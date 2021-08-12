@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { PortfolioModule } from './portfolio/portfolio.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { MatTableModule } from '@angular/material/table';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
-    MatTableModule
+    PortfolioModule
   ],
   providers: [],
   bootstrap: [AppComponent]
