@@ -9,8 +9,23 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class PortfolioComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = [
+    'name', 
+    'description', 
+    'price', 
+    'amountOwned',
+    'averagePrice',
+    'totalPrice',
+    'totalPriceUSD',
+    'netValue',
+    'netValueUSD',
+    'gp',
+    'gpUSD',
+    'variation',
+    'variationUSD',
+    'port' 
+  ];
+  dataSource = new MatTableDataSource<PortfolioStock>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -22,32 +37,53 @@ export class PortfolioComponent implements AfterViewInit {
   }
 }
 
-export interface PeriodicElement {
+export interface PortfolioStock {
   name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  description: string;
+  price: number;
+  amountOwned: number;
+  averagePrice: number;
+  totalPrice: number;
+  totalPriceUSD: number;
+  netValue: number;
+  netValueUSD: number;
+  gp: number;
+  gpUSD: number;
+  variation: number;
+  variationUSD: number;
+  port: number;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
+const ELEMENT_DATA: PortfolioStock[] = [
+  {
+    name: 'BPV',
+    description: 'Banco Provincial',
+    price: 115000,
+    amountOwned: 37,
+    averagePrice: 96530.65,
+    totalPrice: 3571.63,
+    totalPriceUSD: 144.08,
+    netValue: 4053313,
+    netValueUSD: 91.04,
+    gp: 481679,
+    gpUSD: -53.40,
+    variation: 13.49,
+    variationUSD: -36.81,
+    port: 34.07
+  }, {
+    name: 'FVI.B',
+    description: 'F.V.INM."B"',
+    price: 308.5,
+    amountOwned: 13090,
+    averagePrice: 210.64,
+    totalPrice: 2757.27,
+    totalPriceUSD: 118.10,
+    netValue: 3846851,
+    netValueUSD: 86.41,
+    gp: 1089581.21,
+    gpUSD: -31.69,
+    variation: 39.52,
+    variationUSD: -26.83,
+    port: 32.33
+  }
 ];
