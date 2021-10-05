@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { TitleFormRoutingModule } from './title-form-routing.module';
 import { TitleFormComponent } from './title-form.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -13,10 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ],
   imports: [
     CommonModule,
-    TitleFormRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class TitleFormModule { }

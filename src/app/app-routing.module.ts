@@ -6,7 +6,7 @@ import { TitleFormComponent } from './title-form/title-form.component';
 const routes: Routes = [
   { path: '', redirectTo: 'portfolio', pathMatch: 'full' },
   { path: 'portfolio', component: PortfolioComponent },
-  { path: 'titles', component: TitleFormComponent }
+  { path: 'titles', component: TitleFormComponent, loadChildren: () => import('./title-form/title-form.module').then(m => m.TitleFormModule) }
 ];
 
 @NgModule({
