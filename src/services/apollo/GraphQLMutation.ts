@@ -1,7 +1,7 @@
 import { DocumentNode } from "graphql";
 
-export abstract class GraphQLMutation<Params> {
+export abstract class GraphQLMutation<Params, Result> {
     readonly name: string
-    readonly mutation: DocumentNode
-    constructor(readonly params: Params) { }
+    readonly value: DocumentNode
+    constructor(readonly params?: Params) { }
 }

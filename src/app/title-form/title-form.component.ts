@@ -16,7 +16,7 @@ export class TitleFormComponent implements OnInit {
 
   submit() {
     let stockTitle = new StockTitle('Nombre', 'NBR');
-    this.stockTitleService.createTitle(stockTitle).subscribe((title) => {
+    this.stockTitleService.createTitle(stockTitle).subscribe((title: StockTitle) => {
       console.info('Did create Stock Title', title);
     })
   }
