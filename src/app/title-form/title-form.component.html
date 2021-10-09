@@ -1,43 +1,43 @@
-<h1>Crear T&iacute;tulo</h1>
-
 <div class="container text-center">
     <form (ngSubmit)="submit()">
-        <!-- Name field -->
-        <div class="row">
-            <mat-form-field appearance="outline">
-                <mat-label>Nombre</mat-label>
-                <input matInput required>
-                <mat-hint>
-                    <div class="error">
+        <h1 mat-dialog-title>Crear T&iacute;tulo</h1>
+        <mat-dialog-content>
+            <!-- Name field -->
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput required>
+                    <mat-hint>
+                        <!-- <div class="error">
                         <i class="fas fa-exclamation-circle"></i> Error
-                    </div>
-                    <!-- <div *ngFor="let error of validationMessages.email">
+                    </div> -->
+                        <!-- <div *ngFor="let error of validationMessages.email">
                         
                     </div> -->
-                </mat-hint>
-            </mat-form-field>
-        </div>
-        
-        <!-- Symbol Field -->
-        <div class="row">
-            <mat-form-field appearance="outline">
-                <mat-label>Símbolo</mat-label>
-                <input matInput required>
-                <mat-hint>
-                    <div class="error">
-                        <i class="fas fa-exclamation-circle"></i> Error
-                    </div>
-                    <!-- <div *ngFor="let error of validationMessages.email">
-                        
-                    </div> -->
-                </mat-hint>
-            </mat-form-field>
-        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
 
-        <div class="form-buttons">
-            <button mat-raised-button>Cancelar</button>
-            <button mat-raised-button color="primary" type="submit">Guardar</button>
-        </div>
-        
+            <!-- Symbol Field -->
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Símbolo</mat-label>
+                    <input matInput required>
+                    <mat-hint>
+                        <!-- <div class="error">
+                        <i class="fas fa-exclamation-circle"></i> Error
+                    </div> -->
+                        <!-- <div *ngFor="let error of validationMessages.email">
+                        
+                    </div> -->
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <mat-dialog-actions align="end">
+                <button mat-raised-button>Cancelar</button>
+                <button mat-raised-button color="primary" type="submit">Guardar</button>
+            </mat-dialog-actions>
+        </mat-dialog-content>
     </form>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-title-form',
@@ -9,7 +10,7 @@ import { StockTitleService } from 'src/services/stock-title/stock-title.service'
 })
 export class TitleFormComponent implements OnInit {
 
-  constructor(private stockTitleService: StockTitleService) { }
+  constructor(private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<TitleFormComponent>) { }
 
   ngOnInit(): void {
   }
@@ -18,7 +19,12 @@ export class TitleFormComponent implements OnInit {
     let stockTitle = new StockTitle('Nombre', 'NBR');
     this.stockTitleService.createTitle(stockTitle).subscribe((title: StockTitle) => {
       console.info('Did create Stock Title', title);
+      this.dismiss();
     })
+  }
+
+  dismiss() {
+    this.dialogRef.close();
   }
 
 }

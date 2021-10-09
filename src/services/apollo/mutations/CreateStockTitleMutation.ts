@@ -4,7 +4,7 @@ import { GraphQLMutation } from "../GraphQLMutation";
 
 export class CreateStockTitleMutation extends GraphQLMutation<StockTitle, StockTitle> {
     name = 'createStockTitle';
-    mutation = gql`
+    value = gql`
     mutation createStockTitle($name: String!, $symbol: String!) {
         createStockTitle(insertData: {
             name: $name,
