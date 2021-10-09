@@ -1,19 +1,18 @@
 <div class="container text-center">
-    <form (ngSubmit)="submit()">
+    <form [formGroup]="titleForm" (ngSubmit)="submit()">
         <h1 mat-dialog-title>Crear T&iacute;tulo</h1>
         <mat-dialog-content>
             <!-- Name field -->
             <div class="row">
                 <mat-form-field appearance="outline">
                     <mat-label>Nombre</mat-label>
-                    <input matInput required>
+                    <input matInput name formControlName="name" required>
                     <mat-hint>
-                        <!-- <div class="error">
-                        <i class="fas fa-exclamation-circle"></i> Error
-                    </div> -->
-                        <!-- <div *ngFor="let error of validationMessages.email">
-                        
-                    </div> -->
+                        <div *ngFor="let error of validationMessages.name">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
                     </mat-hint>
                 </mat-form-field>
             </div>
@@ -22,20 +21,19 @@
             <div class="row">
                 <mat-form-field appearance="outline">
                     <mat-label>Símbolo</mat-label>
-                    <input matInput required>
+                    <input matInput symbol formControlName="symbol" required>
                     <mat-hint>
-                        <!-- <div class="error">
-                        <i class="fas fa-exclamation-circle"></i> Error
-                    </div> -->
-                        <!-- <div *ngFor="let error of validationMessages.email">
-                        
-                    </div> -->
+                        <div *ngFor="let error of validationMessages.symbol">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
                     </mat-hint>
                 </mat-form-field>
             </div>
 
             <mat-dialog-actions align="end">
-                <button mat-raised-button>Cancelar</button>
+                <button mat-raised-button (click)="dismiss()">Cancelar</button>
                 <button mat-raised-button color="primary" type="submit">Guardar</button>
             </mat-dialog-actions>
         </mat-dialog-content>
