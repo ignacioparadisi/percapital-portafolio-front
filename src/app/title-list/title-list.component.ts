@@ -39,6 +39,11 @@ export class TitleListComponent implements AfterViewInit {
     }))
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   async presentCreateTitleModal() {
     const dialogRef = this.dialog.open(TitleFormComponent, {
       maxWidth: '700px'

@@ -1,27 +1,42 @@
-<div class="table-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+<div class="container">
+
+  <div class="row filter-section">
+    <div class="col-sm-10">
+      <mat-form-field>
+        <mat-label>Filtrar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-2 text-center">
+      <button mat-raised-button color="primary" (click)="presentCreateTitleModal()">
+        <i class="fas fa-plus"></i> Crear T&iacute;tulo
+      </button>
+    </div>
+    
+    
+  </div>
   
+
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
       <!-- Name Column -->
       <ng-container matColumnDef="symbol" sticky>
         <th mat-header-cell *matHeaderCellDef> Símbolo </th>
         <td mat-cell *matCellDef="let element"> {{ element.symbol }} </td>
       </ng-container>
-  
+
       <!-- Description Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-  
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                    showFirstLastButtons 
-                    aria-label="Select page of periodic elements">
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>
   </div>
-
-
-<button mat-button (click)="presentCreateTitleModal()">Crear Titulo</button>
+</div>
