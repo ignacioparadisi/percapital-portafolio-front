@@ -14,7 +14,7 @@ import { TitleFormComponent } from '../title-form/title-form.component';
 })
 export class TitleListComponent implements AfterViewInit {
 
-  private titles?: StockTitle[] = [];
+  private titles: StockTitle[] = [];
 
   displayedColumns: string[] = [
     'symbol',

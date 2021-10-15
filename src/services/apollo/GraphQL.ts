@@ -1,7 +1,8 @@
+import { Apollo } from "apollo-angular";
+
 export abstract class GraphQL<Params, Result> {
     readonly name: string;
-    
-    constructor() {
+    constructor(readonly apollo: Apollo) {
         this.name = this.getName();
     }
 

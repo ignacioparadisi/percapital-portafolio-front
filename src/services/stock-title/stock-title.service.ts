@@ -10,15 +10,15 @@ import { Page } from 'src/common/classes/Page';
 })
 export class StockTitleService {
 
-  constructor(private apollo: Apollo) { }
+  constructor(private queryFactory: QueryFactory, private mutationFactory: MutationFactory) { }
 
   getTitles(page?: Page<StockTitle>) {
-    let query = QueryFactory.getGetStockTitlesQuery(page);
-    return query.execute(this.apollo);
+    let query = this.queryFactory.getGetStockTitlesQuery(page);
+    return query.execute();
   }
 
   createTitle(stockTitle: StockTitle) {
-    let mutation = MutationFactory.getCreateStockTitleMutation(stockTitle);
-    return mutation.execute(this.apollo);
+    let mutation = this.mutationFactory.getCreateStockTitleMutation(stockTitle);
+    return mutation.execute();
   }
 }

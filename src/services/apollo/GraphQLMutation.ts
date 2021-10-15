@@ -4,14 +4,14 @@ import { GraphQL } from "./GraphQL";
 
 export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Result> {
     abstract readonly mutation: string;
-    constructor(readonly params?: Params) {
-        super();
+    constructor(readonly apollo: Apollo, readonly params?: Params) {
+        super(apollo);
      }
 
-    execute(apollo: Apollo) {
+    execute() {
         let mutation = gql`${this.mutation}`;
         let variables = this.getVariables(this.params);
-        return apollo.mutate<Result>({
+        return this.apollo.mutate<Result>({
             mutation,
             variables
         }).pipe(
