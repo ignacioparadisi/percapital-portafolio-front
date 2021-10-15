@@ -1,18 +1,19 @@
-import { Apollo } from "apollo-angular";
-import { DocumentNode } from "graphql";
+import { Apollo, gql } from "apollo-angular";
 import { GraphQL } from "./GraphQL";
 import { map } from 'rxjs/operators';
 
 export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Result>{
-    readonly query: DocumentNode;
+    abstract readonly query: string;
     constructor(readonly params?: Params) { 
         super();
     }
 
     execute(apollo: Apollo) {
+        let query = gql`${this.query}`;
+        let variables = this.getVariables(this.params);
         return apollo.query<Result>({
-            query: this.query,
-            variables: this.getVariables(this.params)
+            query,
+            variables 
         }).pipe(
             map(({ data }) => {
               // @ts-ignore

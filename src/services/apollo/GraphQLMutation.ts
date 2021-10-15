@@ -1,20 +1,19 @@
-import { Apollo } from "apollo-angular";
-import { DocumentNode } from "graphql";
+import { Apollo, gql } from "apollo-angular";
 import { map } from 'rxjs/operators';
 import { GraphQL } from "./GraphQL";
 
 export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Result> {
-    readonly name: string
-    readonly mutation: DocumentNode
+    abstract readonly mutation: string;
     constructor(readonly params?: Params) {
         super();
-        console.log(this.constructor.name);
      }
 
-    execute(apollo: Apollo){
+    execute(apollo: Apollo) {
+        let mutation = gql`${this.mutation}`;
+        let variables = this.getVariables(this.params);
         return apollo.mutate<Result>({
-            mutation: this.mutation,
-            variables: this.getVariables(this.params)
+            mutation,
+            variables
         }).pipe(
             map(({ data }) => {
               // @ts-ignore
