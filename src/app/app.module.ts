@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
-import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     PortfolioModule,
     GraphQLModule,
-    HttpClientModule,
-    MatDialogModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 <div class="container text-center">
+    <button mat-icon-button class="close" (click)="dismiss()"><i class="fas fa-times"></i></button>
     <h1 mat-dialog-title>Crear T&iacute;tulo</h1>
 
     <form [formGroup]="titleForm" (ngSubmit)="submit()">
