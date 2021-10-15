@@ -4,15 +4,14 @@ import { GraphQL } from "./GraphQL";
 import { map } from 'rxjs/operators';
 
 export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Result>{
-    readonly name: string;
-    readonly value: DocumentNode;
+    readonly query: DocumentNode;
     constructor(readonly params?: Params) { 
         super();
     }
 
     execute(apollo: Apollo) {
         return apollo.query<Result>({
-            query: this.value,
+            query: this.query,
             variables: this.getVariables(this.params)
         }).pipe(
             map(({ data }) => {

@@ -5,14 +5,15 @@ import { GraphQL } from "./GraphQL";
 
 export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Result> {
     readonly name: string
-    readonly value: DocumentNode
+    readonly mutation: DocumentNode
     constructor(readonly params?: Params) {
         super();
+        console.log(this.constructor.name);
      }
 
     execute(apollo: Apollo){
         return apollo.mutate<Result>({
-            mutation: this.value,
+            mutation: this.mutation,
             variables: this.getVariables(this.params)
         }).pipe(
             map(({ data }) => {
