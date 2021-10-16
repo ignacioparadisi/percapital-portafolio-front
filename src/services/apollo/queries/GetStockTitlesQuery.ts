@@ -4,10 +4,11 @@ import { Page } from "src/common/classes/Page";
 
 export class GetStockTitlesQuery extends GraphQLQuery<Page<StockTitle>, Page<StockTitle>> {
     query = `
-    query getStockTitles($limit: Int, $skip: Int) {
+    query getStockTitles($limit: Int, $skip: Int, $where: StockTitleInput) {
         getStockTitles(
             limit: $limit,
-            skip: $skip
+            skip: $skip,
+            where: $where
         ) {
             data {
                 id

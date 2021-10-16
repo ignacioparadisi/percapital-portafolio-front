@@ -18,6 +18,7 @@ export abstract class GraphQL<Params, Result> {
                 variables[key] = params[key];
             }
         });
+        console.log(variables);
         return variables;
     }
 

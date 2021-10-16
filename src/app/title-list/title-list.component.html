@@ -1,19 +1,20 @@
 <div class="container">
 
   <div class="row filter-section">
+    
     <div class="col-sm-10">
+      <form [formGroup]="searchForm">
       <mat-form-field>
         <mat-label>Filtrar</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input>
+        <input matInput search formControlName="search">
       </mat-form-field>
+    </form>
     </div>
     <div class="col-sm-2 text-center">
       <button mat-raised-button color="primary" (click)="presentCreateTitleModal()">
         <i class="fas fa-plus"></i> Crear T&iacute;tulo
       </button>
     </div>
-
-
   </div>
 
   <div class="table-container mat-elevation-z8">

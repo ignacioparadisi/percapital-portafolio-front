@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class TitleFormComponent implements OnInit {
 
+  isLoading = false;
   titleForm: FormGroup;
   public validationMessages = {
     name: [],
@@ -35,15 +36,17 @@ export class TitleFormComponent implements OnInit {
     if (!name || !symbol) {
       throw Error('Required fields');
     }
+    this.isLoading = true;
     let stockTitle = new StockTitle(name, symbol);
     this.stockTitleService.createTitle(stockTitle).subscribe((title: StockTitle) => {
+      this.isLoading = false;
       console.info('Did create Stock Title', title);
-      this.dismiss();
+      this.dismiss(title);
     })
   }
 
-  dismiss() {
-    this.dialogRef.close();
+  dismiss(title?: StockTitle) {
+    this.dialogRef.close({ title });
   }
 
   private createForm() {

@@ -4,8 +4,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Page } from 'src/common/classes/Page';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TitleFormComponent } from '../title-form/title-form.component';
+import { FormControl, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-title-list',
@@ -15,6 +17,9 @@ import { TitleFormComponent } from '../title-form/title-form.component';
 export class TitleListComponent implements AfterViewInit {
 
   private titles: StockTitle[] = [];
+  private dialogRef?: MatDialogRef<TitleFormComponent, any>;
+  private searchFilter?: string;
+  searchForm: FormGroup;
 
   isLoading: boolean = false;
   totalItems: number = 0;
@@ -27,7 +32,17 @@ export class TitleListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private stockTitleService: StockTitleService, private dialog: MatDialog) { }
+  constructor(private stockTitleService: StockTitleService, private dialog: MatDialog) { 
+    this.searchForm = new FormGroup({
+      search: new FormControl()
+    });
+    this.searchForm.get('search')?.valueChanges
+      .pipe(
+        debounceTime(1000)
+      ).subscribe(value => {
+        this.applyFilter(value);
+      })
+  }
 
   ngAfterViewInit() {
     this.subscribeToPagination();
@@ -37,7 +52,11 @@ export class TitleListComponent implements AfterViewInit {
 
   private fetchTitles() {
     this.isLoading = true
-    let page = new Page<StockTitle>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
+    let filteredTitle: StockTitle | undefined = undefined;
+    if (this.searchFilter) {
+      filteredTitle = new StockTitle(this.searchFilter, this.searchFilter);
+    }
+    let page = new Page<StockTitle>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, filteredTitle);
     this.stockTitleService.getTitles(page).subscribe(((result) => {
       this.isLoading = false;
       console.info('Did get titles', result);
@@ -47,15 +66,20 @@ export class TitleListComponent implements AfterViewInit {
     }))
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  private applyFilter(search: string) {
+    this.searchFilter = search;
+    this.fetchTitles();
   }
 
   async presentCreateTitleModal() {
-    const dialogRef = this.dialog.open(TitleFormComponent, {
+    this.dialogRef = this.dialog.open(TitleFormComponent, {
       width: '700px',
       panelClass: 'my-dialog'
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result.title) {
+        this.fetchTitles();
+      }
     });
   }
 
