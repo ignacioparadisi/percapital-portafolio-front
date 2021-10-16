@@ -46,7 +46,7 @@ export class TitleFormComponent implements OnInit {
   }
 
   dismiss(title?: StockTitle) {
-    this.dialogRef.close({ title });
+    this.dialogRef.close(title);
   }
 
   private createForm() {

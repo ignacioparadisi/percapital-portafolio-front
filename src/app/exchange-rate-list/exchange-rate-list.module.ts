@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { ExchangeRateFormModule } from '../exchange-rate-form/exchange-rate-form.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     ExchangeRateListRoutingModule,
+    ExchangeRateFormModule,
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,

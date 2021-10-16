@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ExchangeRate } from 'src/common/classes/ExchangeRate';
 import { Page } from 'src/common/classes/Page';
 import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
+import { ExchangeRateFormComponent } from '../exchange-rate-form/exchange-rate-form.component';
 
 @Component({
   selector: 'app-exchange-rate-list',
@@ -14,6 +15,7 @@ import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.se
 export class ExchangeRateListComponent implements AfterViewInit {
 
   private exchangeRates: ExchangeRate[] = [];
+  private dialogRef?: MatDialogRef<ExchangeRateFormComponent, any>;
 
   isLoading: boolean = false;
   totalItems: number = 0;
@@ -46,16 +48,16 @@ export class ExchangeRateListComponent implements AfterViewInit {
     }))
   }
 
-  // async presentCreateTitleModal() {
-  //   this.dialogRef = this.dialog.open(TitleFormComponent, {
-  //     width: '700px'
-  //   });
-  //   this.dialogRef.afterClosed().subscribe(result => {
-  //     if (result.title) {
-  //       this.fetchTitles();
-  //     }
-  //   });
-  // }
+  async presentCreateModal() {
+    this.dialogRef = this.dialog.open(ExchangeRateFormComponent, {
+      width: '700px'
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetchExchangeRates();
+      }
+    });
+  }
 
   private subscribeToPagination() {
     this.paginator.page.subscribe(event => {

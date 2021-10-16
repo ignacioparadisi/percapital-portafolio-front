@@ -71,12 +71,12 @@ export class TitleListComponent implements AfterViewInit {
     this.fetchTitles();
   }
 
-  async presentCreateTitleModal() {
+  async presentCreateModal() {
     this.dialogRef = this.dialog.open(TitleFormComponent, {
       width: '700px'
     });
     this.dialogRef.afterClosed().subscribe(result => {
-      if (result.title) {
+      if (result) {
         this.fetchTitles();
       }
     });
