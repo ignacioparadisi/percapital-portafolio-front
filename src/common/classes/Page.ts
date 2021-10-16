@@ -1,7 +1,8 @@
 export class Page<T> {
     limit?: number;
     skip?: number;
-    where?: T[];
+    data?: T[];
+    total?: number;
 
     constructor(limit?: number, skip?: number) {
         this.limit = limit;

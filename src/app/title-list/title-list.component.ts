@@ -17,6 +17,7 @@ export class TitleListComponent implements AfterViewInit {
   private titles: StockTitle[] = [];
 
   isLoading: boolean = false;
+  totalItems: number = 0;
 
   displayedColumns: string[] = [
     'symbol',
@@ -29,16 +30,19 @@ export class TitleListComponent implements AfterViewInit {
   constructor(private stockTitleService: StockTitleService, private dialog: MatDialog) { }
 
   ngAfterViewInit() {
+    this.subscribeToPagination();
     this.dataSource.paginator = this.paginator;
     this.fetchTitles();
   }
 
-  private fetchTitles(page?: Page<StockTitle>) {
+  private fetchTitles() {
     this.isLoading = true
+    let page = new Page<StockTitle>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
     this.stockTitleService.getTitles(page).subscribe(((result) => {
       this.isLoading = false;
       console.info('Did get titles', result);
-      this.titles = result;
+      this.titles = result.data;
+      this.totalItems = result.total;
       this.dataSource = new MatTableDataSource<StockTitle>(this.titles);
     }))
   }
@@ -53,6 +57,12 @@ export class TitleListComponent implements AfterViewInit {
       width: '700px',
       panelClass: 'my-dialog'
     });
+  }
+
+  private subscribeToPagination() {
+    this.paginator.page.subscribe(event => {
+      this.fetchTitles();
+    })
   }
 
 }
