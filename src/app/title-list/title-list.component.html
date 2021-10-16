@@ -1,20 +1,21 @@
 <div class="container">
 
-  <div class="row filter-section">
-    
-    <div class="col-sm-10">
+  <div class="row header">
+    <h1 class="col-8 col-md-9 col-lg-10">T&iacute;tulos</h1>
+    <div class="col-4 col-md-3 col-lg-2 text-center">
+      <button mat-raised-button color="primary" (click)="presentCreateTitleModal()">
+        <i class="fas fa-plus"></i> Crear T&iacute;tulo
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-section">
       <form [formGroup]="searchForm">
       <mat-form-field>
         <mat-label>Filtrar</mat-label>
         <input matInput search formControlName="search">
       </mat-form-field>
     </form>
-    </div>
-    <div class="col-sm-2 text-center">
-      <button mat-raised-button color="primary" (click)="presentCreateTitleModal()">
-        <i class="fas fa-plus"></i> Crear T&iacute;tulo
-      </button>
-    </div>
   </div>
 
   <div class="table-container mat-elevation-z8">
