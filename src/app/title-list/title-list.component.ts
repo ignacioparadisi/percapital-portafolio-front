@@ -73,8 +73,7 @@ export class TitleListComponent implements AfterViewInit {
 
   async presentCreateTitleModal() {
     this.dialogRef = this.dialog.open(TitleFormComponent, {
-      width: '700px',
-      panelClass: 'my-dialog'
+      width: '700px'
     });
     this.dialogRef.afterClosed().subscribe(result => {
       if (result.title) {
