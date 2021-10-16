@@ -16,6 +16,8 @@ export class TitleListComponent implements AfterViewInit {
 
   private titles: StockTitle[] = [];
 
+  isLoading: boolean = false;
+
   displayedColumns: string[] = [
     'symbol',
     'name'
@@ -32,7 +34,9 @@ export class TitleListComponent implements AfterViewInit {
   }
 
   private fetchTitles(page?: Page<StockTitle>) {
+    this.isLoading = true
     this.stockTitleService.getTitles(page).subscribe(((result) => {
+      this.isLoading = false;
       console.info('Did get titles', result);
       this.titles = result;
       this.dataSource = new MatTableDataSource<StockTitle>(this.titles);

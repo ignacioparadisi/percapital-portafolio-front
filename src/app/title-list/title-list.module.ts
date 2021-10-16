@@ -10,6 +10,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TitleFormModule } from '../title-form/title-form.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatRippleModule,
+    MatProgressSpinnerModule
   ]
 })
 export class TitleListModule { }
