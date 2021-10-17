@@ -2,9 +2,11 @@ import { Injectable } from "@angular/core";
 import { Apollo } from "apollo-angular";
 import { ExchangeRate } from "src/common/classes/ExchangeRate";
 import { Page } from "src/common/classes/Page";
+import { PriceRV } from "src/common/classes/PriceRV";
 import { StockTitle } from "src/common/classes/StockTitle";
 import { GraphQLQuery } from "../GraphQLQuery";
 import { GetExchangeRatesQuery } from "./GetExchangeRatesQuery";
+import { GetPriceRVsQuery } from "./GetPriceRVsQuery";
 import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
 
 @Injectable({
@@ -17,5 +19,8 @@ export class QueryFactory {
     }
     getGetExchangeRatesQuery(page?: Page<ExchangeRate>): GraphQLQuery<Page<ExchangeRate>, Page<ExchangeRate>> {
         return new GetExchangeRatesQuery(this.apollo, page);
+    }
+    getGetPriceRvsQuery(page?: Page<PriceRV>): GraphQLQuery<Page<PriceRV>, Page<PriceRV>> {
+        return new GetPriceRVsQuery(this.apollo, page);
     }
 }
