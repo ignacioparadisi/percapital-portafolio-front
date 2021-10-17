@@ -1,3 +1,4 @@
+import { ExchangeRate } from "./ExchangeRate";
 import { OperationType } from "./OperationType";
 import { PriceRV } from "./PriceRV";
 
@@ -9,12 +10,12 @@ export class Operation {
     stockAmount?: number;
     stockPrice?: number;
     operationType: OperationType;
-    priceRV: PriceRV;
+    exchangeRate: number;
+    priceRV?: PriceRV;
     value: number;
     comission: number;
     iva: number;
     register: number;
-    exchangeRate: number;
 
     // Variables for sell ops
     sellNetValue?: number;

@@ -9,7 +9,7 @@ export class PriceRV {
     closePrice: number;
     createdAt: Date;
     closeDate: Date;
-    latestExchangeRate: number;
+    latestExchangeRate?: number;
     exchangeRate?: ExchangeRate;
     stockTitle?: StockTitle;
 

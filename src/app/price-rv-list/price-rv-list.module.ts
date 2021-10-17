@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { PipesModule } from 'src/common/pipes/pipes.module';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatButtonModule
+    MatButtonModule,
+    PipesModule
   ]
 })
 export class PriceRvListModule { }

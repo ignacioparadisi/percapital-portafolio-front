@@ -15,6 +15,10 @@ export class GetOperationsQuery extends GraphQLQuery<Page<Operation>, Page<Opera
                 stockAmount
                 stockPrice
                 typeId
+                operationType {
+                    id
+                    name
+                }
     
                 value
                 comission
@@ -46,10 +50,20 @@ export class GetOperationsQuery extends GraphQLQuery<Page<Operation>, Page<Opera
                 buyDollarWeightedPerformance
                 priceRV {
                     id
-                    bolivaresPrice
-                    closePrice
+                    titleId
                     closeDate
+                    closePrice
                     createdAt
+                    bolivaresPrice
+                    exchangeRateId
+                    exchangeRate {
+                      id
+                      value
+                    }
+                    stockTitle {
+                      symbol
+                      name
+                    }
                 }
             }
             total

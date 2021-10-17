@@ -97,8 +97,10 @@ export class PriceRvListComponent implements AfterViewInit {
     })
   }
 
-getCloseDollarPrice(priceRV: PriceRV): number {
-    console.log(priceRV.closePrice / priceRV.latestExchangeRate);
+getCloseDollarPrice(priceRV: PriceRV): number | undefined {
+    if (!priceRV.latestExchangeRate) {
+      return undefined;
+    }
     return priceRV.closePrice / priceRV.latestExchangeRate;
 }
 
