@@ -22,6 +22,7 @@ export class TitleListComponent implements AfterViewInit {
   searchForm: FormGroup;
 
   isLoading: boolean = false;
+  errorLoading: boolean = false;
   totalItems: number = 0;
 
   displayedColumns: string[] = [
@@ -47,28 +48,33 @@ export class TitleListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.subscribeToPagination();
     this.dataSource.paginator = this.paginator;
-    this.fetchTitles();
+    this.fetch();
   }
 
-  private fetchTitles() {
-    this.isLoading = true
+  fetch() {
+    this.isLoading = true;
+    this.errorLoading = false;
     let filteredTitle: StockTitle | undefined = undefined;
     if (this.searchFilter) {
       filteredTitle = new StockTitle(this.searchFilter, this.searchFilter);
     }
     let page = new Page<StockTitle>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, filteredTitle);
-    this.stockTitleService.getTitles(page).subscribe(((result) => {
+    this.stockTitleService.getTitles(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get titles', result);
       this.titles = result.data;
       this.totalItems = result.total;
       this.dataSource = new MatTableDataSource<StockTitle>(this.titles);
-    }))
+    }, error => {
+      console.error(error);
+      this.errorLoading = true;
+      this.isLoading = false;
+    })
   }
 
   private applyFilter(search: string) {
     this.searchFilter = search;
-    this.fetchTitles();
+    this.fetch();
   }
 
   async presentCreateModal() {
@@ -77,14 +83,14 @@ export class TitleListComponent implements AfterViewInit {
     });
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fetchTitles();
+        this.fetch();
       }
     });
   }
 
   private subscribeToPagination() {
     this.paginator.page.subscribe(event => {
-      this.fetchTitles();
+      this.fetch();
     })
   }
 

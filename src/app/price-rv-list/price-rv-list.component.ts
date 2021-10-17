@@ -18,6 +18,7 @@ export class PriceRvListComponent implements AfterViewInit {
   private searchFilter?: string;
 
   isLoading: boolean = false;
+  errorLoading: boolean = false;
   totalItems: number = 0;
 
   displayedColumns: string[] = [
@@ -50,28 +51,33 @@ export class PriceRvListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.subscribeToPagination();
     this.dataSource.paginator = this.paginator;
-    this.fetchTitles();
+    this.fetch();
   }
 
-  private fetchTitles() {
-    this.isLoading = true
+  fetch() {
+    this.isLoading = true;
+    this.errorLoading = false;
     //let filteredTitle: PriceRV | undefined = undefined;
     // if (this.searchFilter) {
     //   filteredTitle = new pric(this.searchFilter, this.searchFilter);
     // }
     let page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
-    this.priceRVService.getPriceRVs(page).subscribe(((result) => {
+    this.priceRVService.getPriceRVs(page).subscribe(result => {
       this.isLoading = false;
-      console.info('Did get titles', result);
+      console.info('Did get Price RVs', result);
       this.priceRvs = result.data;
       this.totalItems = result.total;
       this.dataSource = new MatTableDataSource<PriceRV>(this.priceRvs);
-    }))
+    }, error => {
+      console.error(error);
+      this.isLoading = false;
+      this.errorLoading = true;
+    })
   }
 
   private applyFilter(search: string) {
     this.searchFilter = search;
-    this.fetchTitles();
+    this.fetch();
   }
 
   async presentCreateModal() {
@@ -87,7 +93,7 @@ export class PriceRvListComponent implements AfterViewInit {
 
   private subscribeToPagination() {
     this.paginator.page.subscribe(event => {
-      this.fetchTitles();
+      this.fetch();
     })
   }
 

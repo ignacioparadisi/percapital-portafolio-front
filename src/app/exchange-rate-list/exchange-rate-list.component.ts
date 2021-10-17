@@ -18,6 +18,7 @@ export class ExchangeRateListComponent implements AfterViewInit {
   private dialogRef?: MatDialogRef<ExchangeRateFormComponent, any>;
 
   isLoading: boolean = false;
+  errorLoading: boolean = false;
   totalItems: number = 0;
 
   displayedColumns: string[] = [
@@ -33,19 +34,24 @@ export class ExchangeRateListComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.subscribeToPagination();
     this.dataSource.paginator = this.paginator;
-    this.fetchExchangeRates();
+    this.fetch();
   }
 
-  private fetchExchangeRates() {
-    this.isLoading = true
+  fetch() {
+    this.isLoading = true;
+    this.errorLoading = false;
     let page = new Page<ExchangeRate>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
-    this.exchangeRateService.getExchangeRates(page).subscribe(((result) => {
+    this.exchangeRateService.getExchangeRates(page).subscribe(result => {
       this.isLoading = false;
-      console.info('Did get titles', result);
+      console.info('Did get Exchange Rates', result);
       this.exchangeRates = result.data;
       this.totalItems = result.total;
       this.dataSource = new MatTableDataSource<ExchangeRate>(this.exchangeRates);
-    }))
+    }, error => {
+      console.error(error);
+      this.isLoading = false;
+      this.errorLoading = true;
+    })
   }
 
   async presentCreateModal() {
@@ -54,14 +60,14 @@ export class ExchangeRateListComponent implements AfterViewInit {
     });
     this.dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fetchExchangeRates();
+        this.fetch();
       }
     });
   }
 
   private subscribeToPagination() {
     this.paginator.page.subscribe(event => {
-      this.fetchExchangeRates();
+      this.fetch();
     })
   }
 }

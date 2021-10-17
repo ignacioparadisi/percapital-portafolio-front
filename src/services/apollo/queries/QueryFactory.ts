@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Apollo } from "apollo-angular";
 import { ExchangeRate } from "src/common/classes/ExchangeRate";
+import { Operation } from "src/common/classes/Operation";
 import { Page } from "src/common/classes/Page";
 import { PriceRV } from "src/common/classes/PriceRV";
 import { StockTitle } from "src/common/classes/StockTitle";
-import { GraphQLQuery } from "../GraphQLQuery";
+import { GetOperationsQuery } from "./GetBuyOperationsQuery";
 import { GetExchangeRatesQuery } from "./GetExchangeRatesQuery";
 import { GetPriceRVsQuery } from "./GetPriceRVsQuery";
 import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
@@ -14,13 +15,16 @@ import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
 })
 export class QueryFactory {
     constructor(private apollo: Apollo) { }
-    getGetStockTitlesQuery(page?: Page<StockTitle>): GraphQLQuery<Page<StockTitle>, Page<StockTitle>> {
+    getGetStockTitlesQuery(page?: Page<StockTitle>) {
         return new GetStockTitlesQuery(this.apollo, page);
     }
-    getGetExchangeRatesQuery(page?: Page<ExchangeRate>): GraphQLQuery<Page<ExchangeRate>, Page<ExchangeRate>> {
+    getGetExchangeRatesQuery(page?: Page<ExchangeRate>) {
         return new GetExchangeRatesQuery(this.apollo, page);
     }
-    getGetPriceRvsQuery(page?: Page<PriceRV>): GraphQLQuery<Page<PriceRV>, Page<PriceRV>> {
+    getGetPriceRvsQuery(page?: Page<PriceRV>) {
         return new GetPriceRVsQuery(this.apollo, page);
+    }
+    getGetBuyOperationsQuery(page?: Page<Operation>) {
+        return new GetOperationsQuery(this.apollo, page);
     }
 }
