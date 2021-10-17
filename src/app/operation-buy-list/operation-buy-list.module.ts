@@ -8,19 +8,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NullablePipe } from 'src/common/pipes/NullablePipe';
-import { PercentagePipe } from 'src/common/pipes/PercentagePipe';
+import { PipesModule } from 'src/common/pipes/pipes.module';
 
 
 @NgModule({
   declarations: [
-    OperationBuyListComponent,
-    NullablePipe,
-    PercentagePipe
+    OperationBuyListComponent
   ],
   imports: [
     CommonModule,
     OperationBuyListRoutingModule,
+    PipesModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
