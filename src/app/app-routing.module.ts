@@ -6,7 +6,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'portfolio', pathMatch: 'full' },
   { path: 'portfolio', component: PortfolioComponent },
   { path: 'titles', loadChildren: () => import('./title-list/title-list.module').then(m => m.TitleListModule) },
-  { path: 'exchange-rates', loadChildren: () => import('./exchange-rate-list/exchange-rate-list.module').then(m => m.ExchangeRateListModule) }
+  { path: 'exchange-rates', loadChildren: () => import('./exchange-rate-list/exchange-rate-list.module').then(m => m.ExchangeRateListModule) },
+  { path: 'price-rv', loadChildren: () => import('./price-rv-list/price-rv-list.module').then(m => m.PriceRvListModule) }
 ];
 
 @NgModule({
