@@ -5,7 +5,7 @@ import { Operation } from "src/common/classes/Operation";
 import { Page } from "src/common/classes/Page";
 import { PriceRV } from "src/common/classes/PriceRV";
 import { StockTitle } from "src/common/classes/StockTitle";
-import { GetOperationsQuery } from "./GetBuyOperationsQuery";
+import { GetOperationsQuery } from "./GetOperationsQuery";
 import { GetExchangeRatesQuery } from "./GetExchangeRatesQuery";
 import { GetPriceRVsQuery } from "./GetPriceRVsQuery";
 import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
