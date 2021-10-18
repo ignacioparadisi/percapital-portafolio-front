@@ -13,18 +13,15 @@ export class PriceRV {
     exchangeRate?: ExchangeRate;
     stockTitle?: StockTitle;
 
-   constructor(id: number, titleId: number, exchangeRateId: number, bolivaresPrice: number, 
-    closePrice: number, createdAt: Date, closeDate: Date, latestExchangeRate: number, 
-    exchangeRate?: ExchangeRate, stockTitle?: StockTitle) {
-        this.id = id;
+   constructor(titleId: number, exchangeRateId: number, bolivaresPrice: number, 
+    closePrice: number, closeDate: Date, createdAt?: Date) {
         this.titleId = titleId;
         this.exchangeRateId = exchangeRateId;
         this.bolivaresPrice = bolivaresPrice;
         this.closePrice = closePrice;
-        this.createdAt = createdAt;
+        if (createdAt) {
+            this.createdAt = createdAt;
+        }
         this.closeDate = closeDate;
-        this.latestExchangeRate = latestExchangeRate;
-        this.exchangeRate = exchangeRate;
-        this.stockTitle = stockTitle;
    }
 }

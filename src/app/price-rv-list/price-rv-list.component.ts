@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Page } from 'src/common/classes/Page';
 import { PriceRV } from 'src/common/classes/PriceRV';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
+import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
 
 @Component({
   selector: 'app-price-rv-list',
@@ -14,7 +15,7 @@ import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 })
 export class PriceRvListComponent implements AfterViewInit {
   private priceRvs: PriceRV[] = [];
-  //private dialogRef?: MatDialogRef<TitleFormComponent, any>;
+  private dialogRef?: MatDialogRef<PriceRvFormComponent, any>;
   private searchFilter?: string;
 
   isLoading: boolean = false;
@@ -81,14 +82,14 @@ export class PriceRvListComponent implements AfterViewInit {
   }
 
   async presentCreateModal() {
-    // this.dialogRef = this.dialog.open(TitleFormComponent, {
-    //   width: '700px'
-    // });
-    // this.dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this.fetchTitles();
-    //   }
-    // });
+    this.dialogRef = this.dialog.open(PriceRvFormComponent, {
+      width: '700px'
+    });
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetch();
+      }
+    });
   }
 
   private subscribeToPagination() {

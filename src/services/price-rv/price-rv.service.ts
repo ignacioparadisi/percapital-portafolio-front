@@ -15,4 +15,9 @@ export class PriceRvService {
     let query = this.queryFactory.getGetPriceRvsQuery(page);
     return query.execute();
   }
+
+  createPriceRv(priceRV: PriceRV) {
+    let mutation = this.mutationFactory.getCreatePriceRVMutation(priceRV);
+    return mutation.execute();
+  }
 }
