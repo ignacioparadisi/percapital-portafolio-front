@@ -1,0 +1,22 @@
+.error {
+    color: red;
+}
+
+.container {
+    position: relative!important;
+}
+
+.close {
+    position: absolute;
+    top: -12px;
+    right: -10px;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+}
+
+mat-dialog-actions {
+    button {
+        margin: 10px;
+    }
+}
