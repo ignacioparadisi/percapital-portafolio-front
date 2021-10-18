@@ -6,6 +6,7 @@ import { Operation } from 'src/common/classes/Operation';
 import { OperationType } from 'src/common/classes/OperationType';
 import { Page } from 'src/common/classes/Page';
 import { OperationService } from 'src/services/operation/operation.service';
+import { OperationFormComponent } from '../operation-form/operation-form.component';
 
 @Component({
   selector: 'app-operation-buy-list',
@@ -15,7 +16,7 @@ import { OperationService } from 'src/services/operation/operation.service';
 export class OperationBuyListComponent implements AfterViewInit {
 
   private operations: Operation[] = [];
-  // private dialogRef?: MatDialogRef<ExchangeRateFormComponent, any>;
+  private dialogRef?: MatDialogRef<OperationFormComponent, any>;
 
   errorLoading: boolean = false;
   isLoading: boolean = false;
@@ -80,16 +81,17 @@ export class OperationBuyListComponent implements AfterViewInit {
     })
   }
 
-  // async presentCreateModal() {
-  //   this.dialogRef = this.dialog.open(ExchangeRateFormComponent, {
-  //     width: '700px'
-  //   });
-  //   this.dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.fetchExchangeRates();
-  //     }
-  //   });
-  // }
+  async presentCreateModal() {
+    this.dialogRef = this.dialog.open(OperationFormComponent, {
+      width: '700px'
+    });
+    this.dialogRef.componentInstance.typeId = OperationType.BUY;
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fetch();
+      }
+    });
+  }
 
   private subscribeToPagination() {
     this.paginator.page.subscribe(event => {
