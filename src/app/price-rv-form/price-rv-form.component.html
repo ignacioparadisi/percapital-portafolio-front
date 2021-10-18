@@ -8,9 +8,86 @@
             <div class="row">
                 <mat-form-field appearance="outline">
                     <mat-label>Titulo</mat-label>
-                    <input matInput name formControlName="name" required>
+                    <input matInput name formControlName="title" required>
                     <mat-hint>
-                        <div *ngFor="let error of validationMessages.name">
+                        <div *ngFor="let error of validationMessages.title">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tasa de Cambio</mat-label>
+                    <input matInput name formControlName="exchangeRate" required>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.exchangeRate">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Precio de cierre</mat-label>
+                    <input matInput type="number" placeholder="0" formControlName="closePrice" required>
+                    <span matSuffix>.00</span>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.closePrice">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de cierre</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="closeDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.closeDate">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Precio Bs</mat-label>
+                    <input matInput type="number" placeholder="0" formControlName="bolivaresPrice" required>
+                    <span matSuffix>.00</span>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.bolivaresPrice">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de Creacion</mat-label>
+                    <input matInput [matDatepicker]="createDatePicker" formControlName="createDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="createDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.createDate">
                             <div class="error">
                                 <i class="fas fa-exclamation-circle"></i> {{ error }}
                             </div>

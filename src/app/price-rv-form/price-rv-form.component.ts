@@ -14,8 +14,12 @@ export class PriceRvFormComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
   public validationMessages = {
-    name: [],
-    symbol: []
+    title: [],
+    exchangeRate: [],
+    closePrice: [],
+    closeDate: [],
+    bolivaresPrice: [],
+    createDate: [],
   };
 
   constructor(private priceRVService: PriceRvService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
@@ -59,9 +63,9 @@ export class PriceRvFormComponent implements OnInit {
       title: new FormControl({ value: '', disabled: false }, [Validators.required]),
       exchangeRate: new FormControl({ value: '', disabled: false }, [Validators.required]),
       closePrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      closeDate: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      closeDate: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
       bolivaresPrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      createDate: new FormControl({ value: '', disabled: false }, [])
+      createDate: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [])
     })
   }
 
@@ -69,13 +73,13 @@ export class PriceRvFormComponent implements OnInit {
    * Valida la información que contiene el campo del titulo.
    */
   private validateTitleField() {
-    this.validationMessages.name = [];
+    this.validationMessages.title = [];
     const titleErrors = this.form.get('title')?.errors;
     console.log(titleErrors);
     if (titleErrors) {
       if (titleErrors.required) {
         // @ts-ignore
-        this.validationMessages.name.push('El titulo es obligatorio');
+        this.validationMessages.title.push('El titulo es obligatorio');
       }
     }
   }
@@ -84,7 +88,7 @@ export class PriceRvFormComponent implements OnInit {
    * Valida la información que contiene el campo de contraseña.
    */
   private validateExchangeRateField() {
-    this.validationMessages.name = [];
+    this.validationMessages.exchangeRate = [];
     const exchangeRateErrors = this.form.get('exchangeRate')?.errors;
     console.log(exchangeRateErrors);
     if (exchangeRateErrors) {
@@ -96,13 +100,13 @@ export class PriceRvFormComponent implements OnInit {
   }
 
   private validateClosePriceField() {
-    this.validationMessages.name = [];
+    this.validationMessages.closePrice = [];
     const exchangeRateErrors = this.form.get('closePrice')?.errors;
     console.log(exchangeRateErrors);
     if (exchangeRateErrors) {
       if (exchangeRateErrors.required) {
         // @ts-ignore
-        this.validationMessages.name.push('La tasa de cambio es obligatorio');
+        this.validationMessages.closePrice.push('La tasa de cambio es obligatorio');
       }
     }
   }
