@@ -21,7 +21,7 @@ export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Re
                   throw new Error('Invalid data');
               }
               // @ts-ignore
-              return data[this.name] as R
+              return data[this.name] as Result
           })
         );
     }

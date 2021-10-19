@@ -5,22 +5,23 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-dialog-content>
 
+            <!-- Title -->
             <div class="row">
                 <mat-form-field appearance="outline">
                     <mat-label>T&iacute;tulo</mat-label>
-                    <input placeholder="Título"
-                           aria-label="Título'"
-                           matInput
-                           formControlName="title"
-                           [matAutocomplete]="auto">
-                           <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
-                                <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
-                                {{ title.symbol }} | {{ title.name }}
-                                </mat-option>
-                        </mat-autocomplete>
-                  </mat-form-field>
+                    <input placeholder="Título" aria-label="Título'" matInput formControlName="title"
+                        [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+                        <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+                            {{ title.symbol }} | {{ title.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
             </div>
-            <!-- Name field -->
+            <div class="row">
+                <button mat-flat-button (click)="showDialog()">Precio RV</button>
+            </div>
+            <!-- Exchange Rate Row -->
             <div class="row">
                 <mat-form-field appearance="outline" floatLabel="always">
                     <mat-label>Tasa de Cambio</mat-label>
@@ -34,18 +35,28 @@
                             </div>
                         </div>
                     </mat-hint>
-                  </mat-form-field>
+                </mat-form-field>
             </div>
 
-            <!-- Symbol Field -->
+            <!-- Stock Row -->
             <div class="row">
-                <mat-form-field appearance="outline">
-                    <mat-label>Fecha</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="date" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                <mat-form-field class="col-md-6" appearance="outline" floatLabel="always">
+                    <mat-label>Cantidad de Acciones</mat-label>
+                    <input matInput type="number" placeholder="0" formControlName="stockAmount" required>
                     <mat-hint>
-                        <div *ngFor="let error of validationMessages.date">
+                        <div *ngFor="let error of validationMessages.value">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-6" appearance="outline" floatLabel="always">
+                    <mat-label>Precio de la Acci&oacute;n</mat-label>
+                    <input matInput type="number" placeholder="0" formControlName="stockPrice" required>
+                    <span matPrefix>Bs.&nbsp;</span>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.value">
                             <div class="error">
                                 <i class="fas fa-exclamation-circle"></i> {{ error }}
                             </div>
@@ -53,7 +64,36 @@
                     </mat-hint>
                 </mat-form-field>
             </div>
+
+            <!-- Date Row -->
+            <div class="row">
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>IVA</mat-label>
+                    <mat-select formControlName="tax" required>
+                        <mat-option *ngFor="let typeValue of tax?.values" [value]="typeValue">
+                            {{ typeValue.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>Comisi&oacute;n</mat-label>
+                    <mat-select formControlName="comission" required>
+                        <mat-option *ngFor="let typeValue of comission?.values" [value]="typeValue">
+                            {{ typeValue.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>Registro</mat-label>
+                    <mat-select formControlName="register" required>
+                        <mat-option *ngFor="let typeValue of register?.values" [value]="typeValue">
+                            {{ typeValue.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </mat-dialog-content>
+
         <mat-dialog-actions align="end">
             <button mat-raised-button type="button" (click)="dismiss()">Cancelar</button>
             <button mat-raised-button color="primary" type="submit">Guardar</button>
