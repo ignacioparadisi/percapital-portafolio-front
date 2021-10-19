@@ -99,7 +99,6 @@ export class PriceRvFormComponent implements OnInit {
     let priceRV = new PriceRV(title.id, this.exchangeRate.id, bolivaresPrice, closePrice, closeDate, createDate);
     this.priceRVService.createPriceRv(priceRV).subscribe((priceRV: PriceRV) => {
       this.isLoading = false;
-      console.info('Did create PriceRV', priceRV);
       this.dismiss(priceRV);
     })
   }
