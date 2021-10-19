@@ -17,6 +17,10 @@ export class ExchangeRateService {
     return query.execute();
   }
 
+  getLatestExchangeRate() {
+    let query = this.queryFactory.getGetLatestExchangeQuery();
+    return query.execute();
+  }
   createExchangeRate(exchangeRate: ExchangeRate) {
     let mutation = this.mutationFactory.getCreateExchangeRateMutation(exchangeRate);
     return mutation.execute();

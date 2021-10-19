@@ -9,6 +9,7 @@ import { GetOperationsQuery } from "./GetOperationsQuery";
 import { GetExchangeRatesQuery } from "./GetExchangeRatesQuery";
 import { GetPriceRVsQuery } from "./GetPriceRVsQuery";
 import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
+import { GetLatestExchangeRateQuery } from "./GetLatestExchangeRateQuery";
 import { GetConstantTypesQuery } from "./GetConstantTypesQuery";
 
 @Injectable({
@@ -21,6 +22,9 @@ export class QueryFactory {
     }
     getGetExchangeRatesQuery(page?: Page<ExchangeRate>) {
         return new GetExchangeRatesQuery(this.apollo, page);
+    }
+    getGetLatestExchangeQuery() {
+        return new GetLatestExchangeRateQuery(this.apollo);
     }
     getGetPriceRvsQuery(page?: Page<PriceRV>) {
         return new GetPriceRVsQuery(this.apollo, page);
