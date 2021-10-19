@@ -55,8 +55,8 @@ export class OperationSellListComponent implements AfterViewInit {
     this.operationService.getBuyOperations(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get Sell Operations', result);
-      this.operations = result.data;
-      this.totalItems = result.total;
+      this.operations = result.data ?? [];
+      this.totalItems = result.total ?? 0;
       this.dataSource = new MatTableDataSource<Operation>(this.operations);
     }, error => {
       console.error(error)

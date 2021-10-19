@@ -62,8 +62,8 @@ export class TitleListComponent implements AfterViewInit {
     this.stockTitleService.getTitles(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get titles', result);
-      this.titles = result.data;
-      this.totalItems = result.total;
+      this.titles = result.data ?? [];
+      this.totalItems = result.total ?? 0;
       this.dataSource = new MatTableDataSource<StockTitle>(this.titles);
     }, error => {
       console.error(error);

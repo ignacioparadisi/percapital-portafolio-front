@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ConstantType } from 'src/common/classes/ConstantType';
 import { Operation } from 'src/common/classes/Operation';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
@@ -20,6 +21,9 @@ export class OperationFormComponent implements OnInit {
   form: FormGroup;
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
+  tax: ConstantType;
+  comission: ConstantType;
+  register: ConstantType;
   public validationMessages = {
     value: [],
     date: []
@@ -31,13 +35,29 @@ export class OperationFormComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.fetchTitles();
+    this.fetchConstants();
   }
 
   private fetchTitles() {
     this.stockTitleService.getTitles().subscribe(results => {
-      this.titles = results.data;
+      this.titles = results.data ?? [];
       this.setupFilter();
       console.log(results.data);
+    }, error => {
+      console.error(error);
+    })
+  }
+
+  private fetchConstants() {
+    this.operationService.getConstantTypes().subscribe((results: ConstantType[]) => {
+      console.info('Did get constants', results);
+      if (results.length != 3) {
+        // TODO: SHOW ERROR
+        return;
+      }
+      this.tax = results.filter(value => value.id = ConstantType.TAX)[0];
+      this.comission = results.filter(value => value.id = ConstantType.COMISSION)[0];
+      this.register = results.filter(value => value.id = ConstantType.REGISTER)[0];
     }, error => {
       console.error(error);
     })

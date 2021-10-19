@@ -15,4 +15,9 @@ export class OperationService {
     let query = this.queryFactory.getGetBuyOperationsQuery(page);
     return query.execute();
   }
+
+  getConstantTypes() {
+    let query = this.queryFactory.getGetConstantTypesQuery();
+    return query.execute();
+  }
 }

@@ -13,8 +13,14 @@ $light-theme: mat-light-theme($primary-color, $accent-color, $warn-color);
     body {
         background-color: black;
     }
+    h1 {
+        color: white;
+    }
 }
 
 @media (prefers-color-scheme: light) {
     @include angular-material-theme($light-theme);
+    h1 {
+        color: black;
+    }
 }

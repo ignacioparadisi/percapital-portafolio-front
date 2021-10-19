@@ -65,8 +65,8 @@ export class PriceRvListComponent implements AfterViewInit {
     this.priceRVService.getPriceRVs(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get Price RVs', result);
-      this.priceRvs = result.data;
-      this.totalItems = result.total;
+      this.priceRvs = result.data ?? [];
+      this.totalItems = result.total ?? 0;
       this.dataSource = new MatTableDataSource<PriceRV>(this.priceRvs);
     }, error => {
       console.error(error);

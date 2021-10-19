@@ -44,8 +44,8 @@ export class ExchangeRateListComponent implements AfterViewInit {
     this.exchangeRateService.getExchangeRates(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get Exchange Rates', result);
-      this.exchangeRates = result.data;
-      this.totalItems = result.total;
+      this.exchangeRates = result.data ?? [];
+      this.totalItems = result.total ?? 0;
       this.dataSource = new MatTableDataSource<ExchangeRate>(this.exchangeRates);
     }, error => {
       console.error(error);
