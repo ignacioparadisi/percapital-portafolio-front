@@ -44,7 +44,7 @@ export class PriceRvFormComponent implements OnInit {
 
   private fetchTitles() {
     this.stockTitleService.getTitles().subscribe(results => {
-      this.titles = results.data;
+      this.titles = results.data ?? [];
       this.setupTitleFilter();
       console.log(results.data);
     }, error => {
@@ -54,8 +54,7 @@ export class PriceRvFormComponent implements OnInit {
 
   private fetchLatestExchangeRate() {
     this.exchangeRateService.getLatestExchangeRate().subscribe(results => {
-      this.exchangeRate = results.data;
-      console.log(results.data);
+      this.exchangeRate = results;
       this.form.get('exchangeRate')?.setValue(this.exchangeRate.value);
     }, error => {
       console.error(error);
@@ -97,7 +96,7 @@ export class PriceRvFormComponent implements OnInit {
       throw Error('Required fields');
     }
     this.isLoading = true;
-    let priceRV = new PriceRV(title, exchangeRate, bolivaresPrice, closePrice, closeDate, createDate);
+    let priceRV = new PriceRV(title.id, this.exchangeRate.id, bolivaresPrice, closePrice, closeDate, createDate);
     this.priceRVService.createPriceRv(priceRV).subscribe((priceRV: PriceRV) => {
       this.isLoading = false;
       console.info('Did create PriceRV', priceRV);
