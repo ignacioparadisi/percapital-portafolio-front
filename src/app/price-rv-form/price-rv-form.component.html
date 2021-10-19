@@ -1,0 +1,29 @@
+<div class="container text-center">
+    <button mat-icon-button class="close" (click)="dismiss()"><i class="fas fa-times"></i></button>
+    <h1 mat-dialog-title>Crear Precio RV</h1>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-dialog-content>
+            <!-- Name field -->
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Titulo</mat-label>
+                    <input matInput name formControlName="name" required>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.name">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
+
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button type="button" (click)="dismiss()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+        </mat-dialog-actions>
+    </form>
+
+</div>

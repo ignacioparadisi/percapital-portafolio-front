@@ -9,6 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { PipesModule } from 'src/common/pipes/pipes.module';
+import { PriceRvFormModule } from '../price-rv-form/price-rv-form.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PipesModule } from 'src/common/pipes/pipes.module';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    PipesModule
+    PipesModule,
+    PriceRvFormModule
   ]
 })
 export class PriceRvListModule { }
