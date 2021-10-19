@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { PriceRV } from 'src/common/classes/PriceRV';
+import { StockTitle } from 'src/common/classes/StockTitle';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
+import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 
 @Component({
   selector: 'app-price-rv-form',
@@ -13,6 +17,9 @@ export class PriceRvFormComponent implements OnInit {
 
   isLoading = false;
   form: FormGroup;
+
+  private titles: StockTitle[] = [];
+  filteredTitles?: Observable<StockTitle[]>;
   public validationMessages = {
     title: [],
     exchangeRate: [],
@@ -22,11 +29,40 @@ export class PriceRvFormComponent implements OnInit {
     createDate: [],
   };
 
-  constructor(private priceRVService: PriceRvService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
+  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
   }
 
   ngOnInit(): void {
     this.createForm();
+    this.fetchTitles();
+  }
+
+  private fetchTitles() {
+    this.stockTitleService.getTitles().subscribe(results => {
+      this.titles = results.data;
+      this.setupTitleFilter();
+      console.log(results.data);
+    }, error => {
+      console.error(error);
+    })
+  }
+
+  getOptionText(option?: StockTitle): string {
+    return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
+  }
+
+  private setupTitleFilter() {
+    this.filteredTitles = this.form.get('title')?.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.titles.slice())
+      );
+  }
+
+  private _filter(name: string): StockTitle[] {
+    const filterValue = name.toLowerCase();
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
   }
 
   submit() {
@@ -61,7 +97,7 @@ export class PriceRvFormComponent implements OnInit {
   private createForm() {
     this.form = new FormGroup({
       title: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      exchangeRate: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      exchangeRate: new FormControl({ value: '', disabled: true }, [Validators.required]),
       closePrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
       closeDate: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
       bolivaresPrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
@@ -106,7 +142,7 @@ export class PriceRvFormComponent implements OnInit {
     if (exchangeRateErrors) {
       if (exchangeRateErrors.required) {
         // @ts-ignore
-        this.validationMessages.closePrice.push('La tasa de cambio es obligatorio');
+        this.validationMessages.closePrice.push('El precio de cierre es obligatorio');
       }
     }
   }
