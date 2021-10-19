@@ -3,8 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { ExchangeRate } from 'src/common/classes/ExchangeRate';
 import { PriceRV } from 'src/common/classes/PriceRV';
 import { StockTitle } from 'src/common/classes/StockTitle';
+import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 
@@ -19,6 +21,7 @@ export class PriceRvFormComponent implements OnInit {
   form: FormGroup;
 
   private titles: StockTitle[] = [];
+  private exchangeRate: ExchangeRate;
   filteredTitles?: Observable<StockTitle[]>;
   public validationMessages = {
     title: [],
@@ -29,12 +32,14 @@ export class PriceRvFormComponent implements OnInit {
     createDate: [],
   };
 
-  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
+  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, 
+              private exchangeRateService: ExchangeRateService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
   }
 
   ngOnInit(): void {
     this.createForm();
     this.fetchTitles();
+    this.fetchLatestExchangeRate();
   }
 
   private fetchTitles() {
@@ -42,6 +47,16 @@ export class PriceRvFormComponent implements OnInit {
       this.titles = results.data;
       this.setupTitleFilter();
       console.log(results.data);
+    }, error => {
+      console.error(error);
+    })
+  }
+
+  private fetchLatestExchangeRate() {
+    this.exchangeRateService.getLatestExchangeRate().subscribe(results => {
+      this.exchangeRate = results.data;
+      console.log(results.data);
+      this.form.get('exchangeRate')?.setValue(this.exchangeRate.value);
     }, error => {
       console.error(error);
     })
