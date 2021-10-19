@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ConstantType } from 'src/common/classes/ConstantType';
@@ -8,6 +8,7 @@ import { Operation } from 'src/common/classes/Operation';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
+import { PriceRvListComponent } from '../price-rv-list/price-rv-list.component';
 
 @Component({
   selector: 'app-operation-form',
@@ -21,15 +22,17 @@ export class OperationFormComponent implements OnInit {
   form: FormGroup;
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
-  tax: ConstantType;
-  comission: ConstantType;
-  register: ConstantType;
+  tax: ConstantType | undefined = undefined;
+  comission: ConstantType | undefined = undefined;
+  register: ConstantType | undefined = undefined;
+  priceDialogRef: MatDialogRef<PriceRvListComponent, any>;
   public validationMessages = {
     value: [],
     date: []
   };
 
-  constructor(private operationService: OperationService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<OperationFormComponent>) { 
+  constructor(private operationService: OperationService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<OperationFormComponent>, 
+    private dialog: MatDialog) { 
   }
 
   ngOnInit(): void {
@@ -49,15 +52,18 @@ export class OperationFormComponent implements OnInit {
   }
 
   private fetchConstants() {
-    this.operationService.getConstantTypes().subscribe((results: ConstantType[]) => {
+    this.operationService.getConstantTypes().subscribe(results => {
       console.info('Did get constants', results);
       if (results.length != 3) {
         // TODO: SHOW ERROR
         return;
       }
-      this.tax = results.filter(value => value.id = ConstantType.TAX)[0];
-      this.comission = results.filter(value => value.id = ConstantType.COMISSION)[0];
-      this.register = results.filter(value => value.id = ConstantType.REGISTER)[0];
+      this.tax = results.filter(value => value.id == ConstantType.TAX)[0];
+      this.comission = results.filter(value => value.id == ConstantType.COMISSION)[0];
+      this.register = results.filter(value => value.id == ConstantType.REGISTER)[0];
+      this.form.get('tax')?.setValue(this.tax.values[0]);
+      this.form.get('comission')?.setValue(this.comission.values[0]);
+      this.form.get('register')?.setValue(this.register.values[0]);
     }, error => {
       console.error(error);
     })
@@ -104,9 +110,14 @@ export class OperationFormComponent implements OnInit {
 
   private createForm() {
     this.form = new FormGroup({
-      title: new FormControl({ }, [Validators.required]),
+      title: new FormControl({ value: '', disabled: false }, [Validators.required]),
       value: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required])
+      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
+      tax: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      comission: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      register: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      stockAmount: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      stockPrice: new FormControl({ value: '', disabled: false }, [Validators.required])
     })
   }
 
@@ -137,4 +148,7 @@ export class OperationFormComponent implements OnInit {
     }
   }
 
+  showDialog() {
+    this.priceDialogRef = this.dialog.open(PriceRvListComponent);
+  }
 }
