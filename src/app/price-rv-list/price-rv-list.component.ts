@@ -1,11 +1,15 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
+import { debounceTime, map, startWith } from 'rxjs/operators';
 import { Page } from 'src/common/classes/Page';
 import { PriceRV } from 'src/common/classes/PriceRV';
+import { StockTitle } from 'src/common/classes/StockTitle';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
+import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
 
 @Component({
@@ -14,9 +18,13 @@ import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
   styleUrls: ['./price-rv-list.component.scss']
 })
 export class PriceRvListComponent implements AfterViewInit {
+  private filterPriceRV?: PriceRV
   private priceRvs: PriceRV[] = [];
+  private titles: StockTitle[] = [];
+  filteredTitles?: Observable<StockTitle[]>;
   private dialogRef?: MatDialogRef<PriceRvFormComponent, any>;
-  private searchFilter?: string;
+
+  form: FormGroup;
 
   isLoading: boolean = false;
   errorLoading: boolean = false;
@@ -37,22 +45,74 @@ export class PriceRvListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private priceRVService: PriceRvService, private dialog: MatDialog) { 
-    // this.searchForm = new FormGroup({
-    //   search: new FormControl()
-    // });
-    // this.searchForm.get('search')?.valueChanges
-    //   .pipe(
-    //     debounceTime(1000)
-    //   ).subscribe(value => {
-    //     this.applyFilter(value);
-    //   })
+  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialog: MatDialog) { 
+  }
+
+  ngOnInit(): void {
+    this.createForm();
+    this.fetchTitles();
   }
 
   ngAfterViewInit() {
     this.subscribeToPagination();
     this.dataSource.paginator = this.paginator;
     this.fetch();
+  }
+
+  private createForm() {
+    this.form = new FormGroup({
+      title: new FormControl({ value: '', disabled: false }, []),
+      createDate: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [])
+    })
+
+    this.form.get('createDate')?.valueChanges
+      .pipe(
+        debounceTime(100)
+      ).subscribe(value => {
+        if (this.filterPriceRV) {
+          this.filterPriceRV.createdAt = value
+          this.fetch();
+        }
+      });
+
+      this.form.get('title')?.valueChanges
+      .pipe(
+        debounceTime(100)
+      ).subscribe(value => {
+        if (value as StockTitle && this.filterPriceRV) {
+          this.filterPriceRV.titleId = value.id;
+          this.fetch();
+        }
+        console.log(value instanceof Object)
+      });
+  }
+
+  private setupTitleFilter() {
+    this.filteredTitles = this.form.get('title')?.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filterTitle(name) : this.titles.slice())
+      );
+  }
+
+  private _filterTitle(name: string): StockTitle[] {
+    const filterValue = name.toLowerCase();
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
+  }
+
+  private fetchTitles() {
+    this.stockTitleService.getTitles().subscribe(results => {
+      this.titles = results.data ?? [];
+      this.setupTitleFilter();
+      console.log(results.data);
+    }, error => {
+      console.error(error);
+    })
+  }
+
+  getOptionText(option?: StockTitle): string {
+    return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
   }
 
   fetch() {
@@ -62,7 +122,10 @@ export class PriceRvListComponent implements AfterViewInit {
     // if (this.searchFilter) {
     //   filteredTitle = new pric(this.searchFilter, this.searchFilter);
     // }
-    let page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
+    var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
+    if (this.filterPriceRV) {
+      page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV);
+    }
     this.priceRVService.getPriceRVs(page).subscribe(result => {
       this.isLoading = false;
       console.info('Did get Price RVs', result);
@@ -74,11 +137,6 @@ export class PriceRvListComponent implements AfterViewInit {
       this.isLoading = false;
       this.errorLoading = true;
     })
-  }
-
-  private applyFilter(search: string) {
-    this.searchFilter = search;
-    this.fetch();
   }
 
   async presentCreateModal() {

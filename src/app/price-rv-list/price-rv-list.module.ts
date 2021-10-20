@@ -10,6 +10,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { PipesModule } from 'src/common/pipes/pipes.module';
 import { PriceRvFormModule } from '../price-rv-form/price-rv-form.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -25,7 +31,14 @@ import { PriceRvFormModule } from '../price-rv-form/price-rv-form.module';
     MatProgressSpinnerModule,
     MatButtonModule,
     PipesModule,
-    PriceRvFormModule
+    PriceRvFormModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatOptionModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ]
 })
 export class PriceRvListModule { }

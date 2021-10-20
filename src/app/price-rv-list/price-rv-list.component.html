@@ -6,7 +6,33 @@
             <i class="fas fa-plus"></i> Registrar precio
           </button>
         </div>
-      </div>
+    </div>
+
+    <form [formGroup]="form">
+        <div class="row">
+            <mat-form-field appearance="outline" class="col-md-6">
+                <mat-label>T&iacute;tulo</mat-label>
+                <input placeholder="Título"
+                    aria-label="Título'"
+                    matInput
+                    formControlName="title"
+                    [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
+                            <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+                            {{ title.symbol }} | {{ title.name }}
+                            </mat-option>
+                    </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="col-md-6">
+                <mat-label>Fecha de Creaci&oacute;n</mat-label>
+                <input matInput [matDatepicker]="createDatePicker" formControlName="createDate">
+                <mat-datepicker-toggle matSuffix [for]="createDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #createDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </form>
+
     <div class="table-container mat-elevation-z8">
       <div class="loading-shade" *ngIf="isLoading || errorLoading">
         <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetch()">Reintentar</button>
