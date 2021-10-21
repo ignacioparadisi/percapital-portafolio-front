@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PipesModule } from 'src/common/pipes/pipes.module';
 import { PriceRvFormModule } from '../price-rv-form/price-rv-form.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +38,8 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatRippleModule
   ]
 })
 export class PriceRvListModule { }

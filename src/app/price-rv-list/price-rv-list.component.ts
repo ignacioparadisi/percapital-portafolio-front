@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -18,11 +18,12 @@ import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
   styleUrls: ['./price-rv-list.component.scss']
 })
 export class PriceRvListComponent implements AfterViewInit {
-  private filterPriceRV?: PriceRV
+  @Input() isSelecting: boolean = false;
+  private filterPriceRV: PriceRV = new PriceRV();
   private priceRvs: PriceRV[] = [];
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
-  private dialogRef?: MatDialogRef<PriceRvFormComponent, any>;
+  private formDialogRef?: MatDialogRef<PriceRvFormComponent, any>;
 
   form: FormGroup;
 
@@ -45,7 +46,7 @@ export class PriceRvListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialog: MatDialog) { 
+  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -62,7 +63,7 @@ export class PriceRvListComponent implements AfterViewInit {
   private createForm() {
     this.form = new FormGroup({
       title: new FormControl({ value: '', disabled: false }, []),
-      createDate: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [])
+      createDate: new FormControl({ value: '', disabled: false }, [])
     })
 
     this.form.get('createDate')?.valueChanges
@@ -70,20 +71,29 @@ export class PriceRvListComponent implements AfterViewInit {
         debounceTime(100)
       ).subscribe(value => {
         if (this.filterPriceRV) {
-          this.filterPriceRV.createdAt = value
-          this.fetch();
+          if (!value && this.filterPriceRV.createdAt) {
+            console.log('Empty date');
+            this.filterPriceRV.createdAt = undefined;
+            this.fetch();
+          } else if (value && typeof (value) == 'object') {
+            console.info(`Filtering by date ${value}`);
+            this.filterPriceRV.createdAt = value;
+            this.fetch();
+          }
         }
       });
 
-      this.form.get('title')?.valueChanges
+    this.form.get('title')?.valueChanges
       .pipe(
         debounceTime(100)
       ).subscribe(value => {
-        if (value as StockTitle && this.filterPriceRV) {
+        if (!value && this.filterPriceRV.titleId) {
+          this.filterPriceRV.titleId = undefined;
+          this.fetch();
+        } else if (typeof (value) == 'object') {
           this.filterPriceRV.titleId = value.id;
           this.fetch();
         }
-        console.log(value instanceof Object)
       });
   }
 
@@ -118,12 +128,9 @@ export class PriceRvListComponent implements AfterViewInit {
   fetch() {
     this.isLoading = true;
     this.errorLoading = false;
-    //let filteredTitle: PriceRV | undefined = undefined;
-    // if (this.searchFilter) {
-    //   filteredTitle = new pric(this.searchFilter, this.searchFilter);
-    // }
     var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
-    if (this.filterPriceRV) {
+    console.log(page);
+    if (this.filterPriceRV?.titleId || this.filterPriceRV?.createdAt) {
       page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV);
     }
     this.priceRVService.getPriceRVs(page).subscribe(result => {
@@ -140,10 +147,10 @@ export class PriceRvListComponent implements AfterViewInit {
   }
 
   async presentCreateModal() {
-    this.dialogRef = this.dialog.open(PriceRvFormComponent, {
+    this.formDialogRef = this.dialog.open(PriceRvFormComponent, {
       width: '700px'
     });
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.formDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.fetch();
       }
@@ -156,27 +163,31 @@ export class PriceRvListComponent implements AfterViewInit {
     })
   }
 
-getCloseDollarPrice(priceRV: PriceRV): number | undefined {
-    if (!priceRV.latestExchangeRate) {
+  getCloseDollarPrice(priceRV: PriceRV): number | undefined {
+    if (!priceRV.latestExchangeRate || !priceRV.closePrice) {
       return undefined;
     }
     return priceRV.closePrice / priceRV.latestExchangeRate;
-}
+  }
 
-getDollarPrice(priceRV: PriceRV): number | undefined {
-    if (!priceRV.exchangeRate?.value) {
-        return undefined;
+  getDollarPrice(priceRV: PriceRV): number | undefined {
+    if (!priceRV.exchangeRate?.value || !priceRV.bolivaresPrice) {
+      return undefined;
     }
     return priceRV.bolivaresPrice / priceRV.exchangeRate?.value;
-}
+  }
 
-getRelativeVar(priceRV: PriceRV): number | undefined {
-  let closeDollarPrice = this.getCloseDollarPrice(priceRV);
-  let dollarPrice = this.getDollarPrice(priceRV);
+  getRelativeVar(priceRV: PriceRV): number | undefined {
+    let closeDollarPrice = this.getCloseDollarPrice(priceRV);
+    let dollarPrice = this.getDollarPrice(priceRV);
     if (!closeDollarPrice || !dollarPrice) {
-        return undefined;
+      return undefined;
     }
     return (closeDollarPrice - dollarPrice) / dollarPrice;
-}
+  }
+
+  dismiss() {
+    // this.dialogRef?.close();
+  }
 
 }

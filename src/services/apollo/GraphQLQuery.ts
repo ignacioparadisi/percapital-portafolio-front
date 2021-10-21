@@ -11,6 +11,10 @@ export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Resul
     execute() {
         let query = gql`${this.query}`;
         let variables = this.getVariables(this.params);
+        console.info({
+            query: this.query,
+            variables
+        });
         return this.apollo.query<Result>({
             query,
             variables 

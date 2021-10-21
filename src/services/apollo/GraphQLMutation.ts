@@ -11,6 +11,10 @@ export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Re
     execute() {
         let mutation = gql`${this.mutation}`;
         let variables = this.getVariables(this.params);
+        console.info({
+            mutation: this.mutation,
+            variables
+        });
         return this.apollo.mutate<Result>({
             mutation,
             variables

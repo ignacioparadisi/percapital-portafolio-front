@@ -150,5 +150,6 @@ export class OperationFormComponent implements OnInit {
 
   showDialog() {
     this.priceDialogRef = this.dialog.open(PriceRvListComponent);
+    this.priceDialogRef.componentInstance.isSelecting = true;
   }
 }

@@ -1,99 +1,110 @@
 <div class="container">
+  <div *ngIf="!isSelecting">
     <div class="row header">
-        <h1 class="col-8 col-md-9 col-xl-10">Precio RV</h1>
-        <div class="col-4 col-md-3 col-xl-2 text-center">
-          <button mat-raised-button color="primary" (click)="presentCreateModal()">
-            <i class="fas fa-plus"></i> Registrar precio
-          </button>
-        </div>
-    </div>
-
-    <form [formGroup]="form">
-        <div class="row">
-            <mat-form-field appearance="outline" class="col-md-6">
-                <mat-label>T&iacute;tulo</mat-label>
-                <input placeholder="Título"
-                    aria-label="Título'"
-                    matInput
-                    formControlName="title"
-                    [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
-                            <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
-                            {{ title.symbol }} | {{ title.name }}
-                            </mat-option>
-                    </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="col-md-6">
-                <mat-label>Fecha de Creaci&oacute;n</mat-label>
-                <input matInput [matDatepicker]="createDatePicker" formControlName="createDate">
-                <mat-datepicker-toggle matSuffix [for]="createDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #createDatePicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-    </form>
-
-    <div class="table-container mat-elevation-z8">
-      <div class="loading-shade" *ngIf="isLoading || errorLoading">
-        <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetch()">Reintentar</button>
-        <mat-spinner *ngIf="isLoading"></mat-spinner>
+      <h1 class="col-8 col-md-9 col-xl-10">Precio RV</h1>
+      <div class="col-4 col-md-3 col-xl-2 text-center">
+        <button mat-raised-button color="primary" (click)="presentCreateModal()">
+          <i class="fas fa-plus"></i> Registrar precio
+        </button>
       </div>
-      <div class="table-data-container">
-  
-        <table mat-table [dataSource]="dataSource">
-          <!-- Name Column -->
-          <ng-container matColumnDef="value" sticky>
-            <th mat-header-cell *matHeaderCellDef> Valor </th>
-            <td mat-cell *matCellDef="let element"> {{ element.stockTitle?.symbol }} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> T&iacute;tulo </th>
-            <td mat-cell *matCellDef="let element"> {{ element.stockTitle?.name }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="bolivaresPrice">
-            <th mat-header-cell *matHeaderCellDef> Precio Bs </th>
-            <td mat-cell *matCellDef="let element"> {{ element.bolivaresPrice }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="dollarPrice">
-            <th mat-header-cell *matHeaderCellDef> Precio $ </th>
-            <td mat-cell *matCellDef="let element"> {{ getDollarPrice(element) | currency | nullable }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="closePrice">
-            <th mat-header-cell *matHeaderCellDef> Precio Cierre </th>
-            <td mat-cell *matCellDef="let element"> {{ element.closePrice }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="closeDollarPrice">
-            <th mat-header-cell *matHeaderCellDef> Precio Cierre $ </th>
-            <td mat-cell *matCellDef="let element"> {{ getCloseDollarPrice(element) | currency | nullable }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="createDate">
-            <th mat-header-cell *matHeaderCellDef> Fecha Creacion </th>
-            <td mat-cell *matCellDef="let element"> {{ element.createdAt | date }} </td>
-          </ng-container>
-
-          <ng-container matColumnDef="closeDate">
-            <th mat-header-cell *matHeaderCellDef> Fecha Cierre </th>
-            <td mat-cell *matCellDef="let element"> {{ element.closeDate | date }} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="relativeVar">
-            <th mat-header-cell *matHeaderCellDef> Valor Relativo </th>
-            <td mat-cell *matCellDef="let element"> {{ getRelativeVar(element) | percentage }} </td>
-          </ng-container>
-
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-          <tr mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </div>
-      <mat-paginator [length]="totalItems" [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
-      </mat-paginator>
     </div>
-  
   </div>
+
+  <div *ngIf="isSelecting">
+    <div class="relative-header">
+      <button mat-icon-button class="close" (click)="dismiss()"><i class="fas fa-times"></i></button>
+       <h1 mat-dialog-title>Registrar Operación</h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-md-6">
+        <mat-label>T&iacute;tulo</mat-label>
+        <input placeholder="Título" aria-label="Título'" matInput formControlName="title" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
+          <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+            {{ title.symbol }} | {{ title.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-md-6">
+        <mat-label>Fecha de Creaci&oacute;n</mat-label>
+        <input matInput [matDatepicker]="createDatePicker" formControlName="createDate">
+        <mat-datepicker-toggle matSuffix [for]="createDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #createDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="table-container mat-elevation-z8">
+    <div class="loading-shade" *ngIf="isLoading || errorLoading">
+      <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetch()">Reintentar</button>
+      <mat-spinner *ngIf="isLoading"></mat-spinner>
+    </div>
+    <div class="table-data-container">
+
+      <mat-table [dataSource]="dataSource">
+        <!-- Name Column -->
+        <ng-container matColumnDef="value">
+          <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.stockTitle?.symbol }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef> T&iacute;tulo </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.stockTitle?.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="bolivaresPrice">
+          <mat-header-cell *matHeaderCellDef> Precio Bs </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.bolivaresPrice }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="dollarPrice">
+          <mat-header-cell *matHeaderCellDef> Precio $ </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ getDollarPrice(element) | currency | nullable }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="closePrice">
+          <mat-header-cell *matHeaderCellDef> Precio Cierre </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="closeDollarPrice">
+          <mat-header-cell *matHeaderCellDef> Precio Cierre $ </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ getCloseDollarPrice(element) | currency | nullable }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="createDate">
+          <mat-header-cell *matHeaderCellDef> Fecha Creacion </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.createdAt | date }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="closeDate">
+          <mat-header-cell *matHeaderCellDef> Fecha Cierre </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.closeDate | date }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="relativeVar">
+          <mat-header-cell *matHeaderCellDef> Valor Relativo </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ getRelativeVar(element) | percentage }} </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <div *ngIf="!isSelecting">
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </div>
+        <div *ngIf="isSelecting">
+          <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </div>
+      </mat-table>
+    </div>
+    <mat-paginator [length]="totalItems" [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons
+      aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+
+</div>
