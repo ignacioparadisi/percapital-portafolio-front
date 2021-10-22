@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Result>{
     abstract readonly query: string;
+    readonly findInCache: boolean = true;
     constructor(readonly apollo: Apollo, readonly params?: Params) { 
         super(apollo);
     }
@@ -17,7 +18,8 @@ export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Resul
         });
         return this.apollo.query<Result>({
             query,
-            variables 
+            variables,
+            fetchPolicy: this.findInCache ?  'cache-first' : 'network-only'
         }).pipe(
             map(({ data }) => {
               // @ts-ignore

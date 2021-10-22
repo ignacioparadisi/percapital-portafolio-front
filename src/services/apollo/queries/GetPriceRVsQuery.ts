@@ -3,6 +3,7 @@ import { PriceRV } from "src/common/classes/PriceRV";
 import { GraphQLQuery } from "../GraphQLQuery";
 
 export class GetPriceRVsQuery extends GraphQLQuery<Page<PriceRV>, Page<PriceRV>> {
+    findInCache = false;
     query = `
     query getPriceRVs($limit: Int, $skip: Int, $where: PriceRVInput) {
         getPriceRVs(limit: $limit, skip: $skip, where: $where) {

@@ -1,3 +1,4 @@
+import { MutationFetchPolicy } from "@apollo/client/core/watchQueryOptions";
 import { Apollo, gql } from "apollo-angular";
 import { map } from 'rxjs/operators';
 import { GraphQL } from "./GraphQL";
