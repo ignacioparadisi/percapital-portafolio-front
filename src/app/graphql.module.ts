@@ -7,8 +7,9 @@ import { setContext } from '@apollo/client/link/context';
 const uri = 'https://percapital-backend.herokuapp.com';
 // const uri = 'http://localhost:4000';
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
-  const auth = setContext((operation, context) => ({
+  const auth = setContext(() => ({
     headers: {
+      // TODO: Agarrar el usuario autenticado
       Authorization: '1'
     }
   }));

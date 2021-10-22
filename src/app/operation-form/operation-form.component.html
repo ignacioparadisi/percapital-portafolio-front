@@ -1,25 +1,21 @@
 <div class="container text-center">
     <button mat-icon-button class="close" (click)="dismiss()"><i class="fas fa-times"></i></button>
-    <h1 mat-dialog-title>Registrar Operación</h1>
+    <h1 mat-dialog-title>
+        {{ title }}
+    </h1>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-dialog-content>
 
-            <!-- Title -->
             <div class="row">
-                <mat-form-field appearance="outline">
-                    <mat-label>T&iacute;tulo</mat-label>
-                    <input placeholder="Título" aria-label="Título'" matInput formControlName="title"
-                        [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
-                        <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
-                            {{ title.symbol }} | {{ title.name }}
+                <mat-form-field (click)="showDialog()" appearance="outline">
+                    <mat-label>Precio RV</mat-label>
+                    <mat-select formControlName="priceRV" required>
+                        <mat-option [value]="priceRV">
+                            {{ priceRV?.stockTitle?.symbol }} | {{ priceRV?.stockTitle?.name }}
                         </mat-option>
-                    </mat-autocomplete>
+                    </mat-select>
                 </mat-form-field>
-            </div>
-            <div class="row">
-                <button mat-flat-button (click)="showDialog()">Precio RV</button>
             </div>
             <!-- Exchange Rate Row -->
             <div class="row">

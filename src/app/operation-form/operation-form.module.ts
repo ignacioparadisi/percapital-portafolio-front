@@ -12,7 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
-import { PriceRvListModule } from '../price-rv-list/price-rv-list.module';
+import { PriceRvDialogModule } from '../price-rv-dialog/price-rv-dialog.module';
 
 
 @NgModule({
@@ -32,7 +32,7 @@ import { PriceRvListModule } from '../price-rv-list/price-rv-list.module';
     MatOptionModule,
     MatAutocompleteModule,
     MatSelectModule,
-    PriceRvListModule
+    PriceRvDialogModule
   ]
 })
 export class OperationFormModule { }

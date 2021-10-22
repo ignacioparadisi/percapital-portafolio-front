@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from 'src/common/pipes/pipes.module';
+import { OperationFormModule } from '../operation-form/operation-form.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PipesModule } from 'src/common/pipes/pipes.module';
     MatButtonModule,
     MatDialogModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    OperationFormModule
   ]
 })
 export class OperationSellListModule { }

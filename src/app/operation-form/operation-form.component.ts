@@ -5,10 +5,12 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { ConstantType } from 'src/common/classes/ConstantType';
 import { Operation } from 'src/common/classes/Operation';
+import { OperationType } from 'src/common/classes/OperationType';
+import { PriceRV } from 'src/common/classes/PriceRV';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
-import { PriceRvListComponent } from '../price-rv-list/price-rv-list.component';
+import { PriceRvDialogComponent } from '../price-rv-dialog/price-rv-dialog.component';
 
 @Component({
   selector: 'app-operation-form',
@@ -18,6 +20,7 @@ import { PriceRvListComponent } from '../price-rv-list/price-rv-list.component';
 export class OperationFormComponent implements OnInit {
   @Input() typeId: number;
 
+  title = 'Registrar Operación ';
   isLoading = false;
   form: FormGroup;
   private titles: StockTitle[] = [];
@@ -25,7 +28,8 @@ export class OperationFormComponent implements OnInit {
   tax: ConstantType | undefined = undefined;
   comission: ConstantType | undefined = undefined;
   register: ConstantType | undefined = undefined;
-  priceDialogRef: MatDialogRef<PriceRvListComponent, any>;
+  priceDialogRef: MatDialogRef<PriceRvDialogComponent, any>;
+  priceRV?: PriceRV;
   public validationMessages = {
     value: [],
     date: []
@@ -33,6 +37,7 @@ export class OperationFormComponent implements OnInit {
 
   constructor(private operationService: OperationService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<OperationFormComponent>, 
     private dialog: MatDialog) { 
+      this.title += this.typeId == OperationType.BUY ? 'de Compra' : 'de Venta'
   }
 
   ngOnInit(): void {
@@ -110,7 +115,7 @@ export class OperationFormComponent implements OnInit {
 
   private createForm() {
     this.form = new FormGroup({
-      title: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      priceRV: new FormControl({ value: '', disabled: false }, [Validators.required]),
       value: new FormControl({ value: '', disabled: false }, [Validators.required]),
       date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
       tax: new FormControl({ value: '', disabled: false }, [Validators.required]),
@@ -149,7 +154,14 @@ export class OperationFormComponent implements OnInit {
   }
 
   showDialog() {
-    this.priceDialogRef = this.dialog.open(PriceRvListComponent);
-    this.priceDialogRef.componentInstance.isSelecting = true;
+    this.priceDialogRef = this.dialog.open(PriceRvDialogComponent, {
+      width: '1200px'
+    });
+    this.priceDialogRef.afterClosed().subscribe(priceRV => {
+      if (priceRV) {
+        this.priceRV = priceRV;
+        this.form.get('priceRV')?.setValue(priceRV);
+      }
+    });
   }
 }

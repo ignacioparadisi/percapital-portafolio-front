@@ -40,6 +40,9 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatInputModule,
     MatRippleModule
+  ],
+  exports: [
+    PriceRvListComponent
   ]
 })
 export class PriceRvListModule { }

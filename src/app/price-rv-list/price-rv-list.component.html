@@ -10,13 +10,6 @@
     </div>
   </div>
 
-  <div *ngIf="isSelecting">
-    <div class="relative-header">
-      <button mat-icon-button class="close" (click)="dismiss()"><i class="fas fa-times"></i></button>
-       <h1 mat-dialog-title>Registrar Operación</h1>
-    </div>
-  </div>
-
   <form [formGroup]="form">
     <div class="row">
       <mat-form-field appearance="outline" class="col-md-6">
@@ -98,7 +91,7 @@
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </div>
         <div *ngIf="isSelecting">
-          <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="itemSelected(row)"></mat-row>
         </div>
       </mat-table>
     </div>

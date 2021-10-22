@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -19,6 +19,7 @@ import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
 })
 export class PriceRvListComponent implements AfterViewInit {
   @Input() isSelecting: boolean = false;
+  @Output() didSelectItem = new EventEmitter<PriceRV>();
   private filterPriceRV: PriceRV = new PriceRV();
   private priceRvs: PriceRV[] = [];
   private titles: StockTitle[] = [];
@@ -186,8 +187,9 @@ export class PriceRvListComponent implements AfterViewInit {
     return (closeDollarPrice - dollarPrice) / dollarPrice;
   }
 
-  dismiss() {
-    // this.dialogRef?.close();
+  itemSelected(priceRV: PriceRV) {
+    console.log(priceRV);
+    this.didSelectItem.next(priceRV);
   }
 
 }
