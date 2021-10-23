@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start-dev": "ng serve"
   },
   "private": true,
   "dependencies": {
@@ -20,15 +21,16 @@
     "@angular/platform-browser": "~12.2.8",
     "@angular/platform-browser-dynamic": "~12.2.8",
     "@angular/router": "~12.2.8",
+    "@apollo/client": "^3.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "apollo-angular": "^2.6.0",
     "bootstrap": "^5.1.1",
+    "express": "^4.17.1",
+    "graphql": "^15.0.0",
     "jquery": "^3.6.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
-    "zone.js": "~0.11.4",
-    "@apollo/client": "^3.0.0",
-    "graphql": "^15.0.0"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.2.8",
