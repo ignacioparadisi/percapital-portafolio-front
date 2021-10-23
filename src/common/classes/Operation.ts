@@ -1,14 +1,16 @@
-import { ExchangeRate } from "./ExchangeRate";
 import { OperationType } from "./OperationType";
 import { PriceRV } from "./PriceRV";
 
 export class Operation {
     id: number;
-    userId: number;
-    typeId: number;
-    createdAt: Date;
+    typeId?: number;
+    priceRvId?: number
     stockAmount?: number;
     stockPrice?: number;
+    ivaCvId?: number;
+    comissionCvId?: number;
+    registerCvId?: number;
+    createdAt?: Date;
     operationType: OperationType;
     exchangeRate: number;
     priceRV?: PriceRV;
@@ -42,7 +44,14 @@ export class Operation {
     buyDollarPerformanceValue?: number;
     buyDollarWeightedPerformance?: number;
 
-    constructor(typeId: number) {
+    constructor(typeId: number, priceRvId?: number, stockAmount?: number, stockPrice?: number, ivaId?: number, comissionId?: number, registerId?: number, createdAt?: Date) {
         this.typeId = typeId;
+        this.priceRvId = priceRvId;
+        this.stockAmount = stockAmount;
+        this.stockPrice = stockPrice;
+        this.ivaCvId = ivaId;
+        this.comissionCvId = comissionId;
+        this.registerCvId = registerId;
+        this.createdAt = createdAt;
     }
 }

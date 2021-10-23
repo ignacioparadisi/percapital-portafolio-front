@@ -4,8 +4,8 @@ import { ApolloClientOptions, InMemoryCache, ApolloLink } from '@apollo/client/c
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 
-const uri = 'https://percapital-backend.herokuapp.com';
-// const uri = 'http://localhost:4000';
+// const uri = 'https://percapital-backend.herokuapp.com';
+const uri = 'http://localhost:4000';
 export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   const auth = setContext(() => ({
     headers: {

@@ -20,4 +20,9 @@ export class OperationService {
     let query = this.queryFactory.getGetConstantTypesQuery();
     return query.execute();
   }
+
+  createOperation(operation: Operation) {
+    let query = this.mutationFactory.getCreateOperationMutation(operation);
+    return query.execute();
+  }
 }

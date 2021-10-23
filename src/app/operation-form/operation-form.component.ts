@@ -98,31 +98,32 @@ export class OperationFormComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
-    let value = this.form.get('value')?.value;
+    let priceRV = this.form.get('priceRV')?.value;
     let date = this.form.get('date')?.value;
-    if (!value) {
+    let tax = this.form.get('tax')?.value;
+    let comission = this.form.get('comission')?.value;
+    let register = this.form.get('register')?.value;
+    let stockAmount = this.form.get('stockAmount')?.value;
+    let stockPrice = this.form.get('stockPrice')?.value;
+    if (!(this.typeId && priceRV && date && tax && comission && register && stockAmount && stockPrice)) {
       throw Error('Required fields');
     }
-    if (!date) {
-      throw Error('Required fields');
-    }
-    this.isLoading = true;
+    this.createOperation(this.typeId, priceRV.id, stockAmount, stockPrice, tax.id, comission.id, register.id, date);
   }
 
-  dismiss(exchangeRate?: Operation) {
-    this.dialogRef.close(exchangeRate);
+  dismiss(operation?: Operation) {
+    this.dialogRef.close(operation);
   }
 
   private createForm() {
     this.form = new FormGroup({
       priceRV: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      value: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
       tax: new FormControl({ value: '', disabled: false }, [Validators.required]),
       comission: new FormControl({ value: '', disabled: false }, [Validators.required]),
       register: new FormControl({ value: '', disabled: false }, [Validators.required]),
       stockAmount: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      stockPrice: new FormControl({ value: '', disabled: false }, [Validators.required])
+      stockPrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required])
     })
   }
 
@@ -163,5 +164,17 @@ export class OperationFormComponent implements OnInit {
         this.form.get('priceRV')?.setValue(priceRV);
       }
     });
+  }
+
+  private createOperation(typeId: number, priceRVId: number, stockAmount: number, stockPrice: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date) {
+    this.isLoading = true;
+    let operation = new Operation(typeId, priceRVId, stockAmount, stockPrice, taxId, comissionId, registerId, createdAt);
+    this.operationService.createOperation(operation).subscribe(result => {
+      this.isLoading = false;
+      this.dismiss(result);
+    }, error => {
+      this.isLoading = false;
+      console.error(error);
+    })
   }
 }

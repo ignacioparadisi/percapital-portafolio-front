@@ -12,25 +12,9 @@
                     <mat-label>Precio RV</mat-label>
                     <mat-select formControlName="priceRV" required>
                         <mat-option [value]="priceRV">
-                            {{ priceRV?.stockTitle?.symbol }} | {{ priceRV?.stockTitle?.name }}
+                            {{ priceRV?.stockTitle?.symbol }}  |  {{ priceRV?.stockTitle?.name }}  | Cambio: {{ priceRV?.exchangeRate?.value }}
                         </mat-option>
                     </mat-select>
-                </mat-form-field>
-            </div>
-            <!-- Exchange Rate Row -->
-            <div class="row">
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Tasa de Cambio</mat-label>
-                    <input matInput type="number" placeholder="0" formControlName="value" required>
-                    <span matPrefix>$&nbsp;</span>
-                    <span matSuffix>.00</span>
-                    <mat-hint>
-                        <div *ngFor="let error of validationMessages.value">
-                            <div class="error">
-                                <i class="fas fa-exclamation-circle"></i> {{ error }}
-                            </div>
-                        </div>
-                    </mat-hint>
                 </mat-form-field>
             </div>
 
