@@ -24,8 +24,8 @@ export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Resul
             map(({ data }) => {
               // @ts-ignore
               if (!data || !data[this.name]) {
-                  console.error(data);
-                  throw new Error('Invalid data. ' + JSON.stringify(data));
+                    console.log(this.name);
+                    throw new Error('Invalid data. ' + JSON.stringify(data));
               }
               // @ts-ignore
               return data[this.name] as Result
