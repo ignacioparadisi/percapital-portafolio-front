@@ -23,8 +23,7 @@ export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Re
             map(({ data }) => {
               // @ts-ignore
               if (!data || !data[this.name]) {
-                console.error(data);
-                  throw new Error('Invalid data');
+                  throw new Error('Invalid data. ' + JSON.stringify(data));
               }
               // @ts-ignore
               return data[this.name] as Result
