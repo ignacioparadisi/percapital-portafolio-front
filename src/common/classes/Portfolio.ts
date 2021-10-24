@@ -33,3 +33,9 @@ export class PortfolioPage extends Page<Portfolio> {
     totalNetGp?: number
     totalDollarNetGp?: number
 }
+
+export interface PortfolioTotalValue {
+    name: string;
+    valueBs?: number;
+    valueUSD?: number;
+  }

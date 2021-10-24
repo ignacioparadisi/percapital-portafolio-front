@@ -49,4 +49,11 @@ table {
 
 .mat-footer-row {
     font-weight: bold;
-  }
+}
+
+.total {
+    margin: 50px 0;
+    .table {
+        margin: 0 20px;
+    }
+}
