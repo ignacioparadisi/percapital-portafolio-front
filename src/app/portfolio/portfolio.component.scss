@@ -1,8 +1,36 @@
+.header {
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+}
+
 .table-container {
-    min-width: 500px;
-    max-width: 100%;
+    position: relative;
+    min-width: 200px;
+}
+
+.table-data-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 70vh;
     overflow: auto;
 }
+
+.loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .mat-cell {
     padding: 0px 8px 0px 8px;
 }
@@ -18,3 +46,7 @@
 .mat-table-sticky-border-elem-left {
     border-right: 1px solid #e0e0e0;
 }
+
+.mat-footer-row {
+    font-weight: bold;
+  }

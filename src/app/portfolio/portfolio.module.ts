@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PortfolioComponent } from './portfolio.component';
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PipesModule } from 'src/common/pipes/pipes.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   imports: [
     CommonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    PipesModule,
+    MatProgressSpinnerModule
   ]
 })
 export class PortfolioModule { }

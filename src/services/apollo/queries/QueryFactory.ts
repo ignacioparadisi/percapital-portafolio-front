@@ -11,6 +11,7 @@ import { GetPriceRVsQuery } from "./GetPriceRVsQuery";
 import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
 import { GetLatestExchangeRateQuery } from "./GetLatestExchangeRateQuery";
 import { GetConstantTypesQuery } from "./GetConstantTypesQuery";
+import { GetPortfolioQuery } from "./GetPortfolioQuery";
 
 @Injectable({
     providedIn: 'root'
@@ -34,5 +35,8 @@ export class QueryFactory {
     }
     getGetConstantTypesQuery() {
         return new GetConstantTypesQuery(this.apollo);
+    }
+    getGetPortfolioQuery() {
+        return new GetPortfolioQuery(this.apollo);
     }
 }
