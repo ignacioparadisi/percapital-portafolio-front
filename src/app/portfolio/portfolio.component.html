@@ -171,7 +171,7 @@
           <!-- Name Column -->
           <ng-container matColumnDef="port">
             <mat-header-cell *matHeaderCellDef> % Portafolio </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.percentageInFolio | percentage | nullable }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element.percentageInFolio * 100 | percentage | nullable }} </mat-cell>
             <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
