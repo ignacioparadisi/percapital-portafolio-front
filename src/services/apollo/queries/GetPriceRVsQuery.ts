@@ -5,8 +5,8 @@ import { GraphQLQuery } from "../GraphQLQuery";
 export class GetPriceRVsQuery extends GraphQLQuery<Page<PriceRV>, Page<PriceRV>> {
     findInCache = false;
     query = `
-    query getPriceRVs($limit: Int, $skip: Int, $where: PriceRVInput) {
-        getPriceRVs(limit: $limit, skip: $skip, where: $where) {
+    query getPriceRVs($limit: Int, $skip: Int, $where: PriceRVInput, $latest: Boolean) {
+        getPriceRVs(limit: $limit, skip: $skip, where: $where, latest: $latest) {
             data {
                 id
                 titleId

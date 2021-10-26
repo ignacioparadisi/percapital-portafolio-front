@@ -129,10 +129,10 @@ export class PriceRvListComponent implements AfterViewInit {
   fetch() {
     this.isLoading = true;
     this.errorLoading = false;
-    var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
+    var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, undefined, this.isSelecting);
     console.log(page);
     if (this.filterPriceRV?.titleId || this.filterPriceRV?.createdAt) {
-      page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV);
+      page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV, this.isSelecting);
     }
     this.priceRVService.getPriceRVs(page).subscribe(result => {
       this.isLoading = false;
