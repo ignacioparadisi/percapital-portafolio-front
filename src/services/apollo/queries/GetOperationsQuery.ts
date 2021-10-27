@@ -4,6 +4,7 @@ import { Page } from "src/common/classes/Page";
 import { GraphQLQuery } from "../GraphQLQuery";
 
 export class GetOperationsQuery extends GraphQLQuery<Page<Operation>, Page<Operation>> {
+    findInCache = false;
     query = `
     query getOperations($limit: Int, $skip: Int, $where: OperationInput!) {
         getOperations(where: $where, limit: $limit, skip: $skip) {
