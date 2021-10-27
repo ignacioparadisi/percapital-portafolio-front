@@ -32,17 +32,26 @@ export class PriceRvListComponent implements AfterViewInit {
   errorLoading: boolean = false;
   totalItems: number = 0;
 
-  displayedColumns: string[] = [
-    'value',
-    'title',
-    'bolivaresPrice',
-    'dollarPrice',
-    'closePrice',
-    'closeDollarPrice',
-    'createDate',
-    'closeDate',
-    'relativeVar'
-  ];
+  get displayedColumns(): string[] {
+    if (this.isSelecting) {
+      return [
+        'value',
+        'title',
+        'exchangeRate',
+      ]
+    }
+    return [
+      'value',
+      'title',
+      'bolivaresPrice',
+      'dollarPrice',
+      'closePrice',
+      'closeDollarPrice',
+      'createDate',
+      'closeDate',
+      'relativeVar'
+    ]
+  };
   dataSource = new MatTableDataSource<PriceRV>(this.priceRvs);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

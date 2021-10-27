@@ -50,39 +50,44 @@
           <mat-cell *matCellDef="let element"> {{ element.stockTitle?.name }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="bolivaresPrice">
+        <ng-container matColumnDef="bolivaresPrice" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Precio Bs </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element.bolivaresPrice }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="dollarPrice">
+        <ng-container matColumnDef="dollarPrice" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Precio $ </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ getDollarPrice(element) | currency | nullable }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="closePrice">
+        <ng-container matColumnDef="closePrice" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Precio Cierre </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="closeDollarPrice">
+        <ng-container matColumnDef="closeDollarPrice" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Precio Cierre $ </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ getCloseDollarPrice(element) | currency | nullable }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="createDate">
+        <ng-container matColumnDef="createDate" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Fecha Creacion </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element.createdAt | date }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="closeDate">
+        <ng-container matColumnDef="closeDate" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Fecha Cierre </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element.closeDate | date }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="relativeVar">
+        <ng-container matColumnDef="relativeVar" *ngIf="!isSelecting">
           <mat-header-cell *matHeaderCellDef> Valor Relativo </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ getRelativeVar(element) | percentage }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="exchangeRate" *ngIf="isSelecting">
+          <mat-header-cell *matHeaderCellDef> Tasa de Cambio </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.exchangeRate.value }} </mat-cell>
         </ng-container>
 
 
