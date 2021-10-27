@@ -5,7 +5,6 @@ import { InsertData } from "src/common/classes/InsertData";
 import { Operation } from "src/common/classes/Operation";
 import { PriceRV } from "src/common/classes/PriceRV";
 import { StockTitle } from "src/common/classes/StockTitle";
-import { GraphQLMutation } from "../GraphQLMutation";
 import { CreateExchangeRateMutation } from "./CreateExchangeRateMutation";
 import { CreateOperationMutation } from "./CreateOperationMutation";
 import { CreatePriceRVMutation } from "./CreatePriceRVMutation";

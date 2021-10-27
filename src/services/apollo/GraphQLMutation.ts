@@ -21,13 +21,14 @@ export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Re
             variables
         }).pipe(
             map(({ data }) => {
-              // @ts-ignore
-              if (!data || !data[this.name]) {
-                  throw new Error('Invalid data');
-              }
-              // @ts-ignore
-              return data[this.name] as Result
-          })
+                let name = this.getName(this.mutation);
+                // @ts-ignore
+                if (!data || !data[name]) {
+                    throw new Error('Invalid data. ' + JSON.stringify(data));
+                }
+                // @ts-ignore
+                return data[name] as Result
+            })
         );
     }
 }

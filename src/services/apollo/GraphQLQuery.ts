@@ -22,13 +22,14 @@ export abstract class GraphQLQuery<Params, Result> extends GraphQL<Params, Resul
             fetchPolicy: this.findInCache ?  'cache-first' : 'network-only'
         }).pipe(
             map(({ data }) => {
-              // @ts-ignore
-              if (!data || !data[this.name]) {
-                  throw new Error('Invalid data');
-              }
-              // @ts-ignore
-              return data[this.name] as Result
-          })
+                let name = this.getName(this.query);
+                // @ts-ignore
+                if (!data || !data[name]) {
+                        throw new Error('Invalid data. ' + JSON.stringify(data));
+                }
+                // @ts-ignore
+                return data[name] as Result
+            })
         );
     }
 }
