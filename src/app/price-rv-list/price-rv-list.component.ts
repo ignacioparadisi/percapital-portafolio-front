@@ -30,26 +30,17 @@ export class PriceRvListComponent implements AfterViewInit {
   errorLoading: boolean = false;
   totalItems: number = 0;
 
-  get displayedColumns(): string[] {
-    if (this.isSelecting) {
-      return [
-        'value',
-        'title',
-        'exchangeRate',
-      ]
-    }
-    return [
-      'value',
-      'title',
-      'bolivaresPrice',
-      'dollarPrice',
-      'closePrice',
-      'closeDollarPrice',
-      'createDate',
-      'closeDate',
-      'relativeVar'
-    ]
-  };
+  displayedColumns: string[] = [
+    'value',
+    'title',
+    'bolivaresPrice',
+    'dollarPrice',
+    'closePrice',
+    'closeDollarPrice',
+    'createDate',
+    'closeDate',
+    'relativeVar'
+  ];
   dataSource = new MatTableDataSource<PriceRV>(this.priceRvs);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -136,10 +127,10 @@ export class PriceRvListComponent implements AfterViewInit {
   fetch() {
     this.isLoading = true;
     this.errorLoading = false;
-    var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, undefined, this.isSelecting);
+    var page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize);
     console.log(page);
     if (this.filterPriceRV?.titleId || this.filterPriceRV?.createdAt) {
-      page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV, this.isSelecting);
+      page = new Page<PriceRV>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, this.filterPriceRV);
     }
     this.priceRVService.getPriceRVs(page).subscribe(result => {
       this.isLoading = false;

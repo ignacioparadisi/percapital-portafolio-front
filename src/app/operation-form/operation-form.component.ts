@@ -6,9 +6,11 @@ import { map, startWith } from 'rxjs/operators';
 import { ConstantType } from 'src/common/classes/ConstantType';
 import { Operation } from 'src/common/classes/Operation';
 import { OperationType } from 'src/common/classes/OperationType';
+import { Page } from 'src/common/classes/Page';
 import { PriceRV } from 'src/common/classes/PriceRV';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
+import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 
 @Component({
@@ -23,6 +25,7 @@ export class OperationFormComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
   private titles: StockTitle[] = [];
+  priceRVs: PriceRV[] = [];
   filteredTitles?: Observable<StockTitle[]>;
   tax: ConstantType | undefined = undefined;
   comission: ConstantType | undefined = undefined;
@@ -34,6 +37,7 @@ export class OperationFormComponent implements OnInit {
 
   constructor(private operationService: OperationService, 
     private stockTitleService: StockTitleService, 
+    private priceRVService: PriceRvService,
     private dialogRef: MatDialogRef<OperationFormComponent>) { 
       
   }
@@ -41,8 +45,11 @@ export class OperationFormComponent implements OnInit {
   ngOnInit(): void {
     this.title += this.typeId == OperationType.BUY ? 'de Compra' : 'de Venta'
     this.createForm();
-    this.fetchTitles();
+    if (this.typeId == OperationType.SELL) {
+      this.fetchTitles();
+    }
     this.fetchConstants();
+    this.fetchPriceRVs();
   }
 
   private fetchTitles() {
@@ -72,22 +79,19 @@ export class OperationFormComponent implements OnInit {
     })
   }
 
+  private fetchPriceRVs() {
+    var page = new Page<PriceRV>(undefined, undefined, undefined, true);
+    console.log(page);
+    this.priceRVService.getPriceRVs(page).subscribe(result => {
+      console.info('Did get Price RVs', result);
+      this.priceRVs = result.data ?? [];
+    }, error => {
+      console.error(error);
+    })
+  }
+
   getOptionText(option?: StockTitle): string {
     return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
-  }
-
-  private setupFilter() {
-    this.filteredTitles = this.form.get('title')?.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this._filter(name) : this.titles.slice())
-      );
-  }
-
-  private _filter(name: string): StockTitle[] {
-    const filterValue = name.toLowerCase();
-    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
   }
 
   submit() {
@@ -96,15 +100,30 @@ export class OperationFormComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
-    let priceRV = this.form.get('priceRV')?.value;
+    let priceRV = this.form.get('priceRV')?.value as PriceRV;
     let date = this.form.get('date')?.value;
     let tax = this.form.get('tax')?.value;
     let comission = this.form.get('comission')?.value;
     let register = this.form.get('register')?.value;
     let stockAmount = this.form.get('stockAmount')?.value;
     let stockPrice = this.form.get('stockPrice')?.value;
+
     if (!(this.typeId && priceRV && date && tax && comission && register && stockAmount && stockPrice)) {
       throw Error('Required fields');
+    }
+
+    if (this.typeId == OperationType.SELL) {
+      const filteredTitles = this.titles.filter((title) => priceRV.titleId == title.id);
+      const title = filteredTitles.length > 0 ? filteredTitles[0] : undefined;
+      let currentAmount = title?.stockAmount;
+      if (!currentAmount) {
+        console.info('No tienes acciones para vender');
+        return;
+      }
+      if (currentAmount < stockAmount) {
+        console.log('Alerta de corto');
+        return
+      }
     }
     this.createOperation(this.typeId, priceRV.id, stockAmount, stockPrice, tax.id, comission.id, register.id, date);
   }

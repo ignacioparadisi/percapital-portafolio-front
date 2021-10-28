@@ -7,16 +7,16 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-dialog-content>
 
-            <!-- <div class="row">
+            <div class="row">
                 <mat-form-field appearance="outline">
                     <mat-label>Precio RV</mat-label>
                     <mat-select formControlName="priceRV" required>
-                        <mat-option [value]="priceRV">
+                        <mat-option *ngFor="let priceRV of priceRVs" [value]="priceRV">
                             {{ priceRV?.stockTitle?.symbol }}  |  {{ priceRV?.stockTitle?.name }}  | Cambio: {{ priceRV?.exchangeRate?.value }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div> -->
+            </div>
 
             <!-- Stock Row -->
             <div class="row">
