@@ -18,8 +18,6 @@ import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
   styleUrls: ['./price-rv-list.component.scss']
 })
 export class PriceRvListComponent implements AfterViewInit {
-  @Input() isSelecting: boolean = false;
-  @Output() didSelectItem = new EventEmitter<PriceRV>();
   private filterPriceRV: PriceRV = new PriceRV();
   private priceRvs: PriceRV[] = [];
   private titles: StockTitle[] = [];
@@ -185,11 +183,6 @@ export class PriceRvListComponent implements AfterViewInit {
       return undefined;
     }
     return (closeDollarPrice - dollarPrice) / dollarPrice;
-  }
-
-  itemSelected(priceRV: PriceRV) {
-    console.log(priceRV);
-    this.didSelectItem.next(priceRV);
   }
 
 }

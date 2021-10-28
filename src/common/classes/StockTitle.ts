@@ -2,6 +2,7 @@ export class StockTitle {
     id: number;
     name: string;
     symbol: string;
+    stockAmount?: number;
     createdAt: Date;
 
     constructor(name: string, symbol: string) {

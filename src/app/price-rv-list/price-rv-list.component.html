@@ -1,5 +1,4 @@
 <div class="container">
-  <div *ngIf="!isSelecting">
     <div class="row header">
       <h1 class="col-8 col-md-9 col-xl-10">Precio RV</h1>
       <div class="col-4 col-md-3 col-xl-2 text-center">
@@ -8,7 +7,6 @@
         </button>
       </div>
     </div>
-  </div>
 
   <form [formGroup]="form">
     <div class="row">
@@ -87,12 +85,7 @@
 
 
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <div *ngIf="!isSelecting">
-          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </div>
-        <div *ngIf="isSelecting">
-          <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="itemSelected(row)"></mat-row>
-        </div>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>
     </div>
     <mat-paginator [length]="totalItems" [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons

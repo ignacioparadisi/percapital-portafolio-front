@@ -12,6 +12,7 @@ import { GetStockTitlesQuery } from "./GetStockTitlesQuery";
 import { GetLatestExchangeRateQuery } from "./GetLatestExchangeRateQuery";
 import { GetConstantTypesQuery } from "./GetConstantTypesQuery";
 import { GetPortfolioQuery } from "./GetPortfolioQuery";
+import { QueryStockTitlesWithAmountQuery } from "./GetStockTitlesWithAmountQuery";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,9 @@ export class QueryFactory {
     constructor(private apollo: Apollo) { }
     getGetStockTitlesQuery(page?: Page<StockTitle>) {
         return new GetStockTitlesQuery(this.apollo, page);
+    }
+    getGetStockTitlesWithAmountQuery() {
+        return new QueryStockTitlesWithAmountQuery(this.apollo);
     }
     getGetExchangeRatesQuery(page?: Page<ExchangeRate>) {
         return new GetExchangeRatesQuery(this.apollo, page);

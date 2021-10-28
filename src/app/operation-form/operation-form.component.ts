@@ -10,7 +10,6 @@ import { PriceRV } from 'src/common/classes/PriceRV';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
-import { PriceRvDialogComponent } from '../price-rv-dialog/price-rv-dialog.component';
 
 @Component({
   selector: 'app-operation-form',
@@ -28,29 +27,28 @@ export class OperationFormComponent implements OnInit {
   tax: ConstantType | undefined = undefined;
   comission: ConstantType | undefined = undefined;
   register: ConstantType | undefined = undefined;
-  priceDialogRef: MatDialogRef<PriceRvDialogComponent, any>;
-  priceRV?: PriceRV;
   public validationMessages = {
     value: [],
     date: []
   };
 
-  constructor(private operationService: OperationService, private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<OperationFormComponent>, 
-    private dialog: MatDialog) { 
-      this.title += this.typeId == OperationType.BUY ? 'de Compra' : 'de Venta'
+  constructor(private operationService: OperationService, 
+    private stockTitleService: StockTitleService, 
+    private dialogRef: MatDialogRef<OperationFormComponent>) { 
+      
   }
 
   ngOnInit(): void {
+    this.title += this.typeId == OperationType.BUY ? 'de Compra' : 'de Venta'
     this.createForm();
     this.fetchTitles();
     this.fetchConstants();
   }
 
   private fetchTitles() {
-    this.stockTitleService.getTitles().subscribe(results => {
-      this.titles = results.data ?? [];
-      this.setupFilter();
-      console.log(results.data);
+    this.stockTitleService.getTitlesWithAmount().subscribe(results => {
+      this.titles = results ?? [];
+      console.log(results);
     }, error => {
       console.error(error);
     })
@@ -152,18 +150,6 @@ export class OperationFormComponent implements OnInit {
         this.validationMessages.date.push('La fecha es obligatoria.');
       }
     }
-  }
-
-  showDialog() {
-    this.priceDialogRef = this.dialog.open(PriceRvDialogComponent, {
-      width: '1200px'
-    });
-    this.priceDialogRef.afterClosed().subscribe(priceRV => {
-      if (priceRV) {
-        this.priceRV = priceRV;
-        this.form.get('priceRV')?.setValue(priceRV);
-      }
-    });
   }
 
   private createOperation(typeId: number, priceRVId: number, stockAmount: number, stockPrice: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date) {
