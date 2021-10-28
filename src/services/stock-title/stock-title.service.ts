@@ -16,6 +16,11 @@ export class StockTitleService {
     return query.execute();
   }
 
+  getTitlesWithAmount() {
+    let query = this.queryFactory.getGetStockTitlesWithAmountQuery();
+    return query.execute();
+  }
+
   createTitle(stockTitle: StockTitle) {
     let mutation = this.mutationFactory.getCreateStockTitleMutation(stockTitle);
     return mutation.execute();
