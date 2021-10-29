@@ -1,0 +1,14 @@
+<div class="container text-center">
+    <h2 mat-dialog-title>
+        {{ title }}
+    </h2>
+
+        <mat-dialog-content>
+            <p>{{ message }}</p>
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+            <button mat-raised-button (click)="dismiss(false)">Cancelar</button>
+            <button mat-raised-button color="primary" (click)="dismiss(true)">Continuar</button>
+        </mat-dialog-actions>
+</div>
