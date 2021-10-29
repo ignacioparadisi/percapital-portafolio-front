@@ -12,6 +12,7 @@ import { StockTitle } from 'src/common/classes/StockTitle';
 import { OperationService } from 'src/services/operation/operation.service';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-operation-form',
@@ -38,7 +39,8 @@ export class OperationFormComponent implements OnInit {
   constructor(private operationService: OperationService, 
     private stockTitleService: StockTitleService, 
     private priceRVService: PriceRvService,
-    private dialogRef: MatDialogRef<OperationFormComponent>) { 
+    private dialogRef: MatDialogRef<OperationFormComponent>,
+    private dialog: MatDialog) { 
       
   }
 
@@ -121,7 +123,7 @@ export class OperationFormComponent implements OnInit {
         return;
       }
       if (currentAmount < stockAmount) {
-        console.log('Alerta de corto');
+        this.showAlert(priceRV, stockAmount, stockPrice, tax, comission, register, date);
         return
       }
     }
@@ -181,5 +183,16 @@ export class OperationFormComponent implements OnInit {
       this.isLoading = false;
       console.error(error);
     })
+  }
+
+  private async showAlert(priceRV: PriceRV, stockAmount: number, stockPrice: number, tax: ConstantType, comission: ConstantType, register: ConstantType, date: Date) {
+    let dialogRef = this.dialog.open(AlertDialogComponent);
+    dialogRef.componentInstance.title = 'Operación en corto';
+    dialogRef.componentInstance.message = 'Estas por irte en corto con esta operación. ¿Quieres continuar?';
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.createOperation(this.typeId, priceRV.id, stockAmount, stockPrice, tax.id, comission.id, register.id, date);
+      }
+    });
   }
 }

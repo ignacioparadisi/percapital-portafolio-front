@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { AlertDialogModule } from '../alert-dialog/alert-dialog.module';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatOptionModule,
     MatAutocompleteModule,
-    MatSelectModule
+    MatSelectModule,
+    AlertDialogModule
   ]
 })
 export class OperationFormModule { }
