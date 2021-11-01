@@ -27,7 +27,8 @@ export class TitleListComponent implements AfterViewInit {
 
   displayedColumns: string[] = [
     'symbol',
-    'name'
+    'name',
+    'isinCode'
   ];
   dataSource = new MatTableDataSource<StockTitle>(this.titles);
 
@@ -56,7 +57,7 @@ export class TitleListComponent implements AfterViewInit {
     this.errorLoading = false;
     let filteredTitle: StockTitle | undefined = undefined;
     if (this.searchFilter) {
-      filteredTitle = new StockTitle(this.searchFilter, this.searchFilter);
+      filteredTitle = new StockTitle(this.searchFilter, this.searchFilter, this.searchFilter);
     }
     let page = new Page<StockTitle>(this.paginator.pageSize, this.paginator.pageIndex * this.paginator.pageSize, filteredTitle);
     this.stockTitleService.getTitles(page).subscribe(result => {

@@ -8,6 +8,7 @@ export class QueryStockTitlesWithAmountQuery extends GraphQLQuery<StockTitle, St
             id
             name
             symbol
+            isinCode
             stockAmount
             createdAt
         }

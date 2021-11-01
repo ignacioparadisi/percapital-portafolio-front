@@ -33,6 +33,20 @@
                     </mat-hint>
                 </mat-form-field>
             </div>
+
+            <div class="row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Código ISIN</mat-label>
+                    <input matInput symbol formControlName="isinCode" required>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.isinCode">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
+                </mat-form-field>
+            </div>
         </mat-dialog-content>
         <mat-dialog-actions align="end">
             <button mat-raised-button type="button" (click)="dismiss()">Cancelar</button>

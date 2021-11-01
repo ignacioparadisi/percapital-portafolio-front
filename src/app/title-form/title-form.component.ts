@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StockTitle } from 'src/common/classes/StockTitle';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, PatternValidator, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-title-form',
@@ -15,7 +15,8 @@ export class TitleFormComponent implements OnInit {
   titleForm: FormGroup;
   public validationMessages = {
     name: [],
-    symbol: []
+    symbol: [],
+    isinCode: []
   };
 
   constructor(private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<TitleFormComponent>) { 
@@ -28,16 +29,18 @@ export class TitleFormComponent implements OnInit {
   submit() {
     this.validateNameField();
     this.validateSymbolField();
+    this.validateIsinCodeField();
     if (!this.titleForm.valid) {
       return;
     }
     let name = this.titleForm.get('name')?.value;
     let symbol = this.titleForm.get('symbol')?.value;
-    if (!name || !symbol) {
+    let isinCode = this.titleForm.get('isinCode')?.value;
+    if (!name || !symbol || !isinCode) {
       throw Error('Required fields');
     }
     this.isLoading = true;
-    let stockTitle = new StockTitle(name, symbol);
+    let stockTitle = new StockTitle(name, symbol, isinCode);
     this.stockTitleService.createTitle(stockTitle).subscribe((title: StockTitle) => {
       this.isLoading = false;
       console.info('Did create Stock Title', title);
@@ -52,7 +55,9 @@ export class TitleFormComponent implements OnInit {
   private createForm() {
     this.titleForm = new FormGroup({
       name: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      symbol: new FormControl({ value: '', disabled: false }, [Validators.required])
+      symbol: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      isinCode: new FormControl({ value: '', disabled: false }, [Validators.required,
+        Validators.pattern('[a-zA-Z0-9]{12}')])
     })
   }
 
@@ -85,4 +90,20 @@ export class TitleFormComponent implements OnInit {
     }
   }
 
+  private validateIsinCodeField() {
+    this.validationMessages.isinCode = [];
+    const isinCodeErrors = this.titleForm.get('isinCode')?.errors;
+    if (isinCodeErrors) {
+      console.log(isinCodeErrors);
+      if (isinCodeErrors.required) {
+        // @ts-ignore
+        this.validationMessages.isinCode.push('El código es obligatorio.');
+      }
+
+      if (isinCodeErrors.pattern) {
+        // @ts-ignore
+        this.validationMessages.isinCode.push('El código ISIN es inválido.');
+      }
+    }
+  }
 }
