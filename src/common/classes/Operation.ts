@@ -4,6 +4,7 @@ import { PriceRV } from "./PriceRV";
 export class Operation {
     id: number;
     typeId?: number;
+    titleId?: number;
     priceRvId?: number
     stockAmount?: number;
     stockPrice?: number;
@@ -44,14 +45,17 @@ export class Operation {
     buyDollarPerformanceValue?: number;
     buyDollarWeightedPerformance?: number;
 
-    constructor(typeId: number, priceRvId?: number, stockAmount?: number, stockPrice?: number, ivaId?: number, comissionId?: number, registerId?: number, createdAt?: Date) {
+    constructor(typeId: number, titleId?: number, stockAmount?: number, stockPrice?: number, exchangeRate?: number, ivaId?: number, comissionId?: number, registerId?: number, createdAt?: Date) {
         this.typeId = typeId;
-        this.priceRvId = priceRvId;
+        this.titleId = titleId;
         this.stockAmount = stockAmount;
         this.stockPrice = stockPrice;
         this.ivaCvId = ivaId;
         this.comissionCvId = comissionId;
         this.registerCvId = registerId;
         this.createdAt = createdAt;
+        if (exchangeRate) {
+            this.exchangeRate = exchangeRate;
+        }
     }
 }
