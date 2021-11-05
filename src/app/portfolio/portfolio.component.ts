@@ -73,7 +73,6 @@ export class PortfolioComponent implements AfterViewInit {
 
   private fetchLatestExchangeRate() {
     this.exchangeRateService.getLatestExchangeRate().subscribe(results => {
-      console.log(results);
       this.exchangeRateDataSource = new MatTableDataSource<number>([results.value]);
     }, error => {
       console.error(error);
