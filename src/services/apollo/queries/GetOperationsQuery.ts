@@ -20,7 +20,12 @@ export class GetOperationsQuery extends GraphQLQuery<Page<Operation>, Page<Opera
                     id
                     name
                 }
-    
+                stockTitle {
+                    id
+                    symbol
+                    isinCode
+                    name
+                }
                 value
                 comission
                 iva
@@ -49,23 +54,6 @@ export class GetOperationsQuery extends GraphQLQuery<Page<Operation>, Page<Opera
                 buyDollarGp
                 buyDollarPerformanceValue
                 buyDollarWeightedPerformance
-                priceRV {
-                    id
-                    titleId
-                    closeDate
-                    closePrice
-                    createdAt
-                    bolivaresPrice
-                    exchangeRateId
-                    exchangeRate {
-                      id
-                      value
-                    }
-                    stockTitle {
-                      symbol
-                      name
-                    }
-                }
             }
             total
         }
