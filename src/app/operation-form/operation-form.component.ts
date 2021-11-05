@@ -26,19 +26,20 @@ export class OperationFormComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
   private titles: StockTitle[] = [];
-  priceRVs: PriceRV[] = [];
   filteredTitles?: Observable<StockTitle[]>;
+  titlesWithStocks?: Observable<StockTitle[]>;
   tax: ConstantType | undefined = undefined;
   comission: ConstantType | undefined = undefined;
   register: ConstantType | undefined = undefined;
   public validationMessages = {
-    value: [],
+    exchangeRate: [],
+    stockAmount: [],
+    stockPrice: [],
     date: []
   };
 
   constructor(private operationService: OperationService, 
-    private stockTitleService: StockTitleService, 
-    private priceRVService: PriceRvService,
+    private stockTitleService: StockTitleService,
     private dialogRef: MatDialogRef<OperationFormComponent>,
     private dialog: MatDialog) { 
       
@@ -47,20 +48,32 @@ export class OperationFormComponent implements OnInit {
   ngOnInit(): void {
     this.title += this.typeId == OperationType.BUY ? 'de Compra' : 'de Venta'
     this.createForm();
-    if (this.typeId == OperationType.SELL) {
-      this.fetchTitles();
-    }
+    this.fetchTitles();
     this.fetchConstants();
-    this.fetchPriceRVs();
   }
 
   private fetchTitles() {
     this.stockTitleService.getTitlesWithAmount().subscribe(results => {
       this.titles = results ?? [];
+      this.setupTitleFilter();
       console.log(results);
     }, error => {
       console.error(error);
     })
+  }
+
+  private setupTitleFilter() {
+    this.filteredTitles = this.form.get('title')?.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.titles.slice())
+      );
+  }
+
+  private _filter(name: string): StockTitle[] {
+    const filterValue = name.toLowerCase();
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
   }
 
   private fetchConstants() {
@@ -81,28 +94,17 @@ export class OperationFormComponent implements OnInit {
     })
   }
 
-  private fetchPriceRVs() {
-    var page = new Page<PriceRV>(undefined, undefined, undefined, true);
-    console.log(page);
-    this.priceRVService.getPriceRVs(page).subscribe(result => {
-      console.info('Did get Price RVs', result);
-      this.priceRVs = result.data ?? [];
-    }, error => {
-      console.error(error);
-    })
-  }
-
   getOptionText(option?: StockTitle): string {
     return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
   }
 
   submit() {
-    this.validateValueField();
     this.validateDateField();
     if (!this.form.valid) {
       return;
     }
-    let priceRV = this.form.get('priceRV')?.value as PriceRV;
+    let selectedTitle = this.form.get('title')?.value;
+    let exchangeRate = this.form.get('exchangeRate')?.value;
     let date = this.form.get('date')?.value;
     let tax = this.form.get('tax')?.value;
     let comission = this.form.get('comission')?.value;
@@ -110,24 +112,24 @@ export class OperationFormComponent implements OnInit {
     let stockAmount = this.form.get('stockAmount')?.value;
     let stockPrice = this.form.get('stockPrice')?.value;
 
-    if (!(this.typeId && priceRV && date && tax && comission && register && stockAmount && stockPrice)) {
+    if (!(this.typeId && selectedTitle && exchangeRate && date && tax && comission && register && stockAmount && stockPrice)) {
       throw Error('Required fields');
     }
 
     if (this.typeId == OperationType.SELL) {
-      const filteredTitles = this.titles.filter((title) => priceRV.titleId == title.id);
-      const title = filteredTitles.length > 0 ? filteredTitles[0] : undefined;
+      const titlesWithStocks = this.titles.filter((title) => selectedTitle.id == title.id);
+      const title = titlesWithStocks.length > 0 ? titlesWithStocks[0] : undefined;
       let currentAmount = title?.stockAmount;
       if (!currentAmount) {
         console.info('No tienes acciones para vender');
         return;
       }
       if (currentAmount < stockAmount) {
-        this.showAlert(priceRV, stockAmount, stockPrice, tax, comission, register, date);
+        this.showAlert(selectedTitle, stockAmount, stockPrice, exchangeRate, tax, comission, register, date);
         return
       }
     }
-    this.createOperation(this.typeId, priceRV.id, stockAmount, stockPrice, tax.id, comission.id, register.id, date);
+    this.createOperation(this.typeId, selectedTitle.id, stockAmount, stockPrice, exchangeRate, tax.id, comission.id, register.id, date);
   }
 
   dismiss(operation?: Operation) {
@@ -136,7 +138,8 @@ export class OperationFormComponent implements OnInit {
 
   private createForm() {
     this.form = new FormGroup({
-      priceRV: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      title: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      exchangeRate: new FormControl({ value: '', disabled: false }, [Validators.required]),
       tax: new FormControl({ value: '', disabled: false }, [Validators.required]),
       comission: new FormControl({ value: '', disabled: false }, [Validators.required]),
       register: new FormControl({ value: '', disabled: false }, [Validators.required]),
@@ -146,23 +149,8 @@ export class OperationFormComponent implements OnInit {
     })
   }
 
-  /**
-   * Valida la información que contiene el campo de email.
-   */
-  private validateValueField() {
-    this.validationMessages.value = [];
-    const nameErrors = this.form.get('value')?.errors;
-    console.log(nameErrors);
-    if (nameErrors) {
-      if (nameErrors.required) {
-        // @ts-ignore
-        this.validationMessages.value.push('La tasa de cambio es obligatoria.');
-      }
-    }
-  }
-
   private validateDateField() {
-    this.validationMessages.value = [];
+    this.validationMessages.date = [];
     const nameErrors = this.form.get('date')?.errors;
     console.log(nameErrors);
     if (nameErrors) {
@@ -173,25 +161,25 @@ export class OperationFormComponent implements OnInit {
     }
   }
 
-  private createOperation(typeId: number, priceRVId: number, stockAmount: number, stockPrice: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date) {
+  private createOperation(typeId: number, titleId: number, stockAmount: number, stockPrice: number,  exchangeRate: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date) {
     this.isLoading = true;
-    let operation = new Operation(typeId, priceRVId, stockAmount, stockPrice, taxId, comissionId, registerId, createdAt);
+    let operation = new Operation(typeId, titleId, stockAmount, stockPrice, exchangeRate, taxId, comissionId, registerId, createdAt);
     this.operationService.createOperation(operation).subscribe(result => {
       this.isLoading = false;
       this.dismiss(result);
     }, error => {
       this.isLoading = false;
-      console.error(error);
+      console.error('Server error:', error);
     })
   }
 
-  private async showAlert(priceRV: PriceRV, stockAmount: number, stockPrice: number, tax: ConstantType, comission: ConstantType, register: ConstantType, date: Date) {
+  private async showAlert(title: StockTitle, stockAmount: number, stockPrice: number, exchangeRate: number, tax: ConstantType, comission: ConstantType, register: ConstantType, date: Date) {
     let dialogRef = this.dialog.open(AlertDialogComponent);
     dialogRef.componentInstance.title = 'Operación en corto';
     dialogRef.componentInstance.message = 'Estas por irte en corto con esta operación. ¿Quieres continuar?';
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.createOperation(this.typeId, priceRV.id, stockAmount, stockPrice, tax.id, comission.id, register.id, date);
+        this.createOperation(this.typeId, title.id, stockAmount, stockPrice, exchangeRate, tax.id, comission.id, register.id, date);
       }
     });
   }

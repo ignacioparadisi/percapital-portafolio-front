@@ -3,10 +3,11 @@ import { GraphQLMutation } from "../GraphQLMutation";
 
 export class CreateStockTitleMutation extends GraphQLMutation<StockTitle, StockTitle> {
     mutation = `
-    mutation createStockTitle($name: String!, $symbol: String!) {
+    mutation createStockTitle($name: String!, $symbol: String!, $isinCode: String!) {
         createStockTitle(insertData: {
             name: $name,
-            symbol: $symbol
+            symbol: $symbol,
+            isinCode: $isinCode
         }) {
             id
             name

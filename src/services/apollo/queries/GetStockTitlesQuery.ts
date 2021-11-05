@@ -15,6 +15,7 @@ export class GetStockTitlesQuery extends GraphQLQuery<Page<StockTitle>, Page<Sto
                 id
                 name
                 symbol
+                isinCode
                 createdAt
             }
             total

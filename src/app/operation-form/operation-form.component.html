@@ -8,13 +8,30 @@
         <mat-dialog-content>
 
             <div class="row">
-                <mat-form-field appearance="outline">
-                    <mat-label>Precio RV</mat-label>
-                    <mat-select formControlName="priceRV" required>
-                        <mat-option *ngFor="let priceRV of priceRVs" [value]="priceRV">
-                            {{ priceRV?.stockTitle?.symbol }}  |  {{ priceRV?.stockTitle?.name }}  | Cambio: {{ priceRV?.exchangeRate?.value }}
-                        </mat-option>
-                    </mat-select>
+                <mat-form-field appearance="outline" class="col-md-6">
+                    <mat-label>T&iacute;tulo</mat-label>
+                    <input placeholder="Título"
+                           aria-label="Título'"
+                           matInput
+                           formControlName="title"
+                           [matAutocomplete]="auto" required>
+                           <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
+                                <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+                                {{ title.symbol }} | {{ title.name }}
+                                </mat-option>
+                        </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-6" appearance="outline" floatLabel="always">
+                    <mat-label>Tasa de Cambio</mat-label>
+                    <input matInput type="number" placeholder="0" formControlName="exchangeRate" required>
+                    <mat-hint>
+                        <div *ngFor="let error of validationMessages.exchangeRate">
+                            <div class="error">
+                                <i class="fas fa-exclamation-circle"></i> {{ error }}
+                            </div>
+                        </div>
+                    </mat-hint>
                 </mat-form-field>
             </div>
 
@@ -24,7 +41,7 @@
                     <mat-label>Cantidad de Acciones</mat-label>
                     <input matInput type="number" placeholder="0" formControlName="stockAmount" required>
                     <mat-hint>
-                        <div *ngFor="let error of validationMessages.value">
+                        <div *ngFor="let error of validationMessages.stockAmount">
                             <div class="error">
                                 <i class="fas fa-exclamation-circle"></i> {{ error }}
                             </div>
@@ -36,7 +53,7 @@
                     <input matInput type="number" placeholder="0" formControlName="stockPrice" required>
                     <span matPrefix>Bs.&nbsp;</span>
                     <mat-hint>
-                        <div *ngFor="let error of validationMessages.value">
+                        <div *ngFor="let error of validationMessages.stockPrice">
                             <div class="error">
                                 <i class="fas fa-exclamation-circle"></i> {{ error }}
                             </div>
