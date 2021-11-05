@@ -46,23 +46,6 @@ export class CreateOperationMutation extends GraphQLMutation<InsertData<Operatio
             buyDollarGp
             buyDollarPerformanceValue
             buyDollarWeightedPerformance
-            priceRV {
-                id
-                titleId
-                closeDate
-                closePrice
-                createdAt
-                bolivaresPrice
-                exchangeRateId
-                exchangeRate {
-                    id
-                    value
-                }
-                stockTitle {
-                    symbol
-                    name
-                }
-            }
         }
     }
     `

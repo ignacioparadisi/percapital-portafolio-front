@@ -169,7 +169,7 @@ export class OperationFormComponent implements OnInit {
       this.dismiss(result);
     }, error => {
       this.isLoading = false;
-      console.error(error);
+      console.error('Server error:', error);
     })
   }
 
