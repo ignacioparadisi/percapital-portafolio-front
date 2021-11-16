@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TypeValue } from 'src/common/classes/ConstantType';
 import { Operation } from 'src/common/classes/Operation';
 import { Page } from 'src/common/classes/Page';
 import { MutationFactory } from '../apollo/mutations/MutationFactory';
@@ -24,5 +25,10 @@ export class OperationService {
   createOperation(operation: Operation) {
     let query = this.mutationFactory.getCreateOperationMutation(operation);
     return query.execute();
+  }
+
+  createConstantValue(constantValue: TypeValue) {
+    let mutation = this.mutationFactory.getCreateConstantValue(constantValue);
+    return mutation.execute();
   }
 }

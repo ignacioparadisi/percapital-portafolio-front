@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Type } from "@angular/core";
 import { Apollo } from "apollo-angular";
+import { TypeValue } from "src/common/classes/ConstantType";
 import { ExchangeRate } from "src/common/classes/ExchangeRate";
 import { InsertData } from "src/common/classes/InsertData";
 import { Operation } from "src/common/classes/Operation";
@@ -9,6 +10,7 @@ import { CreateExchangeRateMutation } from "./CreateExchangeRateMutation";
 import { CreateOperationMutation } from "./CreateOperationMutation";
 import { CreatePriceRVMutation } from "./CreatePriceRVMutation";
 import { CreateStockTitleMutation } from "./CreateStockTitleMutation";
+import { CreateTypeValueMutation } from "./CreateTypeValueMutation";
 
 @Injectable({
     providedIn: 'root'
@@ -27,5 +29,9 @@ export class MutationFactory {
     }
     getCreateOperationMutation(operation: Operation) {
         return new CreateOperationMutation(this.apollo, new InsertData(operation));
+    }
+
+    getCreateConstantValue(constantValue: TypeValue) {
+        return new CreateTypeValueMutation(this.apollo, new InsertData(constantValue));
     }
 }
