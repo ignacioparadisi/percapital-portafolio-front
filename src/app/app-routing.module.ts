@@ -9,7 +9,8 @@ const routes: Routes = [
   { path: 'exchange-rates', loadChildren: () => import('./exchange-rate-list/exchange-rate-list.module').then(m => m.ExchangeRateListModule) },
   { path: 'price-rv', loadChildren: () => import('./price-rv-list/price-rv-list.module').then(m => m.PriceRvListModule) },
   { path: 'buy-operations', loadChildren: () => import('./operation-buy-list/operation-buy-list.module').then(m => m.OperationBuyListModule) },
-  { path: 'sell-operations', loadChildren: () => import('./operation-sell-list/operation-sell-list.module').then(m => m.OperationSellListModule) }
+  { path: 'sell-operations', loadChildren: () => import('./operation-sell-list/operation-sell-list.module').then(m => m.OperationSellListModule) },
+  { path: 'comission', loadChildren: () => import('./constant-type-list/constant-type-list.module').then(m => m.ConstantTypeListModule) }
 ];
 
 @NgModule({

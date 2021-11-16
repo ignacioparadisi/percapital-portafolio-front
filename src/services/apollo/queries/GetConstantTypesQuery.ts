@@ -2,6 +2,7 @@ import { ConstantType } from "src/common/classes/ConstantType";
 import { GraphQLQuery } from "../GraphQLQuery";
 
 export class GetConstantTypesQuery extends GraphQLQuery<ConstantType, ConstantType[]> {
+  findInCache = false;
     query = `
     query getConstantTypes {
         getConstantTypes {
@@ -10,6 +11,7 @@ export class GetConstantTypesQuery extends GraphQLQuery<ConstantType, ConstantTy
           values {
             id
             value
+            createdAt
           }
         }
     }
