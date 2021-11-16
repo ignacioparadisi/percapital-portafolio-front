@@ -1,5 +1,5 @@
 import { OperationType } from "./OperationType";
-import { PriceRV } from "./PriceRV";
+import { StockTitle } from "./StockTitle";
 
 export class Operation {
     id: number;
@@ -14,7 +14,7 @@ export class Operation {
     createdAt?: Date;
     operationType: OperationType;
     exchangeRate: number;
-    priceRV?: PriceRV;
+    stockTitle?: StockTitle;
     value: number;
     comission: number;
     iva: number;
