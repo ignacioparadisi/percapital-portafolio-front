@@ -26,9 +26,9 @@ export class PortfolioComponent implements AfterViewInit {
     'usd'
   ]
   displayedColumns: string[] = [
-    'symbol', 
-    'description', 
-    'price', 
+    'symbol',
+    'description',
+    'price',
     'amountOwned',
     'averagePrice',
     'totalPrice',
@@ -39,7 +39,7 @@ export class PortfolioComponent implements AfterViewInit {
     'gpUSD',
     'variation',
     'variationUSD',
-    'port' 
+    'port'
   ];
   dataSource = new MatTableDataSource<Portfolio>(this.page?.data);
   totalDataSource = new MatTableDataSource<PortfolioTotalValue>(this.totalValues);
@@ -92,8 +92,8 @@ export class PortfolioComponent implements AfterViewInit {
     });
     this.totalValues.push({
       name: 'Rendimiento',
-      valueBs: undefined,
-      valueUSD: undefined
+      valueBs: result.performance,
+      valueUSD: result.performance
     });
     this.totalDataSource = new MatTableDataSource<PortfolioTotalValue>(this.totalValues);
   }

@@ -28,6 +28,7 @@ export class GetPortfolioQuery extends GraphQLQuery<Portfolio, PortfolioPage> {
                 percentageInFolio
             }
             total
+            performance
             totalStocksAmount
             totalBuyTotalCost
             totalDollarBuyTotalCost
