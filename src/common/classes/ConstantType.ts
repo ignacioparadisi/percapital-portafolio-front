@@ -1,6 +1,7 @@
 export class TypeValue {
     id: number;
     value: number;
+    createdAt: Date;
 }
 
 export class ConstantType {

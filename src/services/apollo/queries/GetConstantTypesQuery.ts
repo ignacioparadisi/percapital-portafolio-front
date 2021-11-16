@@ -10,6 +10,7 @@ export class GetConstantTypesQuery extends GraphQLQuery<ConstantType, ConstantTy
           values {
             id
             value
+            createdAt
           }
         }
     }
