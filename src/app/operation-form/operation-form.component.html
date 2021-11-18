@@ -64,7 +64,7 @@
 
             <!-- Date Row -->
             <div class="row">
-                <mat-form-field class="col-md-4" appearance="outline">
+                <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
                     <mat-label>IVA</mat-label>
                     <mat-select formControlName="tax" required>
                         <mat-option *ngFor="let typeValue of tax?.values" [value]="typeValue">
@@ -72,7 +72,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field class="col-md-4" appearance="outline">
+                <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
                     <mat-label>Comisi&oacute;n</mat-label>
                     <mat-select formControlName="comission" required>
                         <mat-option *ngFor="let typeValue of comission?.values" [value]="typeValue">
@@ -80,13 +80,17 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field class="col-md-4" appearance="outline">
+                <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
                     <mat-label>Registro</mat-label>
                     <mat-select formControlName="register" required>
                         <mat-option *ngFor="let typeValue of register?.values" [value]="typeValue">
                             {{ typeValue.value }}
                         </mat-option>
                     </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
+                  <mat-label>Otros</mat-label>
+                  <input matInput type="number" placeholder="0" formControlName="otherComission">
                 </mat-form-field>
             </div>
         </mat-dialog-content>

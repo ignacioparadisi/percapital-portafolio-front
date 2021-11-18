@@ -38,11 +38,11 @@ export class OperationFormComponent implements OnInit {
     date: []
   };
 
-  constructor(private operationService: OperationService, 
+  constructor(private operationService: OperationService,
     private stockTitleService: StockTitleService,
     private dialogRef: MatDialogRef<OperationFormComponent>,
-    private dialog: MatDialog) { 
-      
+    private dialog: MatDialog) {
+
   }
 
   ngOnInit(): void {
@@ -111,9 +111,14 @@ export class OperationFormComponent implements OnInit {
     let register = this.form.get('register')?.value;
     let stockAmount = this.form.get('stockAmount')?.value;
     let stockPrice = this.form.get('stockPrice')?.value;
+    let otherComission = this.form.get('otherComission')?.value;
 
     if (!(this.typeId && selectedTitle && exchangeRate && date && tax && comission && register && stockAmount && stockPrice)) {
       throw Error('Required fields');
+    }
+
+    if (otherComission !== null && otherComission !== undefined && isNaN(otherComission)) {
+      throw Error('Other comission must be a number');
     }
 
     if (this.typeId == OperationType.SELL) {
@@ -129,7 +134,7 @@ export class OperationFormComponent implements OnInit {
         return
       }
     }
-    this.createOperation(this.typeId, selectedTitle.id, stockAmount, stockPrice, exchangeRate, tax.id, comission.id, register.id, date);
+    this.createOperation(this.typeId, selectedTitle.id, stockAmount, stockPrice, exchangeRate, tax.id, comission.id, register.id, date, otherComission);
   }
 
   dismiss(operation?: Operation) {
@@ -145,7 +150,8 @@ export class OperationFormComponent implements OnInit {
       register: new FormControl({ value: '', disabled: false }, [Validators.required]),
       stockAmount: new FormControl({ value: '', disabled: false }, [Validators.required]),
       stockPrice: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required])
+      date: new FormControl({ value: (new Date()).toISOString(), disabled: false }, [Validators.required]),
+      otherComission: new FormControl({ value: '', disabled: false }, [Validators.pattern(/^\d+(\.\d{1,2})?$/)])
     })
   }
 
@@ -161,9 +167,9 @@ export class OperationFormComponent implements OnInit {
     }
   }
 
-  private createOperation(typeId: number, titleId: number, stockAmount: number, stockPrice: number,  exchangeRate: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date) {
+  private createOperation(typeId: number, titleId: number, stockAmount: number, stockPrice: number,  exchangeRate: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date, otherComission?: number) {
     this.isLoading = true;
-    let operation = new Operation(typeId, titleId, stockAmount, stockPrice, exchangeRate, taxId, comissionId, registerId, createdAt);
+    let operation = new Operation(typeId, titleId, stockAmount, stockPrice, exchangeRate, taxId, comissionId, registerId, createdAt, otherComission);
     this.operationService.createOperation(operation).subscribe(result => {
       this.isLoading = false;
       this.dismiss(result);

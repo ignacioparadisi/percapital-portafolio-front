@@ -19,6 +19,7 @@ export class Operation {
     comission: number;
     iva: number;
     register: number;
+    otherComission?: number;
 
     // Variables for sell ops
     sellNetValue?: number;
@@ -45,7 +46,7 @@ export class Operation {
     buyDollarPerformanceValue?: number;
     buyDollarWeightedPerformance?: number;
 
-    constructor(typeId: number, titleId?: number, stockAmount?: number, stockPrice?: number, exchangeRate?: number, ivaId?: number, comissionId?: number, registerId?: number, createdAt?: Date) {
+    constructor(typeId: number, titleId?: number, stockAmount?: number, stockPrice?: number, exchangeRate?: number, ivaId?: number, comissionId?: number, registerId?: number, createdAt?: Date, otherComission?: number) {
         this.typeId = typeId;
         this.titleId = titleId;
         this.stockAmount = stockAmount;
@@ -57,5 +58,6 @@ export class Operation {
         if (exchangeRate) {
             this.exchangeRate = exchangeRate;
         }
+        this.otherComission = otherComission;
     }
 }
