@@ -1,14 +1,14 @@
 export class TypeValue {
-    id: number;
-    value: number;
-    createdAt: Date;
-    constantTypeId?: number;
+  id: number;
+  value: number;
+  createdAt: Date;
+  constantTypeId?: number;
 }
 
 export class ConstantType {
     id: number;
     name: string
-    values: [TypeValue];
+    values: TypeValue[];
 
     static TAX = 1;
     static COMISSION = 2;

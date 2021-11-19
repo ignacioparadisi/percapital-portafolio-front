@@ -9,6 +9,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import {MatSelectModule} from "@angular/material/select";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -19,11 +22,15 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ConstantTypeListRoutingModule,
     ConstantValueFormModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule
   ]
 })
 export class ConstantTypeListModule { }
