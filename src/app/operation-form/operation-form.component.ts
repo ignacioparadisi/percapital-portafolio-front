@@ -111,14 +111,15 @@ export class OperationFormComponent implements OnInit {
     let register = this.form.get('register')?.value;
     let stockAmount = this.form.get('stockAmount')?.value;
     let stockPrice = this.form.get('stockPrice')?.value;
-    let otherComission = this.form.get('otherComission')?.value;
+    let otherComission = Number(this.form.get('otherComission')?.value);
+    console.log('otherComission', otherComission);
 
     if (!(this.typeId && selectedTitle && exchangeRate && date && tax && comission && register && stockAmount && stockPrice)) {
       throw Error('Required fields');
     }
 
-    if (otherComission !== null && otherComission !== undefined && isNaN(otherComission)) {
-      throw Error('Other comission must be a number');
+    if (isNaN(otherComission)) {
+      otherComission = 0;
     }
 
     if (this.typeId == OperationType.SELL) {
@@ -168,6 +169,7 @@ export class OperationFormComponent implements OnInit {
   }
 
   private createOperation(typeId: number, titleId: number, stockAmount: number, stockPrice: number,  exchangeRate: number, taxId: number, comissionId: number, registerId: number, createdAt?: Date, otherComission?: number) {
+    console.info('Creating operation');
     this.isLoading = true;
     let operation = new Operation(typeId, titleId, stockAmount, stockPrice, exchangeRate, taxId, comissionId, registerId, createdAt, otherComission);
     this.operationService.createOperation(operation).subscribe(result => {
