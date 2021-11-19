@@ -1,28 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ConstantType, TypeValue } from 'src/common/classes/ConstantType';
 import { OperationService } from 'src/services/operation/operation.service';
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-constant-value-form',
   templateUrl: './constant-value-form.component.html',
   styleUrls: ['./constant-value-form.component.scss']
 })
-export class ConstantValueFormComponent implements OnInit {
+export class ConstantValueFormComponent implements AfterViewInit {
 
   isLoading = false;
   form: FormGroup;
+  constantTypes: ConstantType[] = [];
   public validationMessages = {
     value: [],
     date: []
   };
 
-  constructor(private operationService: OperationService, private dialogRef: MatDialogRef<ConstantValueFormComponent>) { 
+  constructor(private operationService: OperationService, private dialogRef: MatDialogRef<ConstantValueFormComponent>) {
+    this.createForm();
   }
 
-  ngOnInit(): void {
-    this.createForm();
+  ngAfterViewInit(): void {
+    this.fetch();
+  }
+
+  fetch() {
+    this.isLoading = true;
+    this.operationService.getConstantTypes().subscribe(result => {
+      this.isLoading = false;
+      this.constantTypes = result;
+      console.info('Did get Constant Types', result);
+    }, error => {
+      console.error(error);
+      this.isLoading = false;
+    });
   }
 
   submit() {
@@ -31,16 +46,17 @@ export class ConstantValueFormComponent implements OnInit {
       return;
     }
     let value = this.form.get('value')?.value;
-    if (!value) {
+    let constantType = this.form.get('constantType')?.value;
+    if (!value || !constantType) {
       throw Error('Required fields');
     }
     this.isLoading = true;
     let constantValue = new TypeValue();
     constantValue.value = value;
-    constantValue.constantTypeId = ConstantType.COMISSION;
+    constantValue.constantTypeId = constantType.id;
     this.operationService.createConstantValue(constantValue).subscribe(constantValue => {
       this.isLoading = false;
-      console.info('Did create Exchange Rate', constantValue);
+      console.info('Did create Constant Value', constantValue);
       this.dismiss(constantValue);
     })
   }
@@ -51,6 +67,7 @@ export class ConstantValueFormComponent implements OnInit {
 
   private createForm() {
     this.form = new FormGroup({
+      constantType: new FormControl({ value: '', disabled: false }, [Validators.required]),
       value: new FormControl({ value: '', disabled: false }, [Validators.required])
     })
   }

@@ -6,8 +6,17 @@
         <mat-dialog-content>
             <!-- Name field -->
             <div class="row">
-                <mat-form-field appearance="outline" floatLabel="always">
-                    <mat-label>Comisión</mat-label>
+              <mat-form-field class="col-md-6" appearance="outline" floatLabel="always">
+                <mat-label>Tipo</mat-label>
+                <mat-select formControlName="constantType">
+                  <mat-option *ngFor="let type of constantTypes" [value]="type">
+                    {{ type.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+                <mat-form-field class="col-md-6" appearance="outline" floatLabel="always">
+                    <mat-label>Valor</mat-label>
                     <input matInput type="number" placeholder="0" formControlName="value" required>
                     <mat-hint>
                         <div *ngFor="let error of validationMessages.value">
