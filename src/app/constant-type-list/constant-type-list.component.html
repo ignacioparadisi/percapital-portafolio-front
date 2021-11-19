@@ -33,7 +33,7 @@
         <mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="type">
             <mat-header-cell *matHeaderCellDef> Tipo </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ getConstantTypeName(element.id) }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ getConstantTypeName(element.constantTypeId) }} </mat-cell>
           </ng-container>
           <!-- Name Column -->
             <ng-container matColumnDef="value">

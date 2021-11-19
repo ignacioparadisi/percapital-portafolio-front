@@ -9,8 +9,8 @@ export class CreateTypeValueMutation extends GraphQLMutation<InsertData<TypeValu
         createTypeValue(insertData: $insertData) {
             id
             value
+            constantTypeId
             createdAt
-            cotId
         }
     }
     `
