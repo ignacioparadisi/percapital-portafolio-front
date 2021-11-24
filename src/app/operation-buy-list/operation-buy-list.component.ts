@@ -31,6 +31,7 @@ export class OperationBuyListComponent implements AfterViewInit {
     'comission',
     'taxes',
     'register',
+    'otherComission',
     'totalCost',
     'totalUnitPrice',
     'exchangeRate',
