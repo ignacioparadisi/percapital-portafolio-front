@@ -66,7 +66,7 @@
             <div class="row">
                 <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
                     <mat-label>IVA</mat-label>
-                    <mat-select formControlName="tax" required>
+                    <mat-select formControlName="tax" required disable>
                         <mat-option *ngFor="let typeValue of tax?.values" [value]="typeValue">
                             {{ typeValue.value }}
                         </mat-option>
@@ -82,7 +82,7 @@
                 </mat-form-field>
                 <mat-form-field class="col-md-6 col-lg-3" appearance="outline">
                     <mat-label>Registro</mat-label>
-                    <mat-select formControlName="register" required>
+                    <mat-select formControlName="register" required disable>
                         <mat-option *ngFor="let typeValue of register?.values" [value]="typeValue">
                             {{ typeValue.value }}
                         </mat-option>
