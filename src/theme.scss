@@ -1,26 +1,97 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
-$primary-color: mat-palette($mat-indigo);
-$accent-color: mat-palette($mat-pink, A200, A100, A400);
-$warn-color: mat-palette($mat-red);
+$primary-color: (
+  50 : #e0e0e6,
+  100 : #b3b3c2,
+  200 : #808099,
+  300 : #4d4d70,
+  400 : #262651,
+  500 : #000032,
+  600 : #00002d,
+  700 : #000026,
+  800 : #00001f,
+  900 : #000013,
+  A100 : #5454ff,
+  A200 : #2121ff,
+  A400 : #0000ed,
+  A700 : #0000d4,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
 
-$dark-theme: mat-dark-theme($primary-color, $accent-color, $warn-color);
-$light-theme: mat-light-theme($primary-color, $accent-color, $warn-color);
-  
-@media (prefers-color-scheme: dark) {
-    @include angular-material-theme($dark-theme);
-    body {
-        background-color: black;
-    }
-    h1 {
-        color: white;
-    }
-}
+$accent-color: (
+  50 : #eaf4f1,
+  100 : #cae5dd,
+  200 : #a7d3c7,
+  300 : #84c1b0,
+  400 : #69b49f,
+  500 : #4fa78e,
+  600 : #489f86,
+  700 : #3f967b,
+  800 : #368c71,
+  900 : #267c5f,
+  A100 : #beffe8,
+  A200 : #8bffd6,
+  A400 : #58ffc4,
+  A700 : #3effbb,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
 
-@media (prefers-color-scheme: light) {
-    @include angular-material-theme($light-theme);
-    h1 {
-        color: black;
-    }
-}
+$primary-color-palette: mat-palette($primary-color);
+$accent-color-palette: mat-palette($accent-color);
+$warn-color-palette: mat-palette($mat-red);
+
+$dark-theme: mat-dark-theme($primary-color-palette, $accent-color-palette, $warn-color-palette);
+$light-theme: mat-light-theme($primary-color-palette, $accent-color-palette, $warn-color-palette);
+
+$primary: mat-color($primary-color-palette);
+$accent: mat-color($accent-color-palette);
+
+@include angular-material-theme($light-theme);
+
+//@media (prefers-color-scheme: dark) {
+//    @include angular-material-theme($dark-theme);
+//    body {
+//        background-color: black;
+//    }
+//    h1 {
+//        color: white;
+//    }
+//}
+//
+//@media (prefers-color-scheme: light) {
+//    @include angular-material-theme($light-theme);
+//    h1 {
+//        color: black;
+//    }
+//}
