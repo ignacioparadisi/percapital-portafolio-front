@@ -51,6 +51,25 @@ mat-sidenav-container {
   }
 }
 
+.panel {
+  position: relative;
+
+  .line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: #4fa78e;
+  }
+}
+
+.panel-open {
+  mat-panel-title {
+    color: white;
+  }
+}
+
 .mat-flat-button {
   margin: 0 !important;
   padding: -10px !important;
