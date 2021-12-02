@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ExchangeRate } from 'src/common/classes/ExchangeRate';
 import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-exchange-rate-form',
@@ -18,7 +19,9 @@ export class ExchangeRateFormComponent implements OnInit {
     date: []
   };
 
-  constructor(private exchangeRateService: ExchangeRateService, private dialogRef: MatDialogRef<ExchangeRateFormComponent>) { 
+  constructor(private exchangeRateService: ExchangeRateService,
+              private dialogRef: MatDialogRef<ExchangeRateFormComponent>,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -45,6 +48,10 @@ export class ExchangeRateFormComponent implements OnInit {
       this.isLoading = false;
       console.info('Did create Exchange Rate', exchangeRate);
       this.dismiss(exchangeRate);
+      this.toastr.success(`La tasa de cambio ${exchangeRate.value} se creó de manera exitosa`);
+    }, error => {
+      console.error(error);
+      this.toastr.error('Hubo un error al crear la tasa de cambio', 'Error');
     })
   }
 

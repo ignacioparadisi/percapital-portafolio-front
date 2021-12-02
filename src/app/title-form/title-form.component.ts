@@ -3,6 +3,7 @@ import { StockTitle } from 'src/common/classes/StockTitle';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, PatternValidator, Validators } from '@angular/forms';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-title-form',
@@ -19,7 +20,9 @@ export class TitleFormComponent implements OnInit {
     isinCode: []
   };
 
-  constructor(private stockTitleService: StockTitleService, private dialogRef: MatDialogRef<TitleFormComponent>) { 
+  constructor(private stockTitleService: StockTitleService,
+              private dialogRef: MatDialogRef<TitleFormComponent>,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -44,7 +47,11 @@ export class TitleFormComponent implements OnInit {
     this.stockTitleService.createTitle(stockTitle).subscribe((title: StockTitle) => {
       this.isLoading = false;
       console.info('Did create Stock Title', title);
+      this.toastr.success(`${title.name} fue creado de manera exitosa`);
       this.dismiss(title);
+    }, error => {
+      console.error(error);
+      this.toastr.error('Hubo un error al crear el título');
     })
   }
 

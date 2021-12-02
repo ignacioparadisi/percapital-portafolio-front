@@ -7,6 +7,7 @@ import { OperationService } from 'src/services/operation/operation.service';
 import { ConstantValueFormComponent } from '../constant-value-form/constant-value-form.component';
 import {FormControl} from "@angular/forms";
 import {debounceTime} from "rxjs/operators";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-constant-type-list',
@@ -34,7 +35,9 @@ export class ConstantTypeListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private operationService: OperationService, private dialog: MatDialog) {
+  constructor(private operationService: OperationService,
+              private dialog: MatDialog,
+              private toastr: ToastrService) {
     this.filterSelect.valueChanges.subscribe(value => {
       this.applyFilter(value);
     })
@@ -56,6 +59,7 @@ export class ConstantTypeListComponent implements AfterViewInit {
       console.error(error);
       this.isLoading = false;
       this.errorLoading = true;
+      this.toastr.error('Hubo un error al obtener los tipos de comisión', 'Error');
     })
   }
 

@@ -11,6 +11,7 @@ import { StockTitle } from 'src/common/classes/StockTitle';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 import { PriceRvFormComponent } from '../price-rv-form/price-rv-form.component';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-price-rv-list',
@@ -45,7 +46,10 @@ export class PriceRvListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, private dialog: MatDialog) {
+  constructor(private priceRVService: PriceRvService,
+              private stockTitleService: StockTitleService,
+              private dialog: MatDialog,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -117,6 +121,7 @@ export class PriceRvListComponent implements AfterViewInit {
       console.log(results.data);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener los títulos', 'Error');
     })
   }
 
@@ -142,6 +147,7 @@ export class PriceRvListComponent implements AfterViewInit {
       console.error(error);
       this.isLoading = false;
       this.errorLoading = true;
+      this.toastr.error('Hubo un error al obtener los Precios RV', 'Error');
     })
   }
 

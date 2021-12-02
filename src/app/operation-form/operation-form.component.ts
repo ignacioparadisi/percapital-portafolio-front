@@ -13,6 +13,7 @@ import { OperationService } from 'src/services/operation/operation.service';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-operation-form',
@@ -39,9 +40,10 @@ export class OperationFormComponent implements OnInit {
   };
 
   constructor(private operationService: OperationService,
-    private stockTitleService: StockTitleService,
-    private dialogRef: MatDialogRef<OperationFormComponent>,
-    private dialog: MatDialog) {
+              private stockTitleService: StockTitleService,
+              private dialogRef: MatDialogRef<OperationFormComponent>,
+              private dialog: MatDialog,
+              private toastr: ToastrService) {
 
   }
 
@@ -59,6 +61,7 @@ export class OperationFormComponent implements OnInit {
       console.log(results);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener los títulos', 'Error');
     })
   }
 
@@ -80,7 +83,7 @@ export class OperationFormComponent implements OnInit {
     this.operationService.getConstantTypes().subscribe(results => {
       console.info('Did get constants', results);
       if (results.length != 3) {
-        // TODO: SHOW ERROR
+        this.toastr.error('Hubo un error al obtener las comisiones', 'Error');
         return;
       }
       this.tax = results.filter(value => value.id == ConstantType.TAX)[0];
@@ -93,6 +96,7 @@ export class OperationFormComponent implements OnInit {
       this.form.get('register')?.setValue(this.register.values[0]);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener las comisiones', 'Error');
     })
   }
 
@@ -176,10 +180,12 @@ export class OperationFormComponent implements OnInit {
     let operation = new Operation(typeId, titleId, stockAmount, stockPrice, exchangeRate, taxId, comissionId, registerId, createdAt, otherComission);
     this.operationService.createOperation(operation).subscribe(result => {
       this.isLoading = false;
+      this.toastr.success('La operación fue creado de manera exitosa');
       this.dismiss(result);
     }, error => {
       this.isLoading = false;
       console.error('Server error:', error);
+      this.toastr.error('Hubo un error al crear la operación', 'Error');
     })
   }
 

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Portfolio, PortfolioPage, PortfolioTotalValue } from 'src/common/classes/Portfolio';
 import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
 import { PortfolioService } from 'src/services/portfolio/portfolio.service';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-portfolio',
@@ -52,7 +53,9 @@ export class PortfolioComponent implements AfterViewInit {
     this.fetchLatestExchangeRate();
   }
 
-  constructor(private portfolioService: PortfolioService, private exchangeRateService: ExchangeRateService) {
+  constructor(private portfolioService: PortfolioService,
+              private exchangeRateService: ExchangeRateService,
+              private toastr: ToastrService) {
   }
 
   fetch() {
@@ -65,9 +68,10 @@ export class PortfolioComponent implements AfterViewInit {
       this.dataSource = new MatTableDataSource<Portfolio>(this.page.data);
       this.setTotalValues(result);
     }, error => {
-      console.error(error)
+      console.error(error);
       this.isLoading = false;
       this.errorLoading = true;
+      this.toastr.error('Hubo un error al obtener el portafolio', 'Error');
     })
   }
 
@@ -76,6 +80,7 @@ export class PortfolioComponent implements AfterViewInit {
       this.exchangeRateDataSource = new MatTableDataSource<number>([results.value]);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener la tasa de cambio', 'Error');
     })
   }
 

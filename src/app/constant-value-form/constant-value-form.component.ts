@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ConstantType, TypeValue } from 'src/common/classes/ConstantType';
 import { OperationService } from 'src/services/operation/operation.service';
 import {MatTableDataSource} from "@angular/material/table";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-constant-value-form',
@@ -20,7 +21,9 @@ export class ConstantValueFormComponent implements AfterViewInit {
     date: []
   };
 
-  constructor(private operationService: OperationService, private dialogRef: MatDialogRef<ConstantValueFormComponent>) {
+  constructor(private operationService: OperationService,
+              private dialogRef: MatDialogRef<ConstantValueFormComponent>,
+              private toastr: ToastrService) {
     this.createForm();
   }
 
@@ -37,6 +40,7 @@ export class ConstantValueFormComponent implements AfterViewInit {
     }, error => {
       console.error(error);
       this.isLoading = false;
+      this.toastr.error('Hubo un error al obtener los tipos de comisiones', 'Error');
     });
   }
 
@@ -57,8 +61,12 @@ export class ConstantValueFormComponent implements AfterViewInit {
     this.operationService.createConstantValue(constantValue).subscribe(constantValue => {
       this.isLoading = false;
       console.info('Did create Constant Value', constantValue);
+      this.toastr.success(`${constantType.name} se creó de manera exitosa`);
       this.dismiss(constantValue);
-    })
+    }, error => {
+      console.error(error);
+      this.toastr.error(`Hubo un error al crear ${constantType.name}`, 'Error');
+    });
   }
 
   dismiss(typeValue?: TypeValue) {

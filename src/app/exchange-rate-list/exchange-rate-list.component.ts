@@ -6,6 +6,7 @@ import { ExchangeRate } from 'src/common/classes/ExchangeRate';
 import { Page } from 'src/common/classes/Page';
 import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
 import { ExchangeRateFormComponent } from '../exchange-rate-form/exchange-rate-form.component';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-exchange-rate-list',
@@ -29,7 +30,9 @@ export class ExchangeRateListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private exchangeRateService: ExchangeRateService, private dialog: MatDialog) { }
+  constructor(private exchangeRateService: ExchangeRateService,
+              private dialog: MatDialog,
+              private toastr: ToastrService) { }
 
   ngAfterViewInit() {
     this.subscribeToPagination();
@@ -51,6 +54,7 @@ export class ExchangeRateListComponent implements AfterViewInit {
       console.error(error);
       this.isLoading = false;
       this.errorLoading = true;
+      this.toastr.error('Hubo un error al obtener las tasas de cambio', 'Error');
     })
   }
 

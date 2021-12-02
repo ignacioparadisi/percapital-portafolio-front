@@ -9,6 +9,7 @@ import { StockTitle } from 'src/common/classes/StockTitle';
 import { ExchangeRateService } from 'src/services/exchange-rate/exchange-rate.service';
 import { PriceRvService } from 'src/services/price-rv/price-rv.service';
 import { StockTitleService } from 'src/services/stock-title/stock-title.service';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-price-rv-form',
@@ -32,8 +33,11 @@ export class PriceRvFormComponent implements OnInit {
     createDate: [],
   };
 
-  constructor(private priceRVService: PriceRvService, private stockTitleService: StockTitleService, 
-              private exchangeRateService: ExchangeRateService, private dialogRef: MatDialogRef<PriceRvFormComponent>) { 
+  constructor(private priceRVService: PriceRvService,
+              private stockTitleService: StockTitleService,
+              private exchangeRateService: ExchangeRateService,
+              private dialogRef: MatDialogRef<PriceRvFormComponent>,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -49,6 +53,7 @@ export class PriceRvFormComponent implements OnInit {
       console.log(results.data);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener los títulos', 'Error');
     })
   }
 
@@ -58,6 +63,7 @@ export class PriceRvFormComponent implements OnInit {
       this.form.get('exchangeRate')?.setValue(this.exchangeRate.value);
     }, error => {
       console.error(error);
+      this.toastr.error('Hubo un error al obtener la tasa de cambio', 'Error');
     })
   }
 
@@ -99,7 +105,11 @@ export class PriceRvFormComponent implements OnInit {
     let priceRV = new PriceRV(title.id, this.exchangeRate.id, bolivaresPrice, closePrice, closeDate, createDate);
     this.priceRVService.createPriceRv(priceRV).subscribe((priceRV: PriceRV) => {
       this.isLoading = false;
+      this.toastr.success('El Precio RV fue creado de manera exitosa');
       this.dismiss(priceRV);
+    }, error => {
+      console.error(error);
+      this.toastr.error('Hubo un error al crear el Precio RV', 'Error');
     })
   }
 

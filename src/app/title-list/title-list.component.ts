@@ -8,6 +8,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TitleFormComponent } from '../title-form/title-form.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-title-list',
@@ -34,7 +35,7 @@ export class TitleListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private stockTitleService: StockTitleService, private dialog: MatDialog) { 
+  constructor(private stockTitleService: StockTitleService, private dialog: MatDialog, private toastr: ToastrService) {
     this.searchForm = new FormGroup({
       search: new FormControl()
     });
@@ -70,6 +71,7 @@ export class TitleListComponent implements AfterViewInit {
       console.error(error);
       this.errorLoading = true;
       this.isLoading = false;
+      this.toastr.error('Hubo un error al listar los títulos', 'Error');
     })
   }
 

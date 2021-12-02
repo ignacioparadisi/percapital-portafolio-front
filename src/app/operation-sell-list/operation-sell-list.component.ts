@@ -7,6 +7,7 @@ import { OperationType } from 'src/common/classes/OperationType';
 import { Page } from 'src/common/classes/Page';
 import { OperationService } from 'src/services/operation/operation.service';
 import { OperationFormComponent } from '../operation-form/operation-form.component';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-operation-sell-list',
@@ -41,7 +42,9 @@ export class OperationSellListComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private operationService: OperationService, private dialog: MatDialog) { }
+  constructor(private operationService: OperationService,
+              private dialog: MatDialog,
+              private toastr: ToastrService) { }
 
   ngAfterViewInit() {
     this.subscribeToPagination();
@@ -64,6 +67,7 @@ export class OperationSellListComponent implements AfterViewInit {
       console.error(error)
       this.isLoading = false;
       this.errorLoading = true;
+      this.toastr.error('Hubo un error al obtener las operaciones', 'Error');
     })
   }
 
