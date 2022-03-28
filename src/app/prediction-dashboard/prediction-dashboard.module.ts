@@ -9,6 +9,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatIconModule} from "@angular/material/icon";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -23,7 +25,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatButtonToggleModule,
+    MatIconModule
   ]
 })
 export class PredictionDashboardModule { }

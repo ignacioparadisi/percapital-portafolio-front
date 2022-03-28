@@ -27,19 +27,26 @@ export class PredictionDashboardComponent implements OnInit {
 
   constructor(private predictionService: PredictionService, private stockTitleService: StockTitleService, private toastr: ToastrService) {
     this.form = new FormGroup({
-      title: new FormControl({value: '', disabled: false}, [Validators.required])
+      title: new FormControl({value: '', disabled: false}, [Validators.required]),
+      interval: new FormControl({value: '1month', disabled: false}, [Validators.required])
     });
   }
 
   ngOnInit(): void {
-    this.form.get('title')?.valueChanges.subscribe(title => {
-      this.fetchStockHistoric(title.symbol);
+    this.form.valueChanges.subscribe(form => {
+      if (form.interval == "all") {
+        form.interval = null;
+      }
+      this.fetchStockHistoric(form.title.symbol, form.interval);
     });
     this.fetchTitles();
   }
 
-  private fetchStockHistoric(symbol: string) {
-    this.predictionService.getStockHistoricBySymbol(symbol).subscribe(result => {
+  private fetchStockHistoric(symbol: string, interval?: string) {
+    if (symbol === undefined) {
+      return;
+    }
+    this.predictionService.getStockHistoricBySymbol(symbol, interval).subscribe(result => {
       let data = [{
         x: result.map(item => {
           let date = new Date(+item.date);
