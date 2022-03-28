@@ -2,7 +2,11 @@
   <mat-sidenav #drawer class="example-sidenav" mode="side">
     <h1>Percapital</h1>
     <mat-nav-list>
-      <a mat-list-item routerLink="/portfolio" routerLinkActive="active-item"  (click)="didSelectItem()">
+      <a mat-list-item routerLink="/prediction" routerLinkActive="active-item" (click)="didSelectItem()">
+        <span class="line"></span>
+        Dashboard
+      </a>
+      <a mat-list-item routerLink="/portfolio" routerLinkActive="active-item" (click)="didSelectItem()">
         <span class="line"></span>
         Portafolio
       </a>

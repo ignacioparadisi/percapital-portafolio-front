@@ -9,14 +9,14 @@ export abstract class GraphQLMutation<Params, Result> extends GraphQL<Params, Re
         super(apollo);
      }
 
-    execute() {
+    execute(serverName: string = 'default') {
         let mutation = gql`${this.mutation}`;
         let variables = this.getVariables(this.params);
         console.info({
             mutation: this.mutation,
             variables
         });
-        return this.apollo.mutate<Result>({
+        return this.apollo.use(serverName).mutate<Result>({
             mutation,
             variables
         }).pipe(

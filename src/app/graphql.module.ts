@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
-import { APOLLO_OPTIONS } from 'apollo-angular';
+import {Apollo, ApolloModule} from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache, ApolloLink } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 
-const uri = 'https://percapital-backend.herokuapp.com';
-// const uri = 'http://localhost:4000';
-export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
+const isBackendRunningLocally = true;
+const serverURL = isBackendRunningLocally ? 'http://localhost:4000' : 'https://percapital-backend.herokuapp.com';
+const predictionURL = 'http://localhost:4001';
+
+function createApollo(httpLink: HttpLink, uri: string): ApolloClientOptions<any> {
   const auth = setContext(() => ({
     headers: {
       // TODO: Agarrar el usuario autenticado
@@ -14,18 +16,18 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
     }
   }));
   return {
-    link: ApolloLink.from([auth, httpLink.create({uri})]),
     cache: new InMemoryCache(),
+    link: ApolloLink.from([auth, httpLink.create({uri})])
   };
 }
 
 @NgModule({
-  providers: [
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: createApollo,
-      deps: [HttpLink],
-    },
-  ],
+  imports: [ApolloModule]
 })
-export class GraphQLModule {}
+export class GraphQLModule {
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+    apollo.create(createApollo(httpLink, serverURL));
+    apollo.create(createApollo(httpLink, predictionURL), 'prediction');
+  }
+}
+

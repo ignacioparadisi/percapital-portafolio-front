@@ -13,6 +13,8 @@ import { GetLatestExchangeRateQuery } from "./GetLatestExchangeRateQuery";
 import { GetConstantTypesQuery } from "./GetConstantTypesQuery";
 import { GetPortfolioQuery } from "./GetPortfolioQuery";
 import { QueryStockTitlesWithAmountQuery } from "./GetStockTitlesWithAmountQuery";
+import {GetStockHistoricBySymbol} from "./GetStockHistoricBySymbol";
+import {StockHistoric} from "../../../common/classes/StockHistoric";
 
 @Injectable({
     providedIn: 'root'
@@ -42,5 +44,9 @@ export class QueryFactory {
     }
     getGetPortfolioQuery() {
         return new GetPortfolioQuery(this.apollo);
+    }
+    getGetStockHistoricBySymbolQuery(symbol: string, interval?: string) {
+      let stock = new StockHistoric(symbol, interval);
+      return new GetStockHistoricBySymbol(this.apollo, stock);
     }
 }
