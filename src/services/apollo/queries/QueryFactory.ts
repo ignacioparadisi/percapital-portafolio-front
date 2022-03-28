@@ -15,6 +15,7 @@ import { GetPortfolioQuery } from "./GetPortfolioQuery";
 import { QueryStockTitlesWithAmountQuery } from "./GetStockTitlesWithAmountQuery";
 import {GetStockHistoricBySymbol} from "./GetStockHistoricBySymbol";
 import {StockHistoric} from "../../../common/classes/StockHistoric";
+import {GetStocksFromBVC} from "./GetStocksFromBVC";
 
 @Injectable({
     providedIn: 'root'
@@ -48,5 +49,8 @@ export class QueryFactory {
     getGetStockHistoricBySymbolQuery(symbol: string, interval?: string) {
       let stock = new StockHistoric(symbol, interval);
       return new GetStockHistoricBySymbol(this.apollo, stock);
+    }
+    getGetStocksFromBVCQuery() {
+      return new GetStocksFromBVC(this.apollo);
     }
 }

@@ -13,4 +13,9 @@ export class PredictionService {
     let query = this.queryFactory.getGetStockHistoricBySymbolQuery(symbol, interval);
     return query.execute('prediction');
   }
+
+  getStocksFromBVC() {
+    let query = this.queryFactory.getGetStocksFromBVCQuery();
+    return query.execute('prediction');
+  }
 }

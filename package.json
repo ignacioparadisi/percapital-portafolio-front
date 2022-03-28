@@ -26,6 +26,7 @@
     "angular-plotly.js": "^4.0.4",
     "apollo-angular": "^3.0.0",
     "bootstrap": "^5.1.1",
+    "chart.js": "^3.7.1",
     "express": "^4.17.1",
     "graphql": "^15.0.0",
     "jquery": "^3.6.0",

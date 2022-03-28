@@ -6,6 +6,9 @@ import {Observable} from "rxjs";
 import {StockTitleService} from "../../services/stock-title/stock-title.service";
 import {map, startWith} from "rxjs/operators";
 import {ToastrService} from "ngx-toastr";
+import Chart from 'chart.js/auto';
+import {StockHistoric} from "../../common/classes/StockHistoric";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-prediction-dashboard',
@@ -17,13 +20,17 @@ export class PredictionDashboardComponent implements OnInit {
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
 
-  graphLayout = { autosize: true, title: '' }
-  graphData: any = [{
-    x: [],
-    y: [],
-    type: 'scatter',
-    mode: 'lines',
-  }];
+  latestsStocks: StockHistoric[] = [];
+  chart: Chart;
+
+  isLoading: boolean = false;
+  errorLoading: boolean = false;
+  displayedColumns: string[] = [
+    'symbol',
+    'value',
+    'date'
+  ];
+  dataSource = new MatTableDataSource<StockHistoric>(this.latestsStocks);
 
   constructor(private predictionService: PredictionService, private stockTitleService: StockTitleService, private toastr: ToastrService) {
     this.form = new FormGroup({
@@ -33,6 +40,7 @@ export class PredictionDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setupChart();
     this.form.valueChanges.subscribe(form => {
       if (form.interval == "all") {
         form.interval = null;
@@ -40,6 +48,21 @@ export class PredictionDashboardComponent implements OnInit {
       this.fetchStockHistoric(form.title.symbol, form.interval);
     });
     this.fetchTitles();
+    this.setupChart();
+  }
+
+  private setupChart() {
+    this.chart = new Chart('chart', {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Historic',
+          data: [],
+          fill: false
+        }]
+      }
+    });
   }
 
   private fetchStockHistoric(symbol: string, interval?: string) {
@@ -47,17 +70,22 @@ export class PredictionDashboardComponent implements OnInit {
       return;
     }
     this.predictionService.getStockHistoricBySymbol(symbol, interval).subscribe(result => {
-      let data = [{
-        x: result.map(item => {
+      this.chart.data = {
+        labels: result.map(item => {
           let date = new Date(+item.date);
-          return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+          return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
         }),
-        y: result.map(item => item.closePrice),
-        type: 'scatter',
-        mode: 'lines'
-      }];
-      this.graphLayout = { autosize: true, title: symbol }
-      this.graphData = data;
+        datasets: [{
+          label: 'Histórico',
+          data: result.map(item => item.closePrice),
+          fill: true,
+          pointRadius: 1,
+          borderWidth: 1,
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.3)'
+        }]
+      }
+      this.chart.update();
     }, error => {
       console.error(error);
     });
@@ -74,6 +102,20 @@ export class PredictionDashboardComponent implements OnInit {
     }, error => {
       console.error(error);
       this.toastr.error('Hubo un error al obtener los títulos', 'Error');
+    })
+  }
+
+  fetchStocksFromBVC() {
+    this.isLoading = true;
+    this.errorLoading = false;
+    this.predictionService.getStocksFromBVC().subscribe(result => {
+      this.latestsStocks = result;
+      this.dataSource = new MatTableDataSource<StockHistoric>(this.latestsStocks);
+      this.isLoading = false;
+    }, error => {
+      console.error(error);
+      this.isLoading = true;
+      this.errorLoading = true;
     })
   }
 
