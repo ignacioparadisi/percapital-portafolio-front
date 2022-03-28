@@ -3,5 +3,23 @@
     <H1>Dashboard</H1>
   </div>
 
-  <plotly-plot [data]="graphData" [layout]="graphLayout" (error)="handleError"></plotly-plot>
+  <form [formGroup]="form">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>T&iacute;tulo</mat-label>
+        <input placeholder="Título"
+               aria-label="Título'"
+               matInput
+               formControlName="title"
+               [matAutocomplete]="auto" required>
+        <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
+          <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+            {{ title.symbol }} | {{ title.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <plotly-plot [data]="graphData" [layout]="graphLayout"></plotly-plot>
 </div>

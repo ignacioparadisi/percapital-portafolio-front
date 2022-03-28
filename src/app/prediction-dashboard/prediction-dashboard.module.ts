@@ -5,6 +5,10 @@ import { PredictionDashboardRoutingModule } from './prediction-dashboard-routing
 import { PredictionDashboardComponent } from './prediction-dashboard.component';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatInputModule} from "@angular/material/input";
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -15,7 +19,11 @@ PlotlyModule.plotlyjs = PlotlyJS;
   imports: [
     CommonModule,
     PredictionDashboardRoutingModule,
-    PlotlyModule
+    PlotlyModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule
   ]
 })
 export class PredictionDashboardModule { }

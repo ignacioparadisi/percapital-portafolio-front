@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {PredictionService} from "../../services/prediction/prediction.service";
+import {PredictionService} from "src/services/prediction/prediction.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {StockTitle} from "src/common/classes/StockTitle";
+import {Observable} from "rxjs";
+import {StockTitleService} from "../../services/stock-title/stock-title.service";
+import {map, startWith} from "rxjs/operators";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-prediction-dashboard',
@@ -7,19 +13,33 @@ import {PredictionService} from "../../services/prediction/prediction.service";
   styleUrls: ['./prediction-dashboard.component.scss']
 })
 export class PredictionDashboardComponent implements OnInit {
-  graphLayout = { autosize: true, title: 'BNC' }
+  form: FormGroup;
+  private titles: StockTitle[] = [];
+  filteredTitles?: Observable<StockTitle[]>;
+
+  graphLayout = { autosize: true, title: '' }
   graphData: any = [{
     x: [],
     y: [],
     type: 'scatter',
-    mode: 'lines+points',
-    marker: {color: 'red'}
+    mode: 'lines',
   }];
 
-  constructor(private predictionService: PredictionService) { }
+  constructor(private predictionService: PredictionService, private stockTitleService: StockTitleService, private toastr: ToastrService) {
+    this.form = new FormGroup({
+      title: new FormControl({value: '', disabled: false}, [Validators.required])
+    });
+  }
 
   ngOnInit(): void {
-    this.predictionService.getStockHistoricBySymbol('BNC').subscribe(result => {
+    this.form.get('title')?.valueChanges.subscribe(title => {
+      this.fetchStockHistoric(title.symbol);
+    });
+    this.fetchTitles();
+  }
+
+  private fetchStockHistoric(symbol: string) {
+    this.predictionService.getStockHistoricBySymbol(symbol).subscribe(result => {
       let data = [{
         x: result.map(item => {
           let date = new Date(+item.date);
@@ -29,18 +49,43 @@ export class PredictionDashboardComponent implements OnInit {
         type: 'scatter',
         mode: 'lines'
       }];
+      this.graphLayout = { autosize: true, title: symbol }
       this.graphData = data;
     }, error => {
       console.error(error);
+    });
+  }
+
+  private fetchTitles() {
+    this.stockTitleService.getTitlesWithAmount().subscribe(results => {
+      this.titles = results ?? [];
+      if (results.length > 0) {
+        this.form.get('title')?.setValue(results[0]);
+      }
+      this.setupTitleFilter();
+      console.log(results);
+    }, error => {
+      console.error(error);
+      this.toastr.error('Hubo un error al obtener los títulos', 'Error');
     })
   }
 
-  update() {
-    console.log('Did update');
+  private setupTitleFilter() {
+    this.filteredTitles = this.form.get('title')?.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.titles.slice())
+      );
   }
 
-  handleError(err: any) {
-    console.log(err)
+  private _filter(name: string): StockTitle[] {
+    const filterValue = name.toLowerCase();
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
+  }
+
+  getOptionText(option?: StockTitle): string {
+    return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
   }
 
 }
