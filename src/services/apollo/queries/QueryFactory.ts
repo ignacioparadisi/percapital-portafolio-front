@@ -16,6 +16,7 @@ import { QueryStockTitlesWithAmountQuery } from "./GetStockTitlesWithAmountQuery
 import {GetStockHistoricBySymbol} from "./GetStockHistoricBySymbol";
 import {StockHistoric} from "../../../common/classes/StockHistoric";
 import {GetStocksFromBVC} from "./GetStocksFromBVC";
+import {GetTodayStocks} from "./GetTodayStocks";
 
 @Injectable({
     providedIn: 'root'
@@ -52,5 +53,8 @@ export class QueryFactory {
     }
     getGetStocksFromBVCQuery() {
       return new GetStocksFromBVC(this.apollo);
+    }
+    getTodayStocksQuery() {
+      return new GetTodayStocks(this.apollo);
     }
 }

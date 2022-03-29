@@ -18,4 +18,9 @@ export class PredictionService {
     let query = this.queryFactory.getGetStocksFromBVCQuery();
     return query.execute('prediction');
   }
+
+  getTodayStocks() {
+    let query = this.queryFactory.getTodayStocksQuery();
+    return query.execute('prediction');
+  }
 }
