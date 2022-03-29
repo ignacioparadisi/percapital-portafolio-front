@@ -4,10 +4,6 @@ import { ApolloClientOptions, InMemoryCache, ApolloLink } from '@apollo/client/c
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 
-const isBackendRunningLocally = true;
-const serverURL = isDevMode() ? 'http://localhost:4000' : 'https://percapital-backend.herokuapp.com';
-const predictionURL = isDevMode() ? 'http://localhost:4001' : 'https://percapital-backend-prediction.herokuapp.com';
-
 function createApollo(httpLink: HttpLink, uri: string): ApolloClientOptions<any> {
   const auth = setContext(() => ({
     headers: {
@@ -26,6 +22,9 @@ function createApollo(httpLink: HttpLink, uri: string): ApolloClientOptions<any>
 })
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink: HttpLink) {
+    const serverURL = isDevMode() ? 'http://localhost:4000' : 'https://percapital-backend.herokuapp.com';
+    const predictionURL = isDevMode() ? 'http://localhost:4001' : 'https://percapital-backend-prediction.herokuapp.com';
+
     apollo.create(createApollo(httpLink, serverURL));
     apollo.create(createApollo(httpLink, predictionURL), 'prediction');
   }
