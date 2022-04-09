@@ -58,7 +58,7 @@
                      [matAutocomplete]="auto" required>
               <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
                 <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
-                  {{ title.symbol }} | {{ title.name }}
+                  {{ title.symbol }}<span *ngIf="title.name"> | {{ title.name }}</span>
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>

@@ -70,6 +70,7 @@ export class PredictionDashboardComponent implements OnInit {
       return;
     }
     this.predictionService.getStockHistoricBySymbol(symbol, interval).subscribe(result => {
+      console.log(result);
       this.chart.data = {
         labels: result.map(item => {
           let date = new Date(+item.date);
@@ -147,7 +148,7 @@ export class PredictionDashboardComponent implements OnInit {
 
   private _filter(name: string): StockTitle[] {
     const filterValue = name.toLowerCase();
-    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name?.toLowerCase().includes(filterValue)));
   }
 
   getOptionText(option?: StockTitle): string {

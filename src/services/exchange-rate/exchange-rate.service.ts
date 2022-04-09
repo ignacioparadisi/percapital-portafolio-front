@@ -4,6 +4,7 @@ import { Page } from 'src/common/classes/Page';
 import { MutationFactory } from '../apollo/mutations/MutationFactory';
 import { GetExchangeRatesQuery } from '../apollo/queries/GetExchangeRatesQuery';
 import { QueryFactory } from '../apollo/queries/QueryFactory';
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,7 @@
 export class StockHistoric {
   id: number;
   symbol: string;
+  symbolDescription?: string;
   closePrice: number;
   openPrice?: number;
   highPrice?: number;

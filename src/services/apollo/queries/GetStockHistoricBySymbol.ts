@@ -7,6 +7,7 @@ export class GetStockHistoricBySymbol extends GraphQLQuery<StockHistoric, [Stock
     getStockHistoricBySymbol(symbol: $symbol, interval: $interval) {
         id
         symbol
+        symbolDescription
         date
         closePrice
         openPrice

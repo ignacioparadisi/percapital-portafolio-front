@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { TypeValue } from 'src/common/classes/ConstantType';
+import {ConstantType, TypeValue} from 'src/common/classes/ConstantType';
 import { Operation } from 'src/common/classes/Operation';
 import { Page } from 'src/common/classes/Page';
 import { MutationFactory } from '../apollo/mutations/MutationFactory';
 import { QueryFactory } from '../apollo/queries/QueryFactory';
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
