@@ -23,4 +23,9 @@ export class PredictionService {
     let query = this.queryFactory.getTodayStocksQuery();
     return query.execute('prediction');
   }
+
+  getPrediction(symbol: string, lookUpDays: number = 15) {
+    let query = this.queryFactory.getGetPredictionQuery(symbol, lookUpDays);
+    return query.execute('prediction');
+  }
 }

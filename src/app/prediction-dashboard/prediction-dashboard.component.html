@@ -45,39 +45,49 @@
   <br/>
   <div class="row" style="height: 500px">
     <mat-card>
-      <mat-card-title>Histórico</mat-card-title>
-      <mat-card-content>
-        <form [formGroup]="form">
-          <div class="row">
-            <mat-form-field appearance="outline">
-              <mat-label>T&iacute;tulo</mat-label>
-              <input placeholder="Título"
-                     aria-label="Título'"
-                     matInput
-                     formControlName="title"
-                     [matAutocomplete]="auto" required>
-              <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
-                <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
-                  {{ title.symbol }}<span *ngIf="title.name"> | {{ title.name }}</span>
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </div>
-          <div class="text-center">
-            <mat-button-toggle-group formControlName="interval" appearance="legacy">
-              <mat-button-toggle value="1w">1W</mat-button-toggle>
-              <mat-button-toggle value="1month">1M</mat-button-toggle>
-              <mat-button-toggle value="3month">3M</mat-button-toggle>
-              <mat-button-toggle value="6month">6M</mat-button-toggle>
-              <mat-button-toggle value="1y">1Y</mat-button-toggle>
-              <mat-button-toggle value="5y">5Y</mat-button-toggle>
-              <mat-button-toggle value="all">TODO</mat-button-toggle>
-            </mat-button-toggle-group>
-          </div>
-        </form>
+      <div class="row">
+        <mat-card-title>Histórico</mat-card-title>
+        <mat-card-content>
+          <form [formGroup]="form">
+            <div class="row">
+              <mat-form-field appearance="outline">
+                <mat-label>T&iacute;tulo</mat-label>
+                <input placeholder="Título"
+                       aria-label="Título'"
+                       matInput
+                       formControlName="title"
+                       [matAutocomplete]="auto" required>
+                <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
+                  <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
+                    {{ title.symbol }}<span *ngIf="title.name"> | {{ title.name }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="text-center">
+              <mat-button-toggle-group formControlName="interval" appearance="legacy">
+                <mat-button-toggle value="1w">1W</mat-button-toggle>
+                <mat-button-toggle value="1month">1M</mat-button-toggle>
+                <mat-button-toggle value="3month">3M</mat-button-toggle>
+                <mat-button-toggle value="6month">6M</mat-button-toggle>
+                <mat-button-toggle value="1y">1Y</mat-button-toggle>
+                <mat-button-toggle value="5y">5Y</mat-button-toggle>
+                <mat-button-toggle value="all">TODO</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </form>
 
-        <canvas id="chart" height="500" class="col-12"></canvas>
-      </mat-card-content>
+          <canvas id="chart" height="500" class="col-12"></canvas>
+        </mat-card-content>
+      </div>
+
+      <br/>
+      <div class="row">
+        <mat-card-title>Predicción</mat-card-title>
+        <mat-card-content>
+          <canvas id="predictionChart" height="500" class="col-12"></canvas>
+        </mat-card-content>
+      </div>
     </mat-card>
   </div>
   <br/>

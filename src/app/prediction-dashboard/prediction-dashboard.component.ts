@@ -22,6 +22,7 @@ export class PredictionDashboardComponent implements OnInit {
 
   latestsStocks: StockHistoric[] = [];
   chart: Chart;
+  predictionChart: Chart;
 
   isLoading: boolean = false;
   errorLoading: boolean = false;
@@ -46,6 +47,7 @@ export class PredictionDashboardComponent implements OnInit {
         form.interval = null;
       }
       this.fetchStockHistoric(form.title.symbol, form.interval);
+      this.fetchPrediction(form.title.symbol, 15);
     });
     this.fetchTitles();
     this.fetchTodayStocks();
@@ -63,6 +65,23 @@ export class PredictionDashboardComponent implements OnInit {
         }]
       }
     });
+
+
+    this.predictionChart = new Chart('predictionChart', {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Real',
+          data: [],
+          fill: false
+        }, {
+          label: 'Predicción',
+          data: [],
+          fill: false
+        }]
+      }
+    })
   }
 
   private fetchStockHistoric(symbol: string, interval?: string) {
@@ -70,7 +89,6 @@ export class PredictionDashboardComponent implements OnInit {
       return;
     }
     this.predictionService.getStockHistoricBySymbol(symbol, interval).subscribe(result => {
-      console.log(result);
       this.chart.data = {
         labels: result.map(item => {
           let date = new Date(+item.date);
@@ -87,6 +105,38 @@ export class PredictionDashboardComponent implements OnInit {
         }]
       }
       this.chart.update();
+    }, error => {
+      console.error(error);
+    });
+  }
+
+  private fetchPrediction(symbol: string, lookUpDays: number = 15) {
+    console.info('Getting prediction')
+    if (symbol === undefined) {
+      return;
+    }
+    this.predictionService.getPrediction(symbol, lookUpDays).subscribe(result => {
+      this.predictionChart.data = {
+        labels: result.trueData.x,
+        datasets: [{
+          label: 'Real',
+          data: result.trueData.y,
+          fill: true,
+          pointRadius: 1,
+          borderWidth: 1,
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.3)'
+        }, {
+          label: 'Predicción',
+          data: result.data.y,
+          fill: true,
+          pointRadius: 1,
+          borderWidth: 1,
+          borderColor: 'rgb(255, 0, 0)',
+          backgroundColor: 'rgba(255, 0, 0, 0.3)'
+        }]
+      }
+      this.predictionChart.update();
     }, error => {
       console.error(error);
     });

@@ -17,6 +17,8 @@ import {GetStockHistoricBySymbol} from "./GetStockHistoricBySymbol";
 import {StockHistoric} from "../../../common/classes/StockHistoric";
 import {GetStocksFromBVC} from "./GetStocksFromBVC";
 import {GetTodayStocks} from "./GetTodayStocks";
+import {GetPredictionQuery} from "./GetPredictionQuery";
+import {Prediction} from "../../../common/classes/Prediction";
 
 @Injectable({
     providedIn: 'root'
@@ -56,5 +58,9 @@ export class QueryFactory {
     }
     getTodayStocksQuery() {
       return new GetTodayStocks(this.apollo);
+    }
+    getGetPredictionQuery(symbol: string, lookUpDays: number) {
+      let prediction = new Prediction(symbol, lookUpDays);
+      return new GetPredictionQuery(this.apollo, prediction);
     }
 }
