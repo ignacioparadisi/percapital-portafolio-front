@@ -152,7 +152,14 @@ export class PredictionDashboardComponent implements OnInit {
   }
 
   getOptionText(option?: StockTitle): string {
-    return option && option.symbol && option.name ? `${option.symbol} | ${option.name}` : '';
+    let text = '';
+    if (option && option.symbol) {
+      text = `${option.symbol}`;
+      if (option.name) {
+        text += ` | ${option.name}`;
+      }
+    }
+    return text;
   }
 
 }
