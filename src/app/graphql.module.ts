@@ -4,7 +4,7 @@ import { ApolloClientOptions, InMemoryCache, ApolloLink } from '@apollo/client/c
 import { HttpLink } from 'apollo-angular/http';
 import { setContext } from '@apollo/client/link/context';
 
-const isBackendRunningLocally = true;
+const isBackendRunningLocally = false;
 const serverURL = isBackendRunningLocally ? 'http://localhost:4000' : 'https://percapital-backend.herokuapp.com';
 const predictionURL = isBackendRunningLocally ? 'http://localhost:4001' : 'https://percapital-backend-prediction.herokuapp.com';
 
