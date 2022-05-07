@@ -1,0 +1,52 @@
+<div class="background">
+  <div class="container">
+    <div class="form-container align-items-center">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <h1 class="text-center">Iniciar Sesión</h1>
+        <!-- Email -->
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput email formControlName="email" required>
+          <mat-hint>
+            <div *ngFor="let error of validationMessages.email">
+              <div class="error">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+              </div>
+            </div>
+          </mat-hint>
+        </mat-form-field>
+        <!-- Password -->
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Ocultar contraseña'" [attr.aria-pressed]="hidePassword" [disabled]="isLoading">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-hint>
+            <div *ngFor="let error of validationMessages.password">
+              <div class="error">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+              </div>
+            </div>
+          </mat-hint>
+        </mat-form-field>
+
+        <!-- Buttons -->
+        <div class="buttons">
+          <button mat-button type="button" class="btn-block" color="primary" (click)="presentSignUpModal()"
+                  [disabled]="isLoading">Crear Cuenta</button>
+          <button mat-raised-button type="submit" class="btn-block" color="primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Iniciar Sesión</span>
+            <div *ngIf="isLoading" class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Cargando...</span>
+              </div>
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
