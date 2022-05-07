@@ -13,7 +13,7 @@ export class PriceRV {
     exchangeRate?: ExchangeRate;
     stockTitle?: StockTitle;
 
-   constructor(titleId?: number, exchangeRateId?: number, bolivaresPrice?: number, 
+   constructor(titleId?: number, exchangeRateId?: number, bolivaresPrice?: number,
     closePrice?: number, closeDate?: Date, createdAt?: Date) {
         this.titleId = titleId;
         this.exchangeRateId = exchangeRateId;

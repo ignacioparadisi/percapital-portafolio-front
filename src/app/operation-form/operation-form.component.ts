@@ -194,7 +194,7 @@ export class OperationFormComponent implements OnInit {
     dialogRef.componentInstance.title = 'Operación en corto';
     dialogRef.componentInstance.message = 'Estas por irte en corto con esta operación. ¿Quieres continuar?';
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+      if (result === true && title.id) {
         this.createOperation(this.typeId, title.id, stockAmount, stockPrice, exchangeRate, tax.id, comission.id, register.id, date);
       }
     });

@@ -36,7 +36,7 @@
         <div class="buttons">
           <button mat-button type="button" class="btn-block" color="primary" (click)="presentSignUpModal()"
                   [disabled]="isLoading">Crear Cuenta</button>
-          <button mat-raised-button type="submit" class="btn-block" color="primary" [disabled]="isLoading">
+          <button mat-raised-button type="submit" class="btn-block" color="primary" [disabled]="isLoading" (click)="login()">
             <span *ngIf="!isLoading">Iniciar Sesión</span>
             <div *ngIf="isLoading" class="d-flex justify-content-center">
               <div class="spinner-border" role="status">

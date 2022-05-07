@@ -104,6 +104,7 @@ export class RegisterComponent implements OnInit {
         password: this.registerForm.get('password')?.value
       };
       this.isLoading = true;
+      this.router.navigate(['/portfolio']);
       // this.userService.createUser(user).subscribe((user: User) => {
       //   this.isLoading = false;
       //   console.log(user);

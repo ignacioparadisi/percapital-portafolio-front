@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit {
    * Ejecuta el login del usuario enviando el correo y la contraseña al servidor.
    */
   login() {
+    this.router.navigate(['/portfolio']);
     // this.clearValidationMessages();
     // this.validateFields();
     // if (this.loginForm.valid) {

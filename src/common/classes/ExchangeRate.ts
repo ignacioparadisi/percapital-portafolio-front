@@ -1,5 +1,5 @@
 export class ExchangeRate {
-    id: number;
+    id?: number;
     value: number;
     createdAt: Date;
 

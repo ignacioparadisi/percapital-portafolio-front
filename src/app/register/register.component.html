@@ -108,7 +108,7 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button type="button" (click)="dismiss()" [disabled]="isLoading">Cerrar</button>
-      <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="isLoading">
+      <button mat-raised-button class="submit-button" color="primary" type="submit" [disabled]="isLoading" (click)="createAccount()">
 
         <span *ngIf="!isLoading">Crear Cuenta</span>
         <div *ngIf="isLoading" class="d-flex justify-content-center">
