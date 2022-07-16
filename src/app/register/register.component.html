@@ -16,47 +16,6 @@
         </mat-hint>
       </mat-form-field>
 
-      <!-- Document ID Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Documento de Identidad</mat-label>
-        <input matInput number formControlName="documentId" required />
-        <mat-hint>
-          <div *ngFor="let error of validationMessages.documentId">
-            <div class="error">
-              <i class="fas fa-exclamation-circle"></i> {{ error }}
-            </div>
-          </div>
-        </mat-hint>
-      </mat-form-field>
-
-      <!-- Birthday Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha de Nacimiento</mat-label>
-        <input matInput placeholder="MM/DD/AAAA" [max]="maxDate" [matDatepicker]="picker" formControlName="birthday" required>
-        <mat-datepicker-toggle matSuffix [for]="picker" [disabled]="isLoading"></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="multi-year"></mat-datepicker>
-        <mat-hint>
-          <div *ngFor="let error of validationMessages.birthday">
-            <div class="error">
-              <i class="fas fa-exclamation-circle"></i> {{ error }}
-            </div>
-          </div>
-        </mat-hint>
-      </mat-form-field>
-
-      <!-- Phone Field -->
-      <mat-form-field appearance="outline">
-        <mat-label>Número telefónico</mat-label>
-        <input matInput tel formControlName="phone" required />
-        <mat-hint>
-          <div *ngFor="let error of validationMessages.phone">
-            <div class="error">
-              <i class="fas fa-exclamation-circle"></i> {{ error }}
-            </div>
-          </div>
-        </mat-hint>
-      </mat-form-field>
-
       <!-- Email Field -->
       <mat-form-field appearance="outline">
         <mat-label>Correo electrónico</mat-label>

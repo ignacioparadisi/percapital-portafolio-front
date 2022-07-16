@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/resources/auth-guard';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {User} from "../../common/classes/User";
+import { UserService } from 'src/services/user/user.service';
 
 @Component({
   selector: 'app-register',
@@ -35,10 +36,7 @@ export class RegisterComponent implements OnInit {
     name: [],
     email: [],
     password: [],
-    validPassword: [],
-    phone: [],
-    documentId: [],
-    birthday: []
+    validPassword: []
   };
   public hideValidPassword = true;
   public hidePassword = true;
@@ -47,14 +45,11 @@ export class RegisterComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.email, Validators.required]),
     password: new FormControl('', [Validators.required]),
-    validPassword: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required]),
-    documentId: new FormControl('', [Validators.required]),
-    birthday: new FormControl('', [Validators.required])
+    validPassword: new FormControl('', [Validators.required])
   });
 
   constructor(
-    // private userService: UserService,
+    private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<RegisterComponent>) { }
@@ -70,21 +65,13 @@ export class RegisterComponent implements OnInit {
    * Presenta una alerta de error
    */
   async presentErrorAlert(error: any) {
-    var message = '';
-    if (error.status == 400) {
-      message = 'Error al crear el usuario.'
-      if (error.error.email) {
-        this.validationMessages.email.push('El email ingresado ya existe en el sistema.');
-        this.registerForm.get('email')?.setErrors({ incorrect: true} );
-      }
-      if (error.error.cedula) {
-        this.validationMessages.documentId.push('La cédula ingresada ya existe en el sistema.');
-        this.registerForm.get('documentId')?.setErrors({ incorrect: true} );
-      }
-    }  else {
-      message = 'Hugo un error al conectarse con el servidor.';
+    var message = 'Error al crear el usuario.';
+    console.log(error);
+    if (error.message && error.message.includes('email')) {
+      this.validationMessages.email.push(error.message);
+      this.registerForm.get('email')?.setErrors({ incorrect: true} );
     }
-    this.snackBar.open(message, 'Cerrar', {
+    this.snackBar.open(error.message ? error.message : message, 'Cerrar', {
       duration: 5000
     });
   }
@@ -96,29 +83,27 @@ export class RegisterComponent implements OnInit {
     this.clearValidationMessages();
     this.validateFields();
     if (this.registerForm.valid) {
-      const user = {
+      const formData = {
         full_name: this.registerForm.get('name')?.value,
         email: this.registerForm.get('email')?.value,
-        cedula: this.registerForm.get('documentId')?.value,
-        phone: this.registerForm.get('phone')?.value,
-        password: this.registerForm.get('password')?.value
+        password: this.registerForm.get('password')?.value,
+        validPassword: this.registerForm.get('validPassword')?.value,
       };
+      const user = new User(formData.full_name, formData.email, formData.password)
       this.isLoading = true;
-      this.router.navigate(['/portfolio']);
-      // this.userService.createUser(user).subscribe((user: User) => {
-      //   this.isLoading = false;
-      //   console.log(user);
-      //   this.dismiss();
-      //   AuthGuard.saveUser(user);
-      //   this.snackBar.open('Cuenta creada safistactoriamente.', undefined, {
-      //     duration: 3000
-      //   });
-      //   this.router.navigate(['/portfolio']);
-      // }, (error: any) => {
-      //   this.isLoading = false;
-      //   console.log(error);
-      //   this.presentErrorAlert(error);
-      // });
+      this.userService.register(user).subscribe(result => {
+        this.isLoading = false;
+        this.dismiss();
+        AuthGuard.saveUser(result);
+        this.snackBar.open('Cuenta creada safistactoriamente.', undefined, {
+          duration: 3000
+        });
+        this.router.navigate(['/portfolio']);
+      }, error => {
+        this.isLoading = false;
+        console.error(error);
+        this.presentErrorAlert(error);
+      });
     }
   }
 
@@ -138,9 +123,6 @@ export class RegisterComponent implements OnInit {
     this.validationMessages.email = [];
     this.validationMessages.password = [];
     this.validationMessages.validPassword = [];
-    this.validationMessages.phone = [];
-    this.validationMessages.documentId = [];
-    this.validationMessages.birthday = [];
   }
 
   /**
@@ -150,9 +132,6 @@ export class RegisterComponent implements OnInit {
     this.validateEmailField();
     this.validateNameField();
     this.validatePasswordField();
-    this.validateBirthdayField();
-    this.validateDocumentIdField();
-    this.validatePhoneField();
   }
 
   /**
@@ -205,42 +184,6 @@ export class RegisterComponent implements OnInit {
     if (validPasswordErrors) {
       if (validPasswordErrors.required) {
         this.validationMessages.validPassword.push('La comprobación de la contraseña es obligatorio.');
-      }
-    }
-  }
-
-  /**
-   * Valida la información que contiene el campo de cédula.
-   */
-  private validateDocumentIdField() {
-    const documentIdErrors = this.registerForm.get('documentId')?.errors;
-    if (documentIdErrors) {
-      if (documentIdErrors.required) {
-        this.validationMessages.documentId.push('La cédula es obligatorio.');
-      }
-    }
-  }
-
-  /**
-   * Valida la información que contiene el campo de fecha de nacimiento.
-   */
-  private validateBirthdayField() {
-    const birthdayErrors = this.registerForm.get('birthday')?.errors;
-    if (birthdayErrors) {
-      if (birthdayErrors.required) {
-        this.validationMessages.birthday.push('La fecha de nacimiento es obligatorio.');
-      }
-    }
-  }
-
-  /**
-   * Valida la información que contiene el campo de número de teléfono.
-   */
-  private validatePhoneField() {
-    const phoneErrors = this.registerForm.get('phone')?.errors;
-    if (phoneErrors) {
-      if (phoneErrors.required) {
-        this.validationMessages.phone.push('El número telefónico es obligatorio.');
       }
     }
   }

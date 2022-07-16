@@ -6,11 +6,13 @@ import { InsertData } from "src/common/classes/InsertData";
 import { Operation } from "src/common/classes/Operation";
 import { PriceRV } from "src/common/classes/PriceRV";
 import { StockTitle } from "src/common/classes/StockTitle";
+import { User } from "src/common/classes/User";
 import { CreateExchangeRateMutation } from "./CreateExchangeRateMutation";
 import { CreateOperationMutation } from "./CreateOperationMutation";
 import { CreatePriceRVMutation } from "./CreatePriceRVMutation";
 import { CreateStockTitleMutation } from "./CreateStockTitleMutation";
 import { CreateTypeValueMutation } from "./CreateTypeValueMutation";
+import { CreateUserMutation } from "./CreateUserMutation";
 
 @Injectable({
     providedIn: 'root'
@@ -33,5 +35,9 @@ export class MutationFactory {
 
     getCreateConstantValue(constantValue: TypeValue) {
         return new CreateTypeValueMutation(this.apollo, new InsertData(constantValue));
+    }
+
+    getCreateUserMutation(user: User) {
+        return new CreateUserMutation(this.apollo, new InsertData(user));
     }
 }
