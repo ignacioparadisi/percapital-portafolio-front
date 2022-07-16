@@ -19,6 +19,8 @@ import {GetStocksFromBVC} from "./GetStocksFromBVC";
 import {GetTodayStocks} from "./GetTodayStocks";
 import {GetPredictionQuery} from "./GetPredictionQuery";
 import {Prediction} from "../../../common/classes/Prediction";
+import { User } from "src/common/classes/User";
+import { LoginQuery } from "./LoginQuery";
 
 @Injectable({
     providedIn: 'root'
@@ -62,5 +64,9 @@ export class QueryFactory {
     getGetPredictionQuery(symbol: string, lookUpDays: number) {
       let prediction = new Prediction(symbol, lookUpDays);
       return new GetPredictionQuery(this.apollo, prediction);
+    }
+    getLoginQuery(email: string, password: string) {
+        let user = new User('', email, password);
+        return new LoginQuery(this.apollo, user);
     }
 }

@@ -11,8 +11,13 @@ export class UserService {
   constructor(private queryFactory: QueryFactory, private mutationFactory: MutationFactory) { }
 
   register(user: User) {
-    let query = this.mutationFactory.getCreateUserMutation(user);
+    let mutation = this.mutationFactory.getCreateUserMutation(user);
+    return mutation.execute();
+  }
+
+  login(email: string, password: string) {
+    let query = this.queryFactory.getLoginQuery(email, password);
     return query.execute();
   }
-  
+
 }

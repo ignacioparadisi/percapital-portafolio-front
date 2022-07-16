@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import { AuthGuard } from 'src/resources/auth-guard';
+import { UserService } from 'src/services/user/user.service';
 import {RegisterComponent} from "../register/register.component";
 
 @Component({
@@ -15,7 +17,7 @@ export class LoginComponent implements OnInit {
   /**
    * Mensajes de error para validar el email y la contraseña.
    */
-  public validationMessages = {
+  public validationMessages: any = {
     email: [],
     password: []
   };
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
   get isLoading(): boolean { return this._isLoading };
 
   constructor(
-    // private userService: UserService,
+    private userService: UserService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router) {
@@ -69,13 +71,8 @@ export class LoginComponent implements OnInit {
    * Presenta una alerta de error
    */
   async presentErrorAlert(error: any) {
-    var message = '';
-    if (error.status == 404) {
-      message = 'El correo o la contraseña son inválidos.';
-    } else {
-      message = 'Hugo un error al conectarse con el servidor.';
-    }
-    this.snackBar.open(message, 'Cerrar', {
+    var message = 'El correo o la contraseña son inválidos.';
+    this.snackBar.open(error.message ? error.message : message, 'Cerrar', {
       duration: 5000
     });
   }
@@ -84,32 +81,25 @@ export class LoginComponent implements OnInit {
    * Ejecuta el login del usuario enviando el correo y la contraseña al servidor.
    */
   login() {
-    this.router.navigate(['/portfolio']);
-    // this.clearValidationMessages();
-    // this.validateFields();
-    // if (this.loginForm.valid) {
-    //   const user = {
-    //     id: null,
-    //     email: null
-    //   };
-    //   const authInfo = {
-    //     email: this.loginForm.get('email').value,
-    //     password: this.loginForm.get('password').value
-    //   };
-    //   this.isLoading = true;
-    //   this.userService.login(authInfo).subscribe((response) => {
-    //     console.log(response);
-    //     user.email = response.email;
-    //     user.id = response.id;
-    //     AuthGuard.saveUser(user);
-    //     this.isLoading = false;
-    //     this.router.navigate(['/routes']);
-    //   }, error => {
-    //     console.log(error);
-    //     this.isLoading = false;
-    //     this.presentErrorAlert(error);
-    //   });
-    // }
+    this.clearValidationMessages();
+    this.validateFields();
+    if (this.loginForm.valid) {
+      const authInfo = {
+        email: this.loginForm.get('email')?.value,
+        password: this.loginForm.get('password')?.value
+      };
+      this.isLoading = true;
+      this.userService.login(authInfo.email!, authInfo.password).subscribe((response) => {
+        console.log(response);
+        AuthGuard.saveUser(response);
+        this.isLoading = false;
+        this.router.navigate(['/portfolio']);
+      }, error => {
+        console.log(error);
+        this.isLoading = false;
+        this.presentErrorAlert(error);
+      });
+    }
   }
 
   /**
@@ -144,28 +134,28 @@ export class LoginComponent implements OnInit {
    * Valida la información que contiene el campo de email.
    */
   private validateEmailField() {
-    // const emailErrors = this.loginForm.get('email').errors;
-    // console.log(emailErrors);
-    // if (emailErrors) {
-    //   if (emailErrors.required) {
-    //     this.validationMessages.email.push('El correo electrónico es obligatorio.');
-    //   }
-    //   if (emailErrors.email) {
-    //     this.validationMessages.email.push('El formato del correo electrónico no es válido.');
-    //   }
-    // }
+    const emailErrors = this.loginForm.get('email')?.errors;
+    console.log(emailErrors);
+    if (emailErrors) {
+      if (emailErrors.required) {
+        this.validationMessages.email.push('El correo electrónico es obligatorio.');
+      }
+      if (emailErrors.email) {
+        this.validationMessages.email.push('El formato del correo electrónico no es válido.');
+      }
+    }
   }
 
   /**
    * Valida la información que contiene el campo de contraseña.
    */
   private validatePasswordField() {
-    // const passwordErrors = this.loginForm.get('password').errors;
-    // console.log(passwordErrors);
-    // if (passwordErrors) {
-    //   if (passwordErrors.required) {
-    //     this.validationMessages.password.push('La contraseña es obligatoria.');
-    //   }
-    // }
+    const passwordErrors = this.loginForm.get('password')?.errors;
+    console.log(passwordErrors);
+    if (passwordErrors) {
+      if (passwordErrors.required) {
+        this.validationMessages.password.push('La contraseña es obligatoria.');
+      }
+    }
   }
 }
