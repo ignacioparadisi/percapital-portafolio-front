@@ -89,8 +89,8 @@ export class OperationFormComponent implements OnInit {
       this.tax = results.filter(value => value.id == ConstantType.TAX)[0];
       this.comission = results.filter(value => value.id == ConstantType.COMISSION)[0];
       this.register = results.filter(value => value.id == ConstantType.REGISTER)[0];
-      this.tax.values.sort((a, b) => a.id -  b.id);
-      this.register.values.sort((a, b) => a.id -  b.id);
+      this.tax.values.sort((a, b) => b.id - a.id);
+      this.register.values.sort((a, b) => b.id - a.id);
       this.form.get('tax')?.setValue(this.tax.values[0]);
       this.form.get('comission')?.setValue(this.comission.values[0]);
       this.form.get('register')?.setValue(this.register.values[0]);
