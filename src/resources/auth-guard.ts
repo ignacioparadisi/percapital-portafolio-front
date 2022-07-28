@@ -1,38 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import {User} from "../common/classes/User";
+import { User } from "../common/classes/User";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  private static loggedIn = false;
 
-  constructor(
-    private router: Router,
-  ) {
-    const user = localStorage.getItem('user');
-    AuthGuard.loggedIn = (user !== undefined && user !== null);
+  constructor() {
 
-    if (AuthGuard.loggedIn) {
-      this.router.navigate(['/portfolio']);
-    } else {
-      this.router.navigate(['/login']);
-    }
   }
 
-  static saveUser(user: User) {
-    this.loggedIn = true;
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  static removeUser() {
-    this.loggedIn = false;
-    localStorage.removeItem('user');
-  }
-
-  static getUser() {
+  getUser(): User | null {
     let userString = localStorage.getItem('user');
     if (!userString) {
       return null;
@@ -41,16 +21,15 @@ export class AuthGuard implements CanActivate {
   }
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (!AuthGuard.loggedIn) {
-      return this.router.navigate(['/login']);
+    let role = next.data.role;
+    let user = this.getUser();
+    console.log('Checking role...');
+    console.log(role);
+    console.log(user?.roles)
+    if (role && user?.roles?.map((role) => role.id).includes(role)) {
+      return true;
     }
-
-    return AuthGuard.loggedIn;
-  }
-
-  public getGuardAuthentication(): boolean {
-    console.log(AuthGuard.loggedIn);
-    return AuthGuard.loggedIn;
+    return false;
   }
 }
 
@@ -58,16 +37,39 @@ export class AuthGuard implements CanActivate {
   providedIn: 'root',
 })
 export class LoginGuard implements CanActivate {
+  isLoggedIn = false;
 
   constructor(
     private router: Router,
-    private authGuard: AuthGuard,
-  ) { }
+    private authGuard: AuthGuard
+  ) {
+    const user = this.authGuard.getUser();
+    this.isLoggedIn = (user !== undefined && user !== null);
+
+    if (this.isLoggedIn) {
+      console.log('Hola')
+      this.router.navigate(['/portfolio']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+  login(user: User) {
+    this.isLoggedIn = true;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  logout() {
+    this.isLoggedIn = false;
+    localStorage.removeItem('user');
+  }
 
   public canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authGuard.getGuardAuthentication()) {
-      this.router.navigate(['/portfolio']);
+    if (!this.isLoggedIn) {
+      this.router.navigate(['/login']);
     }
-    return true;
+    console.log(`IS SIGNED IN ${this.isLoggedIn}`)
+    return this.isLoggedIn;
   }
+
 }

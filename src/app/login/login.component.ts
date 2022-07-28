@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
-import { AuthGuard } from 'src/resources/auth-guard';
+import { AuthGuard, LoginGuard } from 'src/resources/auth-guard';
 import { UserService } from 'src/services/user/user.service';
 import {RegisterComponent} from "../register/register.component";
 
@@ -47,7 +47,8 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router) {
+    private router: Router,
+    private loginGuard: LoginGuard) {
     this.loginForm = new FormGroup({
       email: new FormControl({ value: '', disabled: false }, [Validators.email, Validators.required]),
       password: new FormControl({ value: '', disabled: false }, [Validators.required])
@@ -91,7 +92,7 @@ export class LoginComponent implements OnInit {
       this.isLoading = true;
       this.userService.login(authInfo.email!, authInfo.password).subscribe((response) => {
         console.log(response);
-        AuthGuard.saveUser(response);
+        this.loginGuard.login(response);
         this.isLoading = false;
         this.router.navigate(['/portfolio']);
       }, error => {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthGuard } from 'src/resources/auth-guard';
+import { AuthGuard, LoginGuard } from 'src/resources/auth-guard';
 // import { UserService } from 'src/services/user.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -52,7 +52,8 @@ export class RegisterComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<RegisterComponent>) { }
+    private dialogRef: MatDialogRef<RegisterComponent>,
+    private loginGuard: LoginGuard) { }
 
   ngOnInit(): void {
   }
@@ -94,7 +95,7 @@ export class RegisterComponent implements OnInit {
       this.userService.register(user).subscribe(result => {
         this.isLoading = false;
         this.dismiss();
-        AuthGuard.saveUser(result);
+        this.loginGuard.login(result);
         this.snackBar.open('Cuenta creada safistactoriamente.', undefined, {
           duration: 3000
         });

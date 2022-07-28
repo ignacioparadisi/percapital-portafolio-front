@@ -1,4 +1,4 @@
-<mat-sidenav-container class="example-container" autosize>
+<mat-sidenav-container *ngIf="isLoggedIn()" class="example-container" autosize>
   <mat-sidenav #drawer class="example-sidenav" mode="side">
     <h1>Percapital</h1>
     <mat-nav-list>
@@ -28,23 +28,23 @@
           </mat-list>
         </mat-expansion-panel>
       </div>
-      <a mat-list-item routerLink="/titles" routerLinkActive="active-item"  (click)="didSelectItem()">
+      <a *ngIf="isAdmin()" mat-list-item routerLink="/titles" routerLinkActive="active-item"  (click)="didSelectItem()">
         <span class="line"></span>
         Títulos
       </a>
-      <a mat-list-item routerLink="/exchange-rates" routerLinkActive="active-item"  (click)="didSelectItem()">
+      <a *ngIf="isAdmin()" mat-list-item routerLink="/exchange-rates" routerLinkActive="active-item"  (click)="didSelectItem()">
         <span class="line"></span>
         Tasa de Cambio
       </a>
-      <a mat-list-item routerLink="/price-rv" routerLinkActive="active-item"  (click)="didSelectItem()">
+      <a *ngIf="isAdmin()" mat-list-item routerLink="/price-rv" routerLinkActive="active-item"  (click)="didSelectItem()">
         <span class="line"></span>
         Precio RV
       </a>
-      <a mat-list-item routerLink="/comissions" routerLinkActive="active-item"  (click)="didSelectItem()">
+      <a *ngIf="isAdmin()" mat-list-item routerLink="/comissions" routerLinkActive="active-item"  (click)="didSelectItem()">
         <span class="line"></span>
         Comisiones
       </a>
-      <a mat-list-item routerLink="/login">
+      <a mat-list-item (click)="logout()">
         <span class="line"></span>
         Cerrar Sesión
       </a>
@@ -60,4 +60,6 @@
   </div>
 
 </mat-sidenav-container>
+
+<router-outlet *ngIf="!isLoggedIn()"></router-outlet>
 
