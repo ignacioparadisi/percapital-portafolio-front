@@ -212,4 +212,12 @@ export class PredictionDashboardComponent implements OnInit {
     return text;
   }
 
+  downloadCSVDocument() {
+
+  }
+
+  downloadJSONDocument() {
+
+  }
+
 }

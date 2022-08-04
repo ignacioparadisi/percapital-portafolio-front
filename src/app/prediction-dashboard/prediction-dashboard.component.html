@@ -5,6 +5,20 @@
 
   <div class="row">
     <mat-card>
+      <mat-card-title>Cargar Archivo</mat-card-title>
+      <mat-card-content>
+        Puedes cargar un archivo tipo CSV y JSON para insertar valores que han tenido las acciones a lo largo del tiempo.
+        <br/>
+        <button mat-button color="primary" (click)="downloadCSVDocument()">Descargar archivo CSV ejemplo</button>
+        <button mat-button color="primary" (click)="downloadJSONDocument()">Descargar archivo JSON ejemplo</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <br/>
+
+  <div class="row">
+    <mat-card>
       <div class="center loading-shade" *ngIf="isLoading || errorLoading">
         <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetchStocksFromBVC()">Reintentar</button>
         <mat-spinner *ngIf="isLoading"></mat-spinner>
