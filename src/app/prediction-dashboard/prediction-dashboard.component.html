@@ -11,6 +11,13 @@
         <br/>
         <button mat-button color="primary" (click)="downloadCSVDocument()">Descargar archivo CSV ejemplo</button>
         <button mat-button color="primary" (click)="downloadJSONDocument()">Descargar archivo JSON ejemplo</button>
+
+        <div class="dropzone">
+          <input type="file" #fileDropRef id="fileDropRef"/>
+          <h3>Arrastra el archivo</h3>
+          <h3>o</h3>
+          <button mat-raised-button color="primary">Buscar archivo</button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
