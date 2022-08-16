@@ -5,11 +5,13 @@ import { ExchangeRate } from "src/common/classes/ExchangeRate";
 import { InsertData } from "src/common/classes/InsertData";
 import { Operation } from "src/common/classes/Operation";
 import { PriceRV } from "src/common/classes/PriceRV";
+import { StockHistoric } from "src/common/classes/StockHistoric";
 import { StockTitle } from "src/common/classes/StockTitle";
 import { User } from "src/common/classes/User";
 import { CreateExchangeRateMutation } from "./CreateExchangeRateMutation";
 import { CreateOperationMutation } from "./CreateOperationMutation";
 import { CreatePriceRVMutation } from "./CreatePriceRVMutation";
+import { CreateStockHistoricMutation } from "./CreateStockHistoricMutation";
 import { CreateStockTitleMutation } from "./CreateStockTitleMutation";
 import { CreateTypeValueMutation } from "./CreateTypeValueMutation";
 import { CreateUserMutation } from "./CreateUserMutation";
@@ -39,5 +41,9 @@ export class MutationFactory {
 
     getCreateUserMutation(user: User) {
         return new CreateUserMutation(this.apollo, new InsertData(user));
+    }
+
+    getCreateStockHistoriMutation(stocks: StockHistoric[]) {
+        return new CreateStockHistoricMutation(this.apollo, new InsertData(stocks));
     }
 }

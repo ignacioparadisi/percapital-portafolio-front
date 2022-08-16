@@ -13,12 +13,15 @@
         <button mat-button color="primary" (click)="downloadJSONDocument()">Descargar archivo JSON ejemplo</button>
 
         <div class="dropzone">
-          <input type="file" #fileDropRef id="fileDropRef"/>
+          <input type="file" #fileDropRef id="fileDropRef" accept=".json, .csv" (change)="setSelectedFile($event)"/>
           <h3>Arrastra el archivo</h3>
           <h3>o</h3>
           <button mat-raised-button color="primary">Buscar archivo</button>
         </div>
       </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="uploadDocument()" [disabled]="false">Cargar</button>
+      </mat-card-actions>
     </mat-card>
   </div>
 

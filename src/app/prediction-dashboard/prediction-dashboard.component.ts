@@ -17,6 +17,7 @@ import {MatTableDataSource} from "@angular/material/table";
 })
 export class PredictionDashboardComponent implements OnInit {
   form: FormGroup;
+  private uploadedFile?: File;
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
 
@@ -217,6 +218,63 @@ export class PredictionDashboardComponent implements OnInit {
   }
 
   downloadJSONDocument() {
+
+  }
+
+  setSelectedFile(event: any) {
+    console.info(`${event.target.files.length} file was selected`);
+    if (event.target.files.length > 0) {
+      this.uploadedFile = event.target.files[0];
+    } else {
+      this.uploadedFile = undefined;
+    }
+  }
+
+  uploadDocument() {
+    if (!this.uploadedFile) return;
+    let fileExtension = this.uploadedFile.name.split('.').pop()?.toLowerCase();
+    switch (fileExtension) {
+      case 'json':
+        this.uploadJSONDocument(this.uploadedFile);
+        break;
+      case 'csv':
+        this.uploadCSVDocument(this.uploadedFile);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private uploadJSONDocument(file: File) {
+    let fileReader = new FileReader();
+    fileReader.readAsText(file, "UTF-8");
+    fileReader.onload = () => {
+      let json = JSON.parse(fileReader.result as string);
+      if (json.stock_historic) {
+        let stocks: StockHistoric[] = [];
+        json.stock_historic.map((item: any) => {
+          let stock = new StockHistoric(item.symbol, 
+            undefined, 
+            item.symbol_description, 
+            item.close_price, 
+            item.open_price, 
+            item.high_price, 
+            item.low_price, 
+            item.volume, 
+            item.change);
+          stocks.push(stock);
+        })
+        this.predictionService.createStockHistoric(stocks).subscribe(response => {
+          console.info(response)
+        }, error => {
+          console.error(error);
+        });
+
+      }
+    }
+  }
+
+  private uploadCSVDocument(file: File) {
 
   }
 
