@@ -7,7 +7,7 @@ import {StockTitleService} from "../../services/stock-title/stock-title.service"
 import {map, startWith} from "rxjs/operators";
 import {ToastrService} from "ngx-toastr";
 import Chart from 'chart.js/auto';
-import {StockHistoric} from "../../common/classes/StockHistoric";
+import {StockHistoric, StockHistoricInput} from "../../common/classes/StockHistoric";
 import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
@@ -251,11 +251,9 @@ export class PredictionDashboardComponent implements OnInit {
     fileReader.onload = () => {
       let json = JSON.parse(fileReader.result as string);
       if (json.stock_historic) {
-        let stocks: StockHistoric[] = [];
+        let stocks: StockHistoricInput[] = [];
         json.stock_historic.map((item: any) => {
-          let stock = new StockHistoric(item.symbol, 
-            undefined, 
-            item.symbol_description, 
+          let stock = new StockHistoricInput(item.symbol, 
             item.close_price, 
             item.open_price, 
             item.high_price, 

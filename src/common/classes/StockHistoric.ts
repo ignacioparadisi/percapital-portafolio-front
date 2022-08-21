@@ -34,3 +34,35 @@ export class StockHistoric {
   }
 
 }
+
+export class StockHistoricInput {
+  symbol: string;
+  closePrice: number;
+  openPrice?: number;
+  highPrice?: number;
+  lowPrice?: number;
+  volume?: string;
+  change?: string;
+  date: Date;
+
+  constructor(symbol: string, 
+    interval?: string, 
+    symbolDescription?: string, 
+    closePrice?: number, 
+    openPrice?: number, 
+    highPrice?: number, 
+    lowPrice?: number, 
+    volume?: string,
+    change?: string) {
+    this.symbol = symbol;
+    this.closePrice = closePrice ?? 0;
+    this.openPrice = openPrice ? (isNaN(openPrice) ? undefined : openPrice) : undefined;
+    this.highPrice = highPrice ? (isNaN(highPrice) ? undefined : highPrice) : undefined;
+    this.lowPrice = lowPrice ? (isNaN(lowPrice) ? undefined : lowPrice) : undefined;
+    this.volume = volume;
+    this.change = change;
+    this.date = new Date();
+  }
+
+}
+

@@ -1,12 +1,11 @@
 import { InsertData } from "src/common/classes/InsertData";
-import { StockHistoric } from "src/common/classes/StockHistoric";
-import { StockTitle } from "src/common/classes/StockTitle";
+import { StockHistoric, StockHistoricInput } from "src/common/classes/StockHistoric";
 import { GraphQLMutation } from "../GraphQLMutation";
 
-export class CreateStockHistoricMutation extends GraphQLMutation<InsertData<StockHistoric[]>, StockHistoric> {
+export class CreateStockHistoricMutation extends GraphQLMutation<InsertData<StockHistoricInput[]>, StockHistoric> {
     mutation = `
-    mutation createStockHistoric($input: [StockHistoricInput]!) {
-        createStockHistoric(input: $input) {
+    mutation createStockHistoric($insertData: [StockHistoricInput]!) {
+        createStockHistoric(insertData: $insertData) {
             id
             symbol
             symbolDescription

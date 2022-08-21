@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {QueryFactory} from "../apollo/queries/QueryFactory";
 import {MutationFactory} from "../apollo/mutations/MutationFactory";
-import { StockHistoric } from 'src/common/classes/StockHistoric';
+import { StockHistoric, StockHistoricInput } from 'src/common/classes/StockHistoric';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class PredictionService {
     return query.execute(this.serverName);
   }
 
-  createStockHistoric(stocks: StockHistoric[]) {
+  createStockHistoric(stocks: StockHistoricInput[]) {
     let query = this.mutationFactory.getCreateStockHistoriMutation(stocks);
     return query.execute(this.serverName);
   }
