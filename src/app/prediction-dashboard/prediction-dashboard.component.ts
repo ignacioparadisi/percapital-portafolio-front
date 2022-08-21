@@ -254,6 +254,8 @@ export class PredictionDashboardComponent implements OnInit {
         let stocks: StockHistoricInput[] = [];
         json.stock_historic.map((item: any) => {
           let stock = new StockHistoricInput(item.symbol, 
+            item.stock_date,
+            item.symbol_description,
             item.close_price, 
             item.open_price, 
             item.high_price, 
