@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {PredictionService} from "src/services/prediction/prediction.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {StockTitle} from "src/common/classes/StockTitle";
-import {Observable} from "rxjs";
-import {StockTitleService} from "../../services/stock-title/stock-title.service";
-import {map, startWith} from "rxjs/operators";
-import {ToastrService} from "ngx-toastr";
+import { PredictionService } from "src/services/prediction/prediction.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { StockTitle } from "src/common/classes/StockTitle";
+import { Observable } from "rxjs";
+import { StockTitleService } from "../../services/stock-title/stock-title.service";
+import { map, startWith } from "rxjs/operators";
+import { ToastrService } from "ngx-toastr";
 import Chart from 'chart.js/auto';
-import {StockHistoric, StockHistoricInput} from "../../common/classes/StockHistoric";
-import {MatTableDataSource} from "@angular/material/table";
+import { StockHistoric, StockHistoricInput } from "../../common/classes/StockHistoric";
+import { MatTableDataSource } from "@angular/material/table";
+import csv from "csvtojson";
 
 @Component({
   selector: 'app-prediction-dashboard',
@@ -36,8 +37,8 @@ export class PredictionDashboardComponent implements OnInit {
 
   constructor(private predictionService: PredictionService, private stockTitleService: StockTitleService, private toastr: ToastrService) {
     this.form = new FormGroup({
-      title: new FormControl({value: '', disabled: false}, [Validators.required]),
-      interval: new FormControl({value: '1month', disabled: false}, [Validators.required])
+      title: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      interval: new FormControl({ value: '1month', disabled: false }, [Validators.required])
     });
   }
 
@@ -251,31 +252,46 @@ export class PredictionDashboardComponent implements OnInit {
     fileReader.onload = () => {
       let json = JSON.parse(fileReader.result as string);
       if (json.stock_historic) {
-        let stocks: StockHistoricInput[] = [];
-        json.stock_historic.map((item: any) => {
-          let stock = new StockHistoricInput(item.symbol, 
-            item.stock_date,
-            item.symbol_description,
-            item.close_price, 
-            item.open_price, 
-            item.high_price, 
-            item.low_price, 
-            item.volume, 
-            item.change);
-          stocks.push(stock);
-        })
-        this.predictionService.createStockHistoric(stocks).subscribe(response => {
-          console.info(response)
-        }, error => {
-          console.error(error);
-        });
-
+        this.saveStockHistoric(json.stock_historic);
       }
     }
   }
 
   private uploadCSVDocument(file: File) {
+    let fileReader = new FileReader();
+    fileReader.readAsText(file, "UTF-8");
+    fileReader.onload = () => {
+      csv().fromString(fileReader.result as string)
+        .then((json) => {
+          this.saveStockHistoric(json);
+        });
+    }
+  }
 
+  private formatJSON(json: any[]): StockHistoricInput[] {
+    let stocks: StockHistoricInput[] = [];
+    json.map((item: any) => {
+      let stock = new StockHistoricInput(item.symbol,
+        item.stock_date,
+        item.symbol_description,
+        parseFloat(item.close_price),
+        parseFloat(item.open_price),
+        parseFloat(item.high_price),
+        parseFloat(item.low_price),
+        item.volume,
+        item.change);
+      stocks.push(stock);
+    });
+    return stocks;
+  }
+
+  private saveStockHistoric(json: any[]) {
+    let stocks = this.formatJSON(json);
+    this.predictionService.createStockHistoric(stocks).subscribe(response => {
+      console.info(response);
+    }, error => {
+      console.error(error);
+    });
   }
 
 }
