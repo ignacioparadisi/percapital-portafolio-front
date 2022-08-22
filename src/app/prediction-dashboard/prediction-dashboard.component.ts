@@ -271,13 +271,16 @@ export class PredictionDashboardComponent implements OnInit {
   private formatJSON(json: any[]): StockHistoricInput[] {
     let stocks: StockHistoricInput[] = [];
     json.map((item: any) => {
+      if (!item.close_price) {
+        return;
+      }
       let stock = new StockHistoricInput(item.symbol,
         item.stock_date,
         item.symbol_description,
         parseFloat(item.close_price),
-        parseFloat(item.open_price),
-        parseFloat(item.high_price),
-        parseFloat(item.low_price),
+        parseFloat(item.open_price ? (isNaN(item.open_price) ? item.close_price : item.open_price) : item.close_price),
+        parseFloat(item.high_price ? (isNaN(item.high_price) ? item.close_price : item.high_price) : item.close_price),
+        parseFloat(item.low_price ? (isNaN(item.low_price) ? item.close_price : item.low_price) : item.close_price),
         item.volume,
         item.change);
       stocks.push(stock);

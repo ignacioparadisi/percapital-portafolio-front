@@ -39,9 +39,9 @@ export class StockHistoricInput {
   symbol: string;
   symbolDescription?: string;
   closePrice: number;
-  openPrice?: number | null;
-  highPrice?: number | null;
-  lowPrice?: number | null;
+  openPrice?: number;
+  highPrice?: number;
+  lowPrice?: number;
   volume?: string;
   change?: string;
   date: Date;
@@ -58,9 +58,9 @@ export class StockHistoricInput {
     this.symbol = symbol;
     this.symbolDescription = symbolDescription;
     this.closePrice = closePrice ?? 0;
-    this.openPrice = openPrice ? (isNaN(openPrice) ? null : openPrice) : null;
-    this.highPrice = highPrice ? (isNaN(highPrice) ? null : highPrice) : null;
-    this.lowPrice = lowPrice ? (isNaN(lowPrice) ? null : lowPrice) : null;
+    this.openPrice = openPrice;
+    this.highPrice = highPrice;
+    this.lowPrice = lowPrice;
     this.volume = volume;
     this.change = change;
     this.date = date;
