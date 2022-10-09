@@ -156,7 +156,7 @@
           <!-- Name Column -->
           <ng-container matColumnDef="walletWeight">
             <th mat-header-cell *matHeaderCellDef> Peso en Cartera </th>
-            <td mat-cell *matCellDef="let element"> {{ element.buyWeightInWallet | percentage | nullable }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element.buyWeightInWallet * 100 | percentage | nullable }} </td>
           </ng-container>
 
           <!-- Name Column -->
