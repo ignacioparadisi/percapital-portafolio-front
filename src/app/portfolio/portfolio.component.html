@@ -73,28 +73,28 @@
           <ng-container matColumnDef="symbol" sticky>
             <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.titleSymbol }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> Total </mat-footer-cell>
           </ng-container>
 
           <!-- Description Column -->
           <ng-container matColumnDef="description">
             <mat-header-cell *matHeaderCellDef> Descripci&oacute;n </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.titleDesc }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="price">
             <mat-header-cell *matHeaderCellDef> Precio Acci&oacute;n </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.stockPrice | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="amountOwned">
             <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.stockInFolio | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalStocksAmount | number | nullable }}
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalStocksAmount | number | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -102,14 +102,14 @@
           <ng-container matColumnDef="averagePrice">
             <mat-header-cell *matHeaderCellDef> Precio Promedio Compra </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.avgBuyPrice | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="totalPrice">
             <mat-header-cell *matHeaderCellDef> Costo Total Compra </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.buyTotalCost | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalBuyTotalCost | number | nullable }}
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalBuyTotalCost | number | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -117,7 +117,7 @@
           <ng-container matColumnDef="totalPriceUSD">
             <mat-header-cell *matHeaderCellDef> Costo Total Compra USD </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.dollarBuyTotalCost | currency | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalDollarBuyTotalCost | currency | nullable
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalDollarBuyTotalCost | currency | nullable
               }}
             </mat-footer-cell>
           </ng-container>
@@ -126,7 +126,7 @@
           <ng-container matColumnDef="netValue">
             <mat-header-cell *matHeaderCellDef> Valor Neto Mercado </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.marketNetValue | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalNetMarketValue | number | nullable }}
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetMarketValue | number | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -134,7 +134,7 @@
           <ng-container matColumnDef="netValueUSD">
             <mat-header-cell *matHeaderCellDef> Valor Neto Mercado USD </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.dollarMarketNetValue | currency | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalDollarNetMarketValue | currency | nullable
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalDollarNetMarketValue | currency | nullable
               }} </mat-footer-cell>
           </ng-container>
 
@@ -142,7 +142,7 @@
           <ng-container matColumnDef="gp">
             <mat-header-cell *matHeaderCellDef> G/P Neto </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.netGp | number | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalNetGp | number | nullable }}
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetGp | number | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -150,7 +150,7 @@
           <ng-container matColumnDef="gpUSD">
             <mat-header-cell *matHeaderCellDef> G/P Neto USD </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.dollarNetGp | currency | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> {{ page?.totalDollarNetGp | currency | nullable }}
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalDollarNetGp | currency | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -158,21 +158,21 @@
           <ng-container matColumnDef="variation">
             <mat-header-cell *matHeaderCellDef> Variaci&oacute;n </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.variation | percentage | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="variationUSD">
             <mat-header-cell *matHeaderCellDef> Variaci&oacute;n USD </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.dollarVariation | percentage | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="port">
             <mat-header-cell *matHeaderCellDef> % Portafolio </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{ element.percentageInFolio | percentage | nullable }} </mat-cell>
-            <mat-footer-cell mat-footer-cell *matFooterCellDef> </mat-footer-cell>
+            <mat-footer-cell *matFooterCellDef> {{ totalPercentage | percentage }} </mat-footer-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>

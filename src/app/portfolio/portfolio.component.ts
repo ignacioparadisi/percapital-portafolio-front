@@ -58,6 +58,11 @@ export class PortfolioComponent implements AfterViewInit {
               private toastr: ToastrService) {
   }
 
+  get totalPercentage(): number {
+      return this.page?.data?.map(element => element.percentageInFolio)
+        .reduce((previous, current) => (previous ?? 0) + (current ?? 0)) ?? 0
+  }
+
   fetch() {
     this.errorLoading = false;
     this.isLoading = true;
@@ -102,4 +107,5 @@ export class PortfolioComponent implements AfterViewInit {
     });
     this.totalDataSource = new MatTableDataSource<PortfolioTotalValue>(this.totalValues);
   }
+
 }
