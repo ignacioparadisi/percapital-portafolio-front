@@ -18,7 +18,7 @@
           <!-- Name Column -->
           <ng-container matColumnDef="bs">
             <mat-header-cell *matHeaderCellDef> Bol&Iacute;vares </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.valueBs | number | nullable }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element.valueBs | number : '1.2-2' | nullable }} </mat-cell>
           </ng-container>
 
           <!-- Description Column -->
@@ -49,7 +49,7 @@
           <!-- Name Column -->
           <ng-container matColumnDef="value">
             <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element | number | nullable }}</mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element | number : '1.2-2' | nullable }}</mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="exchangeRateDisplayedColumns; sticky: true"></mat-header-row>
@@ -86,30 +86,30 @@
           <!-- Name Column -->
           <ng-container matColumnDef="price">
             <mat-header-cell *matHeaderCellDef> Precio Acci&oacute;n </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.stockPrice | number | nullable }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element.stockPrice | number : '1.2-2' | nullable }} </mat-cell>
             <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="amountOwned">
             <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.stockInFolio | number | nullable }} </mat-cell>
-            <mat-footer-cell *matFooterCellDef> {{ page?.totalStocksAmount | number | nullable }}
+            <mat-cell *matCellDef="let element"> {{ element.stockInFolio | number : '1.2-2' | nullable }} </mat-cell>
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalStocksAmount | number : '1.2-2' | nullable }}
             </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="averagePrice">
             <mat-header-cell *matHeaderCellDef> Precio Promedio Compra </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.avgBuyPrice | number | nullable }} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element.avgBuyPrice | number : '1.2-2' | nullable }} </mat-cell>
             <mat-footer-cell *matFooterCellDef> </mat-footer-cell>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="totalPrice">
             <mat-header-cell *matHeaderCellDef> Costo Total Compra </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.buyTotalCost | number | nullable }} </mat-cell>
-            <mat-footer-cell *matFooterCellDef> {{ page?.totalBuyTotalCost | number | nullable }}
+            <mat-cell *matCellDef="let element"> {{ element.buyTotalCost | number : '1.2-2' | nullable }} </mat-cell>
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalBuyTotalCost | number : '1.2-2' | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -125,8 +125,8 @@
           <!-- Name Column -->
           <ng-container matColumnDef="netValue">
             <mat-header-cell *matHeaderCellDef> Valor Neto Mercado </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.marketNetValue | number | nullable }} </mat-cell>
-            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetMarketValue | number | nullable }}
+            <mat-cell *matCellDef="let element"> {{ element.marketNetValue | number : '1.2-2' | nullable }} </mat-cell>
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetMarketValue | number : '1.2-2' | nullable }}
             </mat-footer-cell>
           </ng-container>
 
@@ -141,8 +141,8 @@
           <!-- Name Column -->
           <ng-container matColumnDef="gp">
             <mat-header-cell *matHeaderCellDef> G/P Neto </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{ element.netGp | number | nullable }} </mat-cell>
-            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetGp | number | nullable }}
+            <mat-cell *matCellDef="let element"> {{ element.netGp | number : '1.2-2' | nullable }} </mat-cell>
+            <mat-footer-cell *matFooterCellDef> {{ page?.totalNetGp | number : '1.2-2' | nullable }}
             </mat-footer-cell>
           </ng-container>
 
