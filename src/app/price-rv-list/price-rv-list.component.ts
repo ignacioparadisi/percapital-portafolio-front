@@ -111,7 +111,7 @@ export class PriceRvListComponent implements AfterViewInit {
 
   private _filterTitle(name: string): StockTitle[] {
     const filterValue = name.toLowerCase();
-    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name.toLowerCase().includes(filterValue)));
+    return this.titles.filter(title => (title.symbol.toLowerCase().includes(filterValue) || title.name?.toLowerCase().includes(filterValue)));
   }
 
   private fetchTitles() {
