@@ -49,7 +49,7 @@
 
         <ng-container matColumnDef="bolivaresPrice">
           <mat-header-cell *matHeaderCellDef> Precio Bs </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{ element.bolivaresPrice }} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{ element.bolivaresPrice | number : '1.2-2' }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="dollarPrice">
@@ -59,7 +59,7 @@
 
         <ng-container matColumnDef="closePrice">
           <mat-header-cell *matHeaderCellDef> Precio Cierre </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
+          <mat-cell *matCellDef="let element"> {{ element.closePrice | number : '1.2-2' }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="closeDollarPrice">

@@ -38,7 +38,7 @@
           <!-- Name Column -->
             <ng-container matColumnDef="value">
                 <mat-header-cell *matHeaderCellDef> Valor </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{ element.value }} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{ element.value | number : '1.2-2' }} </mat-cell>
             </ng-container>
 
             <!-- Description Column -->
