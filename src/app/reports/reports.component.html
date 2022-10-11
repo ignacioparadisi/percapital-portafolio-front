@@ -2,53 +2,19 @@
     <div class="header">
         <h1>Reportes</h1>
     </div>
-
     <div class="row">
         <mat-card>
             <div class="center loading-shade" *ngIf="isLoading || errorLoading">
                 <button *ngIf="errorLoading" mat-raised-button color="warn"
-                    (click)="fetchStocksFromBVC()">Reintentar</button>
+                    (click)="fetchReports()">Reintentar</button>
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
-            <mat-card-title>Últimos Precios</mat-card-title>
-            <mat-card-content>
-                <p *ngIf="latestsStocks.length === 0 && !isLoading && !errorLoading" class="center">No se han cargado
-                    precios hoy</p>
-                <div *ngIf="latestsStocks.length > 0" class="table-container mat-elevation-z8">
-                    <div class="table-data-container">
-                        <mat-table [dataSource]="dataSource">
-                            <ng-container matColumnDef="symbol">
-                                <mat-header-cell *matHeaderCellDef> Símbolo </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
-                            </ng-container>
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="value">
-                                <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
-                            </ng-container>
-
-                            <!-- Description Column -->
-                            <ng-container matColumnDef="date">
-                                <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-                                <mat-cell *matCellDef="let element"> {{ element.date | date }} </mat-cell>
-                            </ng-container>
-
-                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                            <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                        </mat-table>
-                    </div>
-                </div>
-            </mat-card-content>
-            <mat-card-actions align="end">
-                <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()"
+            <mat-card-title-group>
+                <mat-card-title>Últimos Precios</mat-card-title>
+                    <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()"
                     [disabled]="isLoading">Refrescar</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
-    <br />
-    <div class="row">
-        <mat-card>
-            <mat-card-title>Reportes</mat-card-title>
+            </mat-card-title-group>
+            <br/>
             <mat-card-content>
                 <div class="table-container mat-elevation-z8">
                     <div class="table-data-container">

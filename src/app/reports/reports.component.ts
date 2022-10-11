@@ -12,16 +12,9 @@ import { ReportsService } from 'src/services/reports/reports.service';
 })
 export class ReportsComponent implements OnInit {
 
-  latestsStocks: StockHistoric[] = [];
   reports: Report[] = [];
   isLoading: boolean = false;
   errorLoading: boolean = false;
-  displayedColumns: string[] = [
-    'symbol',
-    'value',
-    'date'
-  ];
-  dataSource = new MatTableDataSource<StockHistoric>(this.latestsStocks);
   reportsDisplayedColumns: string[] = [
     'symbol',
     'price',
@@ -35,28 +28,14 @@ export class ReportsComponent implements OnInit {
   constructor(private predictionService: PredictionService, private reportsService: ReportsService) { }
 
   ngOnInit(): void {
-    this.fetchTodayStocks();
     this.fetchReports();
-  }
-
-  private fetchTodayStocks() {
-    this.isLoading = true;
-    this.errorLoading = false;
-    this.predictionService.getTodayStocks().subscribe(result => {
-      this.updateLatestStocks(result);
-      this.isLoading = false;
-    }, error => {
-      console.error(error);
-      this.isLoading = true;
-      this.errorLoading = true;
-    });
   }
 
   fetchStocksFromBVC() {
     this.isLoading = true;
     this.errorLoading = false;
     this.predictionService.getStocksFromBVC().subscribe(result => {
-      this.updateLatestStocks(result);
+      this.fetchReports();
       this.isLoading = false;
     }, error => {
       console.error(error);
@@ -66,18 +45,17 @@ export class ReportsComponent implements OnInit {
   }
 
   fetchReports() {
+    this.isLoading = true;
+    this.errorLoading = false;
     this.reportsService.getReports().subscribe(result => {
-      console.log(result);
+      this.isLoading = false;
       this.reports = result;
       this.reportsDataSource = new MatTableDataSource<Report>(this.reports);
     }, error => {
       console.error(error);
+      this.isLoading = true;
+      this.errorLoading = true;
     })
-  }
-
-  private updateLatestStocks(result: StockHistoric[]) {
-    this.latestsStocks = result;
-    this.dataSource = new MatTableDataSource<StockHistoric>(this.latestsStocks);
   }
 
   getColor(percentage: number) {
