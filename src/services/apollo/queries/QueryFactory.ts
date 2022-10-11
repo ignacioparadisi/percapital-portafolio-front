@@ -21,6 +21,7 @@ import {GetPredictionQuery} from "./GetPredictionQuery";
 import {Prediction} from "../../../common/classes/Prediction";
 import { User } from "src/common/classes/User";
 import { LoginQuery } from "./LoginQuery";
+import { GetReportsQuery } from "./GetReportsQuery";
 
 @Injectable({
     providedIn: 'root'
@@ -68,5 +69,8 @@ export class QueryFactory {
     getLoginQuery(email: string, password: string) {
         let user = new User('', email, password);
         return new LoginQuery(this.apollo, user);
+    }
+    getReportsQuery() {
+        return new GetReportsQuery(this.apollo);
     }
 }
