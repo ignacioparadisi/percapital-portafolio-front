@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'buy-operations', loadChildren: () => import('./operation-buy-list/operation-buy-list.module').then(m => m.OperationBuyListModule), canActivate: [LoginGuard] },
   { path: 'sell-operations', loadChildren: () => import('./operation-sell-list/operation-sell-list.module').then(m => m.OperationSellListModule), canActivate: [LoginGuard] },
   { path: 'comissions', loadChildren: () => import('./constant-type-list/constant-type-list.module').then(m => m.ConstantTypeListModule), canActivate: [LoginGuard, AuthGuard], data: { role: User.ROLE_ADMIN } },
-  { path: 'prediction', loadChildren: () => import('./prediction-dashboard/prediction-dashboard.module').then(m => m.PredictionDashboardModule), canActivate: [LoginGuard] }
+  { path: 'prediction', loadChildren: () => import('./prediction-dashboard/prediction-dashboard.module').then(m => m.PredictionDashboardModule), canActivate: [LoginGuard] },
+  { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule), canActivate: [LoginGuard] }
 ];
 
 @NgModule({
