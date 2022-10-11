@@ -1,46 +1,95 @@
 <div class="container">
     <div class="header">
-      <h1>Reportes</h1>
+        <h1>Reportes</h1>
     </div>
 
     <div class="row">
         <mat-card>
-          <div class="center loading-shade" *ngIf="isLoading || errorLoading">
-            <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetchStocksFromBVC()">Reintentar</button>
-            <mat-spinner *ngIf="isLoading"></mat-spinner>
-          </div>
-          <mat-card-title>Últimos Precios</mat-card-title>
-          <mat-card-content>
-            <p *ngIf="latestsStocks.length === 0 && !isLoading && !errorLoading" class="center">No se han cargado precios hoy</p>
-            <div  *ngIf="latestsStocks.length > 0" class="table-container mat-elevation-z8">
-              <div class="table-data-container">
-                <mat-table [dataSource]="dataSource">
-                  <ng-container matColumnDef="symbol">
-                    <mat-header-cell *matHeaderCellDef> Símbolo </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
-                  </ng-container>
-                  <!-- Name Column -->
-                  <ng-container matColumnDef="value">
-                    <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
-                  </ng-container>
-    
-                  <!-- Description Column -->
-                  <ng-container matColumnDef="date">
-                    <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.date | date }} </mat-cell>
-                  </ng-container>
-    
-                  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                  <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </mat-table>
-              </div>
+            <div class="center loading-shade" *ngIf="isLoading || errorLoading">
+                <button *ngIf="errorLoading" mat-raised-button color="warn"
+                    (click)="fetchStocksFromBVC()">Reintentar</button>
+                <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
-          </mat-card-content>
-          <mat-card-actions align="end">
-            <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()" [disabled]="isLoading">Refrescar</button>
-          </mat-card-actions>
+            <mat-card-title>Últimos Precios</mat-card-title>
+            <mat-card-content>
+                <p *ngIf="latestsStocks.length === 0 && !isLoading && !errorLoading" class="center">No se han cargado
+                    precios hoy</p>
+                <div *ngIf="latestsStocks.length > 0" class="table-container mat-elevation-z8">
+                    <div class="table-data-container">
+                        <mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="symbol">
+                                <mat-header-cell *matHeaderCellDef> Símbolo </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
+                            </ng-container>
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="value">
+                                <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{ element.closePrice }} </mat-cell>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="date">
+                                <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{ element.date | date }} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                            <mat-row matRipple *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()"
+                    [disabled]="isLoading">Refrescar</button>
+            </mat-card-actions>
         </mat-card>
-      </div>
-      <br/>
+    </div>
+    <br />
+    <div class="row">
+        <mat-card>
+            <mat-card-title>Reportes</mat-card-title>
+            <mat-card-content>
+                <div class="table-container mat-elevation-z8">
+                    <div class="table-data-container">
+                        <mat-table [dataSource]="reportsDataSource">
+                            <ng-container matColumnDef="symbol">
+                                <mat-header-cell *matHeaderCellDef> Símbolo </mat-header-cell>
+                                <mat-cell *matCellDef="let element"> {{ element.symbol }} </mat-cell>
+                            </ng-container>
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="stockChange">
+                                <mat-header-cell *matHeaderCellDef> Subida/Bajada de Acción </mat-header-cell>
+                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.stockChange)"> 
+                                    {{ abs(element.stockChange) | percent }} 
+                                    <mat-icon>{{ getIconName(element.stockChange) }}</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="buyQuotationChange">
+                                <mat-header-cell *matHeaderCellDef> Cotizaciones de Compra </mat-header-cell>
+                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.buyQuotationChange)"> 
+                                    {{ abs(element.buyQuotationChange) | percent }}
+                                    <mat-icon>{{ getIconName(element.buyQuotationChange) }}</mat-icon>
+                                 </mat-cell>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="sellQuotationChange">
+                                <mat-header-cell *matHeaderCellDef> Cotizaciones de Venta </mat-header-cell>
+                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.sellQuotationChange)"> 
+                                    {{ abs(element.sellQuotationChange) | percent }} 
+                                    <mat-icon>{{ getIconName(element.sellQuotationChange) }}</mat-icon>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="reportsDisplayedColumns; sticky: true"></mat-header-row>
+                            <mat-row matRipple *matRowDef="let row; columns: reportsDisplayedColumns;"></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
