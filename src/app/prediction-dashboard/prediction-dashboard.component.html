@@ -7,13 +7,14 @@
     <mat-card>
       <mat-card-title>Cargar Archivo</mat-card-title>
       <mat-card-content>
-        Puedes cargar un archivo tipo CSV y JSON para insertar valores que han tenido las acciones a lo largo del tiempo.
-        <br/>
+        Puedes cargar un archivo tipo CSV y JSON para insertar valores que han tenido las acciones a lo largo del
+        tiempo.
+        <br />
         <button mat-button color="primary" (click)="downloadCSVDocument()">Descargar archivo CSV ejemplo</button>
         <button mat-button color="primary" (click)="downloadJSONDocument()">Descargar archivo JSON ejemplo</button>
 
         <div class="dropzone">
-          <input type="file" #fileDropRef id="fileDropRef" accept=".json, .csv" (change)="setSelectedFile($event)"/>
+          <input type="file" #fileDropRef id="fileDropRef" accept=".json, .csv" (change)="setSelectedFile($event)" />
           <h3>Arrastra el archivo</h3>
           <h3>o</h3>
           <button mat-raised-button color="primary">Buscar archivo</button>
@@ -25,23 +26,21 @@
     </mat-card>
   </div>
 
-  <br/>
+  <br />
 
   <div style="height: 500px">
     <mat-card>
-      <div class="row">
-        <mat-card-title>Histórico</mat-card-title>
-        <mat-card-content>
-          <form [formGroup]="form">
+      <form [formGroup]="form">
+        <div class="row">
+          <mat-card-title>Histórico</mat-card-title>
+          <mat-card-content>
+
             <div class="row">
               <mat-form-field appearance="outline">
                 <mat-label>T&iacute;tulo</mat-label>
-                <input placeholder="Título"
-                       aria-label="Título'"
-                       matInput
-                       formControlName="title"
-                       [matAutocomplete]="auto" required>
-                <mat-autocomplete #auto="matAutocomplete"  [displayWith]="getOptionText">
+                <input placeholder="Título" aria-label="Título'" matInput formControlName="title"
+                  [matAutocomplete]="auto" required>
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText">
                   <mat-option *ngFor="let title of filteredTitles | async" [value]="title">
                     {{ title.symbol }}<span *ngIf="title.name"> | {{ title.name }}</span>
                   </mat-option>
@@ -50,28 +49,38 @@
             </div>
             <div class="text-center">
               <mat-button-toggle-group formControlName="interval" appearance="legacy">
-                <mat-button-toggle value="1w">1W</mat-button-toggle>
+                <mat-button-toggle value="1w">1S</mat-button-toggle>
                 <mat-button-toggle value="1month">1M</mat-button-toggle>
                 <mat-button-toggle value="3month">3M</mat-button-toggle>
                 <mat-button-toggle value="6month">6M</mat-button-toggle>
-                <mat-button-toggle value="1y">1Y</mat-button-toggle>
-                <mat-button-toggle value="5y">5Y</mat-button-toggle>
+                <mat-button-toggle value="1y">1A</mat-button-toggle>
+                <mat-button-toggle value="5y">5A</mat-button-toggle>
                 <mat-button-toggle value="all">TODO</mat-button-toggle>
               </mat-button-toggle-group>
             </div>
-          </form>
 
-          <canvas id="chart" height="500" class="col-12"></canvas>
-        </mat-card-content>
-      </div>
+            <canvas id="chart" height="500" class="col-12"></canvas>
+          </mat-card-content>
+        </div>
 
-      <br/>
-      <div class="row">
-        <mat-card-title>Predicción</mat-card-title>
-        <mat-card-content>
-          <canvas id="predictionChart" height="500" class="col-12"></canvas>
-        </mat-card-content>
-      </div>
+        <br />
+        <div class="row">
+          <mat-card-title>Predicción</mat-card-title>
+          <mat-card-content>
+            <div class="text-center">
+              <mat-button-toggle-group formControlName="lookUpDays" appearance="legacy">
+                <mat-button-toggle value="7">7 Días</mat-button-toggle>
+                <mat-button-toggle value="15">15 Días</mat-button-toggle>
+                <mat-button-toggle value="30">30 Días</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            <p *ngIf="predictedPrice">Para dentro de {{ lookUpDays }} días el valor de la acción será de {{
+              predictedPrice
+              }} </p>
+            <canvas id="predictionChart" height="500" class="col-12"></canvas>
+          </mat-card-content>
+        </div>
+      </form>
     </mat-card>
   </div>
 </div>

@@ -21,6 +21,8 @@ export class PredictionDashboardComponent implements OnInit {
   private uploadedFile?: File;
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
+  lookUpDays: number = 7;
+  predictedPrice?: number;
 
   chart: Chart;
   predictionChart: Chart;
@@ -28,18 +30,20 @@ export class PredictionDashboardComponent implements OnInit {
   constructor(private predictionService: PredictionService, private stockTitleService: StockTitleService, private toastr: ToastrService) {
     this.form = new FormGroup({
       title: new FormControl({ value: '', disabled: false }, [Validators.required]),
-      interval: new FormControl({ value: '1month', disabled: false }, [Validators.required])
+      interval: new FormControl({ value: '1month', disabled: false }, [Validators.required]),
+      lookUpDays: new FormControl({ value: '7', disabled: false}, [Validators.required])
     });
   }
 
   ngOnInit(): void {
     this.setupChart();
     this.form.valueChanges.subscribe(form => {
+      this.lookUpDays = parseInt(form.lookUpDays);
       if (form.interval == "all") {
         form.interval = null;
       }
       this.fetchStockHistoric(form.title.symbol, form.interval);
-      this.fetchPrediction(form.title.symbol, 15);
+      this.fetchPrediction(form.title.symbol, this.lookUpDays);
     });
     this.fetchTitles();
   }
@@ -107,6 +111,7 @@ export class PredictionDashboardComponent implements OnInit {
       return;
     }
     this.predictionService.getPrediction(symbol, lookUpDays).subscribe(result => {
+      this.predictedPrice = result.futurePrice;
       this.predictionChart.data = {
         labels: result.trueData.x,
         datasets: [{

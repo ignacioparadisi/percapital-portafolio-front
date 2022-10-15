@@ -12,8 +12,9 @@
                 <mat-card-title>Últimos Precios</mat-card-title>
                 <div>
                     <button mat-stroked-button color="link" (click)="download()">Descargar CSV</button>
+                    <button mat-stroked-button color="link" (click)="download()">Descargar PDF</button>
                     <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()"
-                        [disabled]="isLoading">Refrescar</button>
+                        [disabled]="isLoading">Actualizar</button>
                 </div>
 
             </mat-card-title-group>
