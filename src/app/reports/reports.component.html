@@ -5,16 +5,19 @@
     <div class="row">
         <mat-card>
             <div class="center loading-shade" *ngIf="isLoading || errorLoading">
-                <button *ngIf="errorLoading" mat-raised-button color="warn"
-                    (click)="fetchReports()">Reintentar</button>
+                <button *ngIf="errorLoading" mat-raised-button color="warn" (click)="fetchReports()">Reintentar</button>
                 <mat-spinner *ngIf="isLoading"></mat-spinner>
             </div>
             <mat-card-title-group>
                 <mat-card-title>Últimos Precios</mat-card-title>
+                <div>
+                    <button mat-stroked-button color="link" (click)="download()">Descargar CSV</button>
                     <button mat-raised-button color="primary" (click)="fetchStocksFromBVC()"
-                    [disabled]="isLoading">Refrescar</button>
+                        [disabled]="isLoading">Refrescar</button>
+                </div>
+
             </mat-card-title-group>
-            <br/>
+            <br />
             <mat-card-content>
                 <div class="table-container mat-elevation-z8">
                     <div class="table-data-container">
@@ -26,33 +29,35 @@
                             <!-- Name Column -->
                             <ng-container matColumnDef="stockChange">
                                 <mat-header-cell *matHeaderCellDef> Subida/Bajada de Acción </mat-header-cell>
-                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.changePercentage)"> 
-                                    {{ abs(element.changePercentage) | percent }} 
+                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.changePercentage)">
+                                    {{ abs(element.changePercentage) | percent }}
                                     <mat-icon>{{ getIconName(element.changePercentage) }}</mat-icon>
                                 </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="price">
                                 <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
-                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.changePercentage)"> 
-                                    {{ element.latestPrice | number:'1.2-2' }} 
+                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.changePercentage)">
+                                    {{ element.latestPrice | number:'1.2-2' }}
                                 </mat-cell>
                             </ng-container>
 
                             <!-- Description Column -->
                             <ng-container matColumnDef="buyQuotationChange">
                                 <mat-header-cell *matHeaderCellDef> Cotizaciones de Compra </mat-header-cell>
-                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.buyChangePercentage)"> 
+                                <mat-cell *matCellDef="let element"
+                                    [style.color]="getColor(element.buyChangePercentage)">
                                     {{ abs(element.buyChangePercentage) | percent }}
                                     <mat-icon>{{ getIconName(element.buyChangePercentage) }}</mat-icon>
-                                 </mat-cell>
+                                </mat-cell>
                             </ng-container>
 
                             <!-- Description Column -->
                             <ng-container matColumnDef="sellQuotationChange">
                                 <mat-header-cell *matHeaderCellDef> Cotizaciones de Venta </mat-header-cell>
-                                <mat-cell *matCellDef="let element" [style.color]="getColor(element.sellChangePercentage)"> 
-                                    {{ abs(element.sellChangePercentage) | percent }} 
+                                <mat-cell *matCellDef="let element"
+                                    [style.color]="getColor(element.sellChangePercentage)">
+                                    {{ abs(element.sellChangePercentage) | percent }}
                                     <mat-icon>{{ getIconName(element.sellChangePercentage) }}</mat-icon>
                                 </mat-cell>
                             </ng-container>
