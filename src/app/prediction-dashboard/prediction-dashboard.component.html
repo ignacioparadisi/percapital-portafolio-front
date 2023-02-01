@@ -13,7 +13,21 @@
         <button mat-button color="primary" (click)="downloadCSVDocument()">Descargar archivo CSV ejemplo</button>
         <button mat-button color="primary" (click)="downloadJSONDocument()">Descargar archivo JSON ejemplo</button>
 
-        <div class="dropzone">
+        <div *ngIf="uploadedFile != null" class="file text-center" >
+          <ul>
+            <li>
+              <mat-icon class="file-icon">insert_drive_file</mat-icon>
+            </li>
+            <li>
+              {{uploadedFile?.name}}
+            </li>
+            <li>
+              <button mat-raised-button color="warn" [disabled]="isUploadingFile" (click)="deleteFile()">Eliminar</button>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="uploadedFile == null" class="dropzone">
           <input type="file" #fileDropRef id="fileDropRef" accept=".json, .csv" (change)="setSelectedFile($event)" />
           <h3>Arrastra el archivo</h3>
           <h3>o</h3>
@@ -21,7 +35,14 @@
         </div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary" (click)="uploadDocument()" [disabled]="false">Cargar</button>
+        <button mat-raised-button color="primary" (click)="uploadDocument()" [disabled]="uploadedFile == null">
+          <span *ngIf="!isUploadingFile">Cargar</span>
+          <div *ngIf="isUploadingFile" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status" diameter="7px">
+              <span class="sr-only">Cargando...</span>
+            </div>
+          </div>
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -74,6 +95,7 @@
                 <mat-button-toggle value="30">30 Días</mat-button-toggle>
               </mat-button-toggle-group>
             </div>
+            <br/>
             <p *ngIf="predictedPrice">Para dentro de {{ lookUpDays }} días el valor de la acción será de {{
               predictedPrice
               }} </p>

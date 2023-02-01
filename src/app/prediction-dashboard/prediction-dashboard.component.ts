@@ -18,11 +18,12 @@ import csv from "csvtojson";
 })
 export class PredictionDashboardComponent implements OnInit {
   form: FormGroup;
-  private uploadedFile?: File;
+  uploadedFile?: File;
   private titles: StockTitle[] = [];
   filteredTitles?: Observable<StockTitle[]>;
   lookUpDays: number = 7;
   predictedPrice?: number;
+  isUploadingFile = false;
 
   chart: Chart;
   predictionChart: Chart;
@@ -252,12 +253,20 @@ export class PredictionDashboardComponent implements OnInit {
   }
 
   private saveStockHistoric(json: any[]) {
+    this.isUploadingFile = true;
     let stocks = this.formatJSON(json);
     this.predictionService.createStockHistoric(stocks).subscribe(response => {
+      this.isUploadingFile = false;
+      this.uploadedFile = undefined;
       console.info(response);
     }, error => {
+      this.isUploadingFile = false;
       console.error(error);
     });
+  }
+
+  deleteFile() {
+    this.uploadedFile = undefined;
   }
 
 }
