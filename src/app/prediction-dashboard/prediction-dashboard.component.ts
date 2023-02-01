@@ -114,7 +114,10 @@ export class PredictionDashboardComponent implements OnInit {
     this.predictionService.getPrediction(symbol, lookUpDays).subscribe(result => {
       this.predictedPrice = result.futurePrice;
       this.predictionChart.data = {
-        labels: result.trueData.x,
+        labels: result.trueData.x.map((dateNumber) => { 
+          let date = new Date(+dateNumber);
+          return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+        }),
         datasets: [{
           label: 'Real',
           data: result.trueData.y,
